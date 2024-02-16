@@ -20,10 +20,10 @@ module.exports = {
     },
     extend: {
       colors: {
-        firstcolor:"#A2C4FA",
-        cardscolor:"#7CACF8",
-        titlecolor:"#041E49",
-        sidebarColor:"#F3F7FD",
+        primarycolor:"#041E49",
+        secondarycolor:"#7CACF8",
+        hovercolor:"#F3F7FD",
+        greencolor:"#006400",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
