@@ -15,7 +15,7 @@ const ChooseJob = () => {
       <div className="px-8">Header</div>
       <div className="flex flex-col md:justify-center md:items-center w-full h-full">
         <div className="py-5 mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center ">
-          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 ">
+          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 text-primarycolor">
             Join as a client or Service Provider
           </h1>
 

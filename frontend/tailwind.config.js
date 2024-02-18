@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       colors: {
         primarycolor:"#041E49",
+        primarycolorhover:"#042c6e",
         secondarycolor:"#7CACF8",
         hovercolor:"#F3F7FD",
         greencolor:"#006400",
