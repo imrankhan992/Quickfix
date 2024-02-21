@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "../ui/button";
+import { TextInput } from '@tremor/react';
 
 const SPSignup = () => {
   const handlesubmit = (e) => {
@@ -41,11 +42,7 @@ const SPSignup = () => {
               >
                 First name
               </Label>
-              <Input
-                className="border-2 focus:border-none border-gray-200"
-                type="text"
-                id="name"
-              />
+              <TextInput id="name" className="mx-auto max-w-xs rounded-lg border-2 " placeholder="" />
 
             </div>
 
@@ -57,10 +54,11 @@ const SPSignup = () => {
               >
                 Last name
               </Label>
-              <Input
-                className="border-2 focus:border-none border-gray-200"
+              <TextInput
+                className="border-2 focus:border-none border-gray-200 rounded-lg"
                 type="text"
                 id="lastname"
+                placeholder=""
               />
             </div>
             {/* email */}
@@ -71,10 +69,11 @@ const SPSignup = () => {
               >
                 Email
               </Label>
-              <Input
-                className="border-2 focus:border-none border-gray-200"
+              <TextInput
+                className="border-2 focus:border-none border-gray-200 rounded-lg"
                 type="email"
                 id="email"
+                placeholder=""
               />
             </div>
             {/* password */}
@@ -85,10 +84,11 @@ const SPSignup = () => {
               >
                 Password
               </Label>
-              <Input
-                className="border-2 focus:border-none border-gray-200"
+              <TextInput
+                className="border-2 focus:border-none border-gray-200 rounded-lg"
                 type="password"
                 id="password"
+                placeholder=""
               />
             </div>
             {/* confirm password */}
@@ -99,10 +99,11 @@ const SPSignup = () => {
               >
                 Confirm Password
               </Label>
-              <Input
-                className="border-2 focus:border-none border-gray-200"
+              <TextInput
+                className="border-2 focus:border-none border-gray-200 rounded-lg"
                 type="password"
                 id="password"
+                placeholder=""
               />
             </div>
             {/* accept terms and conditons */}

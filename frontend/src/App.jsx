@@ -3,6 +3,7 @@ import ChooseJob from "./components/Signup/chooseJob";
 import SPSignup from "./components/Signup/SPSignup";
 import Congratulation from "./components/Signup/Congratulation";
 import CheckEmail from "./components/Signup/CheckEmail";
+import Profile from "./components/Signup/Profile";
 
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
      {/* <ChooseJob/> */}
      {/* <SPSignup/> */}
      {/* <Congratulation/> */}
-     <CheckEmail/>
+     {/* <CheckEmail/> */}
+     <Profile/>
     </>
   );
 }

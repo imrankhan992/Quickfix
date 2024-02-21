@@ -1,5 +1,5 @@
 import React from "react";
-import { MdMarkEmailUnread } from "react-icons/md";
+
 import mail from "../../assets/sendmail.gif";
 import { Button } from "../ui/button";
 const CheckEmail = () => {
