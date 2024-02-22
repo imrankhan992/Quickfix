@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "../ui/button";
 import { TextInput } from '@tremor/react';
+import { Link } from "react-router-dom";
 
 const SPSignup = () => {
   const handlesubmit = (e) => {
@@ -122,7 +123,9 @@ const SPSignup = () => {
               </div>
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
+              <Link to={"/verifyemail"}>
               <Button>Create my account</Button>
+              </Link>
             </div>
           </form>
         </div>

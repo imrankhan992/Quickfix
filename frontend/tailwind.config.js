@@ -70,12 +70,13 @@ module.exports = {
             emphasis: colors.blue[700],
             inverted: colors.white,
           },
-          background: {
-            muted: colors.gray[50],
-            subtle: colors.gray[100],
-            DEFAULT: colors.white,
-            emphasis: colors.gray[700],
-          },
+          // background: {
+          //   muted: colors.gray[50],
+          //   subtle: colors.gray[100],
+          //   DEFAULT: colors.white,
+          //   emphasis: colors.gray[700],
+          // },
+          background:"#F3F7FD",
           border: {
             DEFAULT: colors.gray[200],
           },

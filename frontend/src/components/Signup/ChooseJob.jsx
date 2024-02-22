@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { FaRegCircle, FaDotCircle, FaUserTie } from "react-icons/fa";
 import { GrUserWorker } from "react-icons/gr";
+import { Link } from "react-router-dom";
 
 const ChooseJob = () => {
   const [selectedOption, setSelectedOption] = useState("notselected");
@@ -63,6 +64,7 @@ const ChooseJob = () => {
           </div>
           <div>
             {selectedOption && selectedOption !== "notselected" && (
+              <Link to={"/createaccount"}>
               <Button>
                 Join as a{" "}
                 {selectedOption
@@ -70,23 +72,26 @@ const ChooseJob = () => {
                     selectedOption.slice(1)
                   : "..."}
               </Button>
+              </Link>
             )}
             {selectedOption === "notselected" && (
+              
               <Button disabled className="cursor-not-allowed">
                 Create Account
               </Button>
+             
             )}
           </div>
           {/* last div */}
           <div>
             <p>
               Already have an account?{" "}
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 className="text-greencolor underline text-lg font-bold"
               >
                 Log In
-              </a>
+              </Link>
             </p>
           </div>
         </div>

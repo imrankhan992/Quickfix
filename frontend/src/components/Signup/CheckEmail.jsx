@@ -2,6 +2,7 @@ import React from "react";
 
 import mail from "../../assets/sendmail.gif";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 const CheckEmail = () => {
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px]">
@@ -23,7 +24,7 @@ const CheckEmail = () => {
 
         <div className="flex gap-3 py-6">
           <Button className="bg-white border-2 hover:bg-hovercolor text-primarycolor rounded-full px-10 border-primarycolor">Send again</Button>
-          <Button className="bg-primarycolor text-white border-2 hover:bg-primarycolorhover hover:border-primarycolorhover  rounded-full px-10 border-primarycolor">Go to Gmail Inbox</Button>
+        <Link to={"/congrats"}><Button className="bg-primarycolor text-white border-2 hover:bg-primarycolorhover hover:border-primarycolorhover  rounded-full px-10 border-primarycolor">Go to Gmail Inbox</Button></Link>  
         </div>
       </div>
     </div>
