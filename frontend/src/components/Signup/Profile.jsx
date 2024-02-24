@@ -16,6 +16,7 @@ import {
 } from "@tremor/react";
 import { Button } from "../ui/button";
 import { DropdownMenuProfile } from "./DropdownMenuProfile";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   return (
@@ -184,9 +185,11 @@ const Profile = () => {
                 />
               </div>
               <div className="rounded-lg flex  col-span-2 mb-6 flex-col mt-6 gap-3 w-full md:w-[20%]">
-                <Button type="submit " className="bg-buttoncolor ">
+                <Link className="border-2 border-buttonborder rounded-xl">
+                <Button type="submit " className="bg-buttoncolor w-full rounded-lg">
                   Submit
                 </Button>
+                </Link>
               </div>
             </div>
           </form>

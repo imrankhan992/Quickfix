@@ -33,6 +33,7 @@ module.exports = {
         hoverblack:"#000",
         greencolor:"#006400",
         bordercolor:"#324053",
+        buttonborder:"#641a23",
         // tremor-background:"",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
