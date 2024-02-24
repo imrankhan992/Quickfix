@@ -20,9 +20,9 @@ export function DropdownMenuProfile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem className="cursor-pointer">
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          <LogOut className="mr-2 h-4 w-4 text-hoverblack" />
+          <span className="text-hoverblack">Log out</span>
+          <DropdownMenuShortcut className="text-hoverblack">⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

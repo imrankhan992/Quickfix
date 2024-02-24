@@ -22,11 +22,17 @@ module.exports = {
     },
     extend: {
       colors: {
-        primarycolor:"#041E49",
+        // primarycolor:"#041E49",
+        primarycolor:"#FFFFFF",
         primarycolorhover:"#042c6e",
         secondarycolor:"#7CACF8",
+        buttoncolor:"#460A0A",
+        thirdcolor:"#10172A",
+        inputbg_color:"#171F32",
         hovercolor:"#F3F7FD",
+        hoverblack:"#000",
         greencolor:"#006400",
+        bordercolor:"#324053",
         // tremor-background:"",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -76,7 +82,7 @@ module.exports = {
           //   DEFAULT: colors.white,
           //   emphasis: colors.gray[700],
           // },
-          background:"#F3F7FD",
+          background:"#171F32",
           border: {
             DEFAULT: colors.gray[200],
           },

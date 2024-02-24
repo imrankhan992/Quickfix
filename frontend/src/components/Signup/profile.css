@@ -2,4 +2,8 @@
     border-radius: 0.5rem;
     border: 2px;
     border-color: #041E49;
+    
+}
+.tremor-TextInput-input{
+    color: white;
 }

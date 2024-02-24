@@ -23,8 +23,8 @@ const ChooseJob = () => {
           <div className="grid md:grid-cols-2 gap-6 w-full px-6">
             {/* left */}
             <div
-              className={`overflow-y-auto cursor-pointer hover:bg-hovercolor hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
-                selectedOption === "client" && "border-greencolor bg-hovercolor"
+              className={`overflow-y-auto cursor-pointer hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
+                selectedOption === "client" && "border-greencolor "
               }`}
               onClick={() => handleOptionClick("client")}
             >
@@ -35,17 +35,17 @@ const ChooseJob = () => {
               {selectedOption === "client" && (
                 <FaDotCircle className="text-2xl absolute right-3 top-3 text-greencolor" />
               )}
-              <FaUserTie className="text-2xl" />
-              <div className="md:text-2xl sm:text-2xl text-[20px] py-3">
+              <FaUserTie className="text-2xl " />
+              <div className="md:text-2xl sm:text-2xl text-[20px] py-3 ">
                 {" "}
                 <h2>I’m a client, hiring for a project</h2>
               </div>
             </div>
             {/* right */}
             <div
-              className={`overflow-y-auto relative hover:bg-hovercolor hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
+              className={`overflow-y-auto relative hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
                 selectedOption === "serviceprovider" &&
-                "border-greencolor bg-hovercolor"
+                "border-greencolor "
               }`}
               onClick={() => handleOptionClick("serviceprovider")}
             >
@@ -65,7 +65,7 @@ const ChooseJob = () => {
           <div>
             {selectedOption && selectedOption !== "notselected" && (
               <Link to={"/createaccount"}>
-              <Button>
+              <Button className="bg-buttoncolor">
                 Join as a{" "}
                 {selectedOption
                   ? selectedOption.charAt(0).toUpperCase() +
@@ -76,7 +76,7 @@ const ChooseJob = () => {
             )}
             {selectedOption === "notselected" && (
               
-              <Button disabled className="cursor-not-allowed">
+              <Button disabled className="cursor-not-allowed bg-buttoncolor">
                 Create Account
               </Button>
              
@@ -84,7 +84,7 @@ const ChooseJob = () => {
           </div>
           {/* last div */}
           <div>
-            <p>
+            <p className="text-primarycolor">
               Already have an account?{" "}
               <Link
                 to="/login"

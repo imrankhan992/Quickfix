@@ -15,9 +15,10 @@ const SPSignup = () => {
       {/* header */}
       <div className="w-full h-full">
         <div className="max-w-[1750px] mx-auto">
-          <div className="flex  justify-center items-center py-3 px-8">
+          <div className="flex py-4 px-8 justify-between items-center  text-white">
             <div>logo here</div>
-            <div className="ms-auto flex justify-end gap-4 items-center">
+            <div className="md:hidden">Login</div>
+            <div className="ms-auto md:flex justify-end gap-4 items-center hidden">
               <div>
                 <p>Here to hire talent?</p>
               </div>
@@ -30,7 +31,7 @@ const SPSignup = () => {
       </div>
       {/* form */}
       <div className=" w-full md:max-w-[1750px] mx-auto h-[100vh] ">
-        <div className="md:w-[40%] mx-auto flex flex-col  items-center px-3 ">
+        <div className="md:w-[40%] mx-auto flex flex-col  items-center px-5 ">
           <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
             Sign up to find work you love
           </h1>
@@ -43,7 +44,7 @@ const SPSignup = () => {
               >
                 First name
               </Label>
-              <TextInput id="name" className="mx-auto max-w-xs rounded-lg border-2 " placeholder="" />
+              <TextInput id="name" className="mx-auto max-w-xs rounded-lg border border-bordercolor" placeholder="" />
 
             </div>
 
@@ -56,7 +57,7 @@ const SPSignup = () => {
                 Last name
               </Label>
               <TextInput
-                className="border-2 focus:border-none border-gray-200 rounded-lg"
+                className="border-bordercolor border focus:border-none  rounded-lg"
                 type="text"
                 id="lastname"
                 placeholder=""
@@ -71,7 +72,7 @@ const SPSignup = () => {
                 Email
               </Label>
               <TextInput
-                className="border-2 focus:border-none border-gray-200 rounded-lg"
+                className="border-bordercolor border focus:border-none  rounded-lg"
                 type="email"
                 id="email"
                 placeholder=""
@@ -86,7 +87,7 @@ const SPSignup = () => {
                 Password
               </Label>
               <TextInput
-                className="border-2 focus:border-none border-gray-200 rounded-lg"
+                className="border-bordercolor border focus:border-none  rounded-lg"
                 type="password"
                 id="password"
                 placeholder=""
@@ -101,7 +102,7 @@ const SPSignup = () => {
                 Confirm Password
               </Label>
               <TextInput
-                className="border-2 focus:border-none border-gray-200 rounded-lg"
+                className="border-bordercolor border focus:border-none  rounded-lg"
                 type="password"
                 id="password"
                 placeholder=""
@@ -124,7 +125,7 @@ const SPSignup = () => {
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
               <Link to={"/verifyemail"}>
-              <Button>Create my account</Button>
+              <Button className="bg-buttoncolor  ">Create my account</Button>
               </Link>
             </div>
           </form>
