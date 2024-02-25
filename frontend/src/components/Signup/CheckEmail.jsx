@@ -9,7 +9,7 @@ const CheckEmail = () => {
       <div className="flex flex-col  justify-center items-center w-full h-[100%]">
         {/* <MdMarkEmailUnread className="text-5xl text-greencolor" /> */}
         <img src={mail} className="w-32" />
-        <div className="md:w-[40%]  text-center flex flex-col items-center justify-center px-4">
+        <div className="md:w-[100%] w-full  text-center flex flex-col items-center justify-center px-4">
           <h1 className="text-2xl font-semibold pb-6 text-primarycolor">
             Verify your email to continue
           </h1>
@@ -22,8 +22,8 @@ const CheckEmail = () => {
           </p>
         </div>
 
-        <div className="flex gap-3 py-6">
-         <Link className="border border-primarycolor rounded-full "> <Button className="hover:bg-hovercolor  hover:text-hoverblack rounded-full px-10 ">Send again</Button></Link>
+        <div className="flex gap-3 py-6 md:flex-row flex-col">
+         <Link className="border border-primarycolor  rounded-full "> <Button className="hover:bg-hovercolor w-full hover:text-hoverblack rounded-full px-10 ">Send again</Button></Link>
         <Link to={"/congrats"} className="border border-buttonborder rounded-full"><Button className="bg-buttoncolor text-white border   rounded-full px-10 border-primarycolor">Go to Gmail Inbox</Button></Link>  
         </div>
       </div>

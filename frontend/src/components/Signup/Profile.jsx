@@ -35,7 +35,7 @@ const Profile = () => {
               type="file"
             />
 
-            <div className="flex gap-1 items-center justify-center border border-bordercolor text-primarycolor hover:bg-thirdcolor py-1 px-3  bg-thirdcolor  mt-3 rounded-full mb-6">
+            <div className="flex gap-1 items-center justify-center border border-buttonborder text-primarycolor hover:bg-thirdcolor py-1 px-3  bg-buttoncolor   mt-3 rounded-full mb-6">
               {" "}
               <img src={plus} className="w-8 " /> Upload Photo
             </div>
