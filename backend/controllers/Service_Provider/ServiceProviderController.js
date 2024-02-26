@@ -7,7 +7,7 @@ exports.registerUserController = async (req, res) => {
             firstname, lastname, email, password 
         });
         const user =await newuser.save();
-        res.status(200).json({user})
+        res.status(200).json({success:true,user})
     } catch (error) {
         console.log(error);
         res.status(500).json({

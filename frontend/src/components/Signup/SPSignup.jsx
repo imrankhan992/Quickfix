@@ -7,8 +7,10 @@ import { TextInput } from "@tremor/react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
+import { useDispatch } from "react-redux";
+import { Registration } from './../Actions/Registration';
 const SPSignup = () => {
- 
+ const dispatch = useDispatch();
   const { values, handleBlur, handleChange,handleClick, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
@@ -20,9 +22,12 @@ const SPSignup = () => {
         checked:false
       },
       validationSchema: registration,
-      onSubmit: async (values, { setSubmitting }) => {},
+      onSubmit: async (values, { setSubmitting }) => {
+        dispatch(Registration(values));
+      },
     });
-  console.log(errors);
+    
+
 
   return (
     <>
