@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const crypto = require("crypto");
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -50,5 +51,17 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: {
         type: Date,
     },
+    verifyEmailToken:String,
+    verifyEmailExpires:Date
 });
+//creating password reset token
+userSchema.methods.getverifyEmailToken = async function () {
+    //generating token
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    //hash reset token and add to user schema
+    this.verifyEmailToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    this.verifyEmailExpires = Date.now() + 15 * 60 * 1000
+    return resetToken
+}
+
 module.exports = mongoose.model("ServiceProviderRegistration", userSchema);

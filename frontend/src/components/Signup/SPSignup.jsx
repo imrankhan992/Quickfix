@@ -1,33 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "../ui/button";
 import { TextInput } from "@tremor/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
-import { useDispatch } from "react-redux";
-import { Registration } from './../Actions/Registration';
+import { useDispatch, useSelector } from "react-redux";
+import { Registration } from "./../Actions/Registration";
+import { Loader2 } from "lucide-react";
 const SPSignup = () => {
- const dispatch = useDispatch();
-  const { values, handleBlur, handleChange,handleClick, handleSubmit, errors, touched } =
-    useFormik({
-      initialValues: {
-        firstname: "",
-        lastname: "",
-        email: "",
-        password: "",
-        confirmPassword:"",
-        checked:false
-      },
-      validationSchema: registration,
-      onSubmit: async (values, { setSubmitting }) => {
-        dispatch(Registration(values));
-      },
-    });
-    
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, success, loading } = useSelector((state) => state.user);
 
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleClick,
+    handleSubmit,
+    errors,
+    touched,
+  } = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      checked: false,
+    },
+    validationSchema: registration,
+    onSubmit: async (values, { setSubmitting }) => {
+      dispatch(Registration(values));
+    },
+  });
+  useEffect(() => {
+    if (success) {
+      navigate("/verifyemail");
+      localStorage.setItem('userEmail', user?.email);
+     
+    
+    }
+  }, [success]);
 
   return (
     <>
@@ -169,12 +186,12 @@ const SPSignup = () => {
                 Password
               </Label>
               <TextInput
-                  className={` rounded-lg border border-bordercolor ${
-                    errors?.password && touched?.password
-                      ? "border-errorcolor border-2"
-                      : ""
-                  }`}
-                  onBlur={handleBlur}
+                className={` rounded-lg border border-bordercolor ${
+                  errors?.password && touched?.password
+                    ? "border-errorcolor border-2"
+                    : ""
+                }`}
+                onBlur={handleBlur}
                 type="password"
                 onChange={handleChange}
                 value={values?.password}
@@ -203,7 +220,7 @@ const SPSignup = () => {
                 Confirm Password
               </Label>
               <TextInput
-                 className={` rounded-lg border border-bordercolor ${
+                className={` rounded-lg border border-bordercolor ${
                   errors?.confirmPassword && touched?.confirmPassword
                     ? "border-errorcolor border-2"
                     : ""
@@ -216,8 +233,8 @@ const SPSignup = () => {
                 id="confirmPassword"
                 placeholder=""
               />
-                {/* error */}
-                <div className="flex gap-2 items-center ">
+              {/* error */}
+              <div className="flex gap-2 items-center ">
                 {errors?.confirmPassword && touched?.confirmPassword ? (
                   <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
                     <MdOutlineErrorOutline className="text-xl" />
@@ -230,11 +247,15 @@ const SPSignup = () => {
             </div>
             {/* accept terms and conditons */}
             <div className="flex items-top  space-x-2 col-span-2">
-            {/* <Checkbox id="checked" name="checked"   onClick={(e)=>{return setchecked(e.target.value==="on"?true:false)}} /> */}
-            {/* <Checkbox id="checked" name="checked"   onCheckedChange={(e)=>{console.log(e.target.value==="on");}} /> */}
-            
-            <input type="checkbox" onChange={handleChange} name="checked" className="rounded-md bg-inputbg_color border border-bordercolor"/>
+              {/* <Checkbox id="checked" name="checked"   onClick={(e)=>{return setchecked(e.target.value==="on"?true:false)}} /> */}
+              {/* <Checkbox id="checked" name="checked"   onCheckedChange={(e)=>{console.log(e.target.value==="on");}} /> */}
 
+              <input
+                type="checkbox"
+                onChange={handleChange}
+                name="checked"
+                className="rounded-md bg-inputbg_color border border-bordercolor"
+              />
 
               <div className="grid gap-1.5 leading-none">
                 <label
@@ -246,24 +267,31 @@ const SPSignup = () => {
                 <p className="text-sm text-muted-foreground">
                   You agree to our Terms of Service and Privacy Policy.
                 </p>
-                 {/* error */}
-                 <div className="flex gap-2 items-center ">
-                {errors?.checked && touched?.checked ? (
-                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
-                    <MdOutlineErrorOutline className="text-xl" />
-                    {errors?.checked}
-                  </span>
-                ) : (
-                  ""
-                )}
+                {/* error */}
+                <div className="flex gap-2 items-center ">
+                  {errors?.checked && touched?.checked ? (
+                    <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
+                      <MdOutlineErrorOutline className="text-xl" />
+                      {errors?.checked}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-              </div>
-              
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
-              <Button className="bg-buttoncolor " type="submit">
-                Create my account
-              </Button>
+              {!loading && (
+                <Button className="bg-buttoncolor " type="submit">
+                  Create my account
+                </Button>
+              )}
+              {loading && (
+                <Button disabled>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </Button>
+              )}
             </div>
           </form>
         </div>

@@ -22,7 +22,7 @@ function App() {
       <Route path="/signup" element={<ChooseJob/>}/>
       <Route path="/createaccount" element={<SPSignup/>}/>
       <Route path="/verifyemail" element={<CheckEmail/>}/>
-      <Route path="/congrats" element={<Congratulation/>}/>
+      <Route path="/api/v1/account/congrats" element={<Congratulation/>}/>
       <Route path="/setup" element={<Profile/>}/>
       <Route path="/submitprofile" element={<SubmitProfile/>}/>
       </Routes>
