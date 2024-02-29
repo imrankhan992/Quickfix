@@ -282,7 +282,7 @@ const SPSignup = () => {
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
               {!loading && (
-                <Button className="bg-buttoncolor " type="submit">
+                <Button className="bg-buttoncolor outline outline-buttonborder" type="submit">
                   Create my account
                 </Button>
               )}

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -20,6 +21,22 @@ const userSchema = new mongoose.Schema({
     emailVerify: {
         type: Boolean,
         default: false,
+    },
+    experience:{
+        type: String,
+        required: true,
+    },
+    city:{
+        type: String,
+        required: true,
+    },
+    job:{
+        type: String,
+        required: true,
+    },
+    zipcode:{
+        type: String,
+        required: true,
     },
     accountStatus: {
         type: String,
@@ -63,5 +80,12 @@ userSchema.methods.getverifyEmailToken = async function () {
     this.verifyEmailExpires = Date.now() + 15 * 60 * 1000
     return resetToken
 }
+
+// jwt token
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.SECRET_KEY_JWT, {
+        expiresIn: process.env.JWT_EXPIRES,
+    });
+};
 
 module.exports = mongoose.model("ServiceProviderRegistration", userSchema);
