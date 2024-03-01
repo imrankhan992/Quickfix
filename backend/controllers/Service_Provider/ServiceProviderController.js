@@ -2,7 +2,7 @@ const registrationModel = require("../../Models/ServiceProvider/registrationMode
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { sendToken } = require("../../utils/sendToken");
-
+const cloudinary = require("../../Middleware/cloudinary")
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
@@ -101,8 +101,10 @@ exports.verifyEmailController = async (req, res) => {
 // setupprofle
 exports.setupProfileController = async (req, res) => {
     try {
+        const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+      console.log(cloudinaryResult);
         const {
-            avatar,
+            
             phoneNumber,
             address,
             dateOfBirth,
@@ -119,6 +121,10 @@ exports.setupProfileController = async (req, res) => {
         user.city = city
         user.job = job
         user.zipcode = zipcode
+        user.avatar = {
+            url: cloudinaryResult.secure_url,
+            public_id: cloudinaryResult.public_id,
+        }
         await user.save();
         res.status(201).json({
             success: true,
@@ -132,5 +138,24 @@ exports.setupProfileController = async (req, res) => {
 
             sucess: false
         })
+    }
+}
+
+exports.logout = async (req, res) => {
+    try {
+        res.cookie("token", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true
+        });
+        res.status(200).json({
+            success: true,
+            message: "Logout Successfully"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message,
+        });
     }
 }

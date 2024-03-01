@@ -1,7 +1,10 @@
 import React from "react";
 import submitprofile from "../../assets/submitprofile.gif";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
+
 const SubmitProfile = () => {
+
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px]">
       <div className="flex items-center justify-center flex-col w-full h-screen">
@@ -17,13 +20,12 @@ const SubmitProfile = () => {
           </p>
         </div>
         <div className="flex md:flex-row flex-col  items-center justify-center gap-3">
-        <Button className="px-8 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
+          {/* <Button className="px-8 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
             Home Page
-          </Button>
-          <Button  className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder" >
-            Go to profile
-          </Button>
-          
+          </Button> */}
+          <Link to={"/"} className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder text-primarycolor py-2 ">
+            Go to Home
+          </Link>
         </div>
       </div>
     </div>

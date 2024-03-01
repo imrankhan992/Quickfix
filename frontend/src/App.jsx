@@ -13,6 +13,7 @@ import {
 import Home from "./components/Home/Home";
 import SubmitProfile from "./components/Signup/SubmitProfile";
 import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
+import SetUprofilePrivate from './components/PrivateRoutes/SetupProfile';
 
 function App() {
   return (
@@ -33,7 +34,10 @@ function App() {
           </Route>
           <Route path="verifyemail" element={<CheckEmail />} />
 
+        
+          <Route  element={<SetUprofilePrivate />}>
           <Route path="/setup" element={<Profile />} />
+          </Route>
           <Route path="/submitprofile" element={<SubmitProfile />} />
         </Routes>
       </Router>

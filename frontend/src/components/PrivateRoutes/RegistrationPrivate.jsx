@@ -34,3 +34,5 @@ export default function RegistrationPrivate({ route }) {
   console.log(message);
   return ok ? <Outlet /> : <Spinner message={message} path="" />;
 }
+
+

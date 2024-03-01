@@ -24,19 +24,19 @@ const userSchema = new mongoose.Schema({
     },
     experience:{
         type: String,
-        required: true,
+        
     },
     city:{
         type: String,
-        required: true,
+        
     },
     job:{
         type: String,
-        required: true,
+        
     },
     zipcode:{
         type: String,
-        required: true,
+        
     },
     accountStatus: {
         type: String,
