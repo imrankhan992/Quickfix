@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const SetuPSpinner = ({message, path="login"}) => {
    
     const navigate = useNavigate()
-    const [count, setcount] = useState(3)
+    const [count, setcount] = useState(5)
     useEffect(() => {
      const interval = setInterval(() => {
         setcount((prevalue)=>--prevalue)

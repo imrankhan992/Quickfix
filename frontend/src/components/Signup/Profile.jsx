@@ -23,7 +23,7 @@ const Profile = () => {
   const LogOut =async()=>{
     try {
       const {data} = await axiosInstance.get("/api/v1/admin/logout");
-      console.log(data);
+      
       if (data?.success) {
         alert(data?.message);
       }
@@ -81,7 +81,7 @@ const Profile = () => {
   useEffect(() => {
     setFieldValue("avatar", profile);
   }, [profile]);
-console.log(errors);
+
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh]">
       <div className="w-full md:flex ">

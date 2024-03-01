@@ -12,14 +12,14 @@ export default function RegistrationPrivate({ route }) {
     const authCheck = async () => {
       try {
         const { data } = await axiosInstance.get(`${route}/${token}`);
-        console.log(data);
+       
         if (data.success === true) {
           setok(true);
         } else {
           setok(false);
         }
       } catch (error) {
-        console.log(error.response.data.success);
+        
         if (error.response.status === 400 || error.response.status === 500 ) {
           setmessage(error.response.data.message);
         }
@@ -31,7 +31,7 @@ export default function RegistrationPrivate({ route }) {
     };
  // Empty dependency array ensures the effect runs only once after the initial render
 
-  console.log(message);
+ 
   return ok ? <Outlet /> : <Spinner message={message} path="" />;
 }
 
