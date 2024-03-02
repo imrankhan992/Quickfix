@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Navbar,
   MobileNav,
@@ -21,8 +21,9 @@ import { RxCross1 } from "react-icons/rx";
 
 
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { loadUserData } from "../Actions/Registration";
 
 // profile menu component
 const profileMenuItems = [
@@ -252,6 +253,11 @@ function NavList() {
 }
  
 export function ComplexNavbar() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+dispatch(loadUserData())
+    
+  }, [])
   const [isNavOpen, setIsNavOpen] = React.useState(false);
  const {user,isAuthenticated} = useSelector((state)=>state.user)
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

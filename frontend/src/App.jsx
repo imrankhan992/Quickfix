@@ -14,16 +14,11 @@ import Home from "./components/Home/Home";
 import SubmitProfile from "./components/Signup/SubmitProfile";
 import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
 import SetUprofilePrivate from './components/PrivateRoutes/SetupProfile';
-import { useDispatch } from "react-redux";
 import { loadUserData } from "./components/Actions/Registration";
 import Login from "./components/Login/Login";
 
 function App() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-dispatch(loadUserData())
-    
-  }, [])
+  
   
   return (
     <>
