@@ -16,6 +16,8 @@ import { FaServicestack,FaMapMarkedAlt,FaSignInAlt, FaUserPlus, FaSignOutAlt } f
 import { IoMdHome } from "react-icons/io";
 import { GrContactInfo } from "react-icons/gr";
 import { MdArrowDropDown,MdPermContactCalendar } from "react-icons/md";
+import { HiBars3BottomRight } from "react-icons/hi2";
+import { RxCross1 } from "react-icons/rx";
 
 
 
@@ -281,7 +283,8 @@ export function ComplexNavbar() {
           onClick={toggleIsNavOpen}
           className="ml-auto mr-2 lg:hidden"
         >
-          <MdArrowDropDown className="h-6 w-6" />
+         {!isNavOpen&&( <HiBars3BottomRight className="h-6 w-6 text-primarycolor" />)}
+         {isNavOpen&&( <RxCross1 className="h-6 w-6 text-primarycolor" />)}
         </IconButton>
  
         {

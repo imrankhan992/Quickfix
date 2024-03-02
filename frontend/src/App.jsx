@@ -16,6 +16,7 @@ import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate"
 import SetUprofilePrivate from './components/PrivateRoutes/SetupProfile';
 import { useDispatch } from "react-redux";
 import { loadUserData } from "./components/Actions/Registration";
+import Login from "./components/Login/Login";
 
 function App() {
   const dispatch = useDispatch()
@@ -41,6 +42,7 @@ dispatch(loadUserData())
             <Route path="account/verify/:token" element={<Congratulation />} />
           </Route>
           <Route path="verifyemail" element={<CheckEmail />} />
+          <Route path="/login" element={<Login />} />
 
         
           <Route  element={<SetUprofilePrivate />}>
