@@ -180,3 +180,28 @@ exports.setupprofileRouteController = async (req, res) => {
         });
     }
 };
+
+// login user data 
+exports.loaddata = async(req,res)=>{
+    try {
+        const user = await registrationModel.findOne({_id:req?.user?._id});
+        if (!user) {
+            return res.status(404).json({
+                message:"User not found",
+                success:false
+            })
+        }
+
+        res.status(200).json({
+            user,
+            message:"User  found",
+            success:false
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+}

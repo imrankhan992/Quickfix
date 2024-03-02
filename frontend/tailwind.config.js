@@ -1,7 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors');
-
-module.exports = {
+const withMT = require("@material-tailwind/react/utils/withMT");
+ 
+module.exports = withMT({
   darkMode: ["class"],
   content: [
     './pages/**/*.{js,jsx}',
@@ -9,7 +10,9 @@ module.exports = {
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}"
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "path-to-your-node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+    "path-to-your-node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
   prefix: "",
   theme: {
@@ -23,6 +26,7 @@ module.exports = {
     extend: {
       colors: {
         // primarycolor:"#041E49",
+        bodycolor:"#030617",
         primarycolor:"#FFFFFF",
         primarycolorhover:"#042c6e",
         secondarycolor:"#7CACF8",
@@ -156,4 +160,4 @@ module.exports = {
   require('@headlessui/tailwindcss'), 
   require('@tailwindcss/forms')
   ],
-}
+});

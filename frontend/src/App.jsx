@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChooseJob from "./components/Signup/chooseJob";
 import SPSignup from "./components/Signup/SPSignup";
 import Congratulation from "./components/Signup/Congratulation";
@@ -14,8 +14,16 @@ import Home from "./components/Home/Home";
 import SubmitProfile from "./components/Signup/SubmitProfile";
 import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
 import SetUprofilePrivate from './components/PrivateRoutes/SetupProfile';
+import { useDispatch } from "react-redux";
+import { loadUserData } from "./components/Actions/Registration";
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+dispatch(loadUserData())
+    
+  }, [])
+  
   return (
     <>
       {/* <ChooseJob/> */}

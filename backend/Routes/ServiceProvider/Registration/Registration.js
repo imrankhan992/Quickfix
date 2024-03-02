@@ -6,6 +6,7 @@ const {
     setupProfileController,
     logout,
     setupprofileRouteController,
+    loaddata,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -19,6 +20,10 @@ router
     .route("/setup")
     .post(isAuthenticated, upload.single("avatar"), setupProfileController);
 router.route("/admin/logout").get(logout);
+router.route("/user/mydata").get(isAuthenticated,loaddata);
+
+
+
 //  protected
 router.route("/profile-setup/protect").get(isAuthenticated, (req, res) => {
     res.status(200).json({
