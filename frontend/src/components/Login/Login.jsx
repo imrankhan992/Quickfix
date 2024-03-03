@@ -16,7 +16,7 @@ import { showtoast } from "@/Toast/Toast";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, setup,loading } = useSelector((state) => state.user);
+  const { user, success, setup, loading } = useSelector((state) => state.user);
 
   const {
     values,
@@ -28,23 +28,20 @@ const Login = () => {
     touched,
   } = useFormik({
     initialValues: {
-      
       email: "",
       password: "",
-      
     },
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
-        dispatch(loginAction(values));
+      dispatch(loginAction(values));
     },
   });
   useEffect(() => {
-    
-    if (setup && !user?.job===undefined && !user?.phoneNumber===undefined) {
-     navigate("/user/dashboard")
+    if (setup && user?.job !== undefined && user?.phoneNumber !== undefined) {
+      navigate(`/${user?.role}/dashboard/home`);
     }
-    if(setup && user?.job===undefined && user?.phoneNumber===undefined){
-      navigate("/setup")
+    if (setup && user?.job === undefined && user?.phoneNumber === undefined) {
+      navigate("/setup");
     }
   }, [setup]);
 
@@ -64,11 +61,8 @@ const Login = () => {
           <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
             Log in to QuickFix
           </h1>
-          
-          <form
-            className="  py-5"
-            onSubmit={handleSubmit}
-          >
+
+          <form className="  py-5" onSubmit={handleSubmit}>
             {/* email */}
             <div className=" w-80">
               <Label
@@ -78,7 +72,7 @@ const Login = () => {
                 Email
               </Label>
               <TextInput
-              // autoComplete="off"
+                // autoComplete="off"
                 className={`max-w-sm rounded-lg border border-bordercolor ${
                   errors?.email && touched?.email
                     ? "border-errorcolor border-2"
@@ -113,7 +107,7 @@ const Login = () => {
                 Password
               </Label>
               <TextInput
-              // autoComplete="off"
+                // autoComplete="off"
 
                 className={`max-w-sm rounded-lg border border-bordercolor ${
                   errors?.password && touched?.password
@@ -159,26 +153,25 @@ const Login = () => {
               )}
             </div>
           </form>
-          </div>
-          <div className="w-[70%] mx-auto">
-            <div className="flex flex-row gap-2  justify-center items-center text-primarycolor  w-full">
-              <hr className="w-20" />
-              <div className="text-center text-sm text-muted">
-                {" "}
-                Don't have an Quickfix account?{" "}
-              </div>
-              <hr className="w-20" />
+        </div>
+        <div className="w-[70%] mx-auto">
+          <div className="flex flex-row gap-2  justify-center items-center text-primarycolor  w-full">
+            <hr className="w-20" />
+            <div className="text-center text-sm text-muted">
+              {" "}
+              Don't have an Quickfix account?{" "}
             </div>
-            <div className=" flex mt-10 items-center justify-center w-full">
-             <Link to={"/signup"}>
-             <Button className="px-12 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
+            <hr className="w-20" />
+          </div>
+          <div className=" flex mt-10 items-center justify-center w-full">
+            <Link to={"/signup"}>
+              <Button className="px-12 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
                 Sign Up
               </Button>
-             </Link>
-            </div>
+            </Link>
           </div>
         </div>
-      
+      </div>
     </>
   );
 };

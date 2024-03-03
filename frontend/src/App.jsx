@@ -20,16 +20,13 @@ import  { Toaster } from 'react-hot-toast';
 
 import AdminPrivate from "./components/PrivateRoutes/AdminPrivate";
 import Dashboard from "./components/Admin/Dashboard";
+import ServiceDashboard from './components/User/ServiceProvider/Dashboard';
 
 function App() {
   return (
     <>
       <Toaster />
-      {/* <ChooseJob/> */}
-      {/* <SPSignup/> */}
-      {/* <Congratulation/> */}
-      {/* <CheckEmail/> */}
-      {/* <Profile/> */}
+    
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -52,6 +49,10 @@ function App() {
           {/* admin routes */}
           <Route path="/admin/" element={<AdminPrivate/>}>
             <Route path="dashboard" element={<Dashboard/>} />
+          </Route>
+          {/*user dashboard  */}
+          <Route path="/user/dashboard/">
+            <Route path="home" element={<ServiceDashboard/>} />
           </Route>
         </Routes>
       </Router>
