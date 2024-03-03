@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { TextInput } from "@tremor/react";
 import { Label } from "../ui/label";
-import { DatePicker } from "@tremor/react";
+
 import profileimage from "../../assets/profile.svg";
 import plus from "../../assets/plus.gif";
 import "./profile.css";
@@ -14,26 +14,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { submitProfileSchema } from "@/Schemas";
 import { useDispatch, useSelector } from "react-redux";
-import { submitProfileAction } from "../Actions/Registration";
+import { loadUserData, submitProfileAction } from "../Actions/Registration";
 
 import { Loader2 } from "lucide-react";
 import axiosInstance from "@/ulities/axios";
+import { showtoast } from "@/Toast/Toast";
 
 const Profile = () => {
-  const LogOut =async()=>{
-    try {
-      const {data} = await axiosInstance.get("/api/v1/admin/logout");
-      
-      if (data?.success) {
-        alert(data?.message);
-      }
-    } catch (error) {
-      
-    }
-  }
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, loading } = useSelector((state) => state.user);
+  const LogOut = async () => {
+    try {
+      const { data } = await axiosInstance.get("/api/v1/admin/logout");
+      console.log(data);
+      if (data?.success) {
+        dispatch(loadUserData())
+        showtoast(data?.message);
+        navigate("/login");
+      }
+    } catch (error) {}
+  };
+  const dispatch = useDispatch();
+
+  const { user, success, setup, loading, submitprofile } = useSelector(
+    (state) => state.user
+  );
   const [profile, setprofile] = useState();
   const [avatarPreview, setavatarPreview] = useState();
   const {
@@ -61,11 +65,7 @@ const Profile = () => {
       dispatch(submitProfileAction(values));
     },
   });
-  useEffect(() => {
-    if (success) {
-      navigate("/submitprofile");
-    }
-  }, [success]);
+
   const handleFileChange = (e) => {
     setprofile(e.currentTarget.files[0]);
     const reader = new FileReader();
@@ -79,8 +79,12 @@ const Profile = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
   useEffect(() => {
+    dispatch(loadUserData)
+    if (submitprofile) {
+      navigate("/submitprofile");
+    }
     setFieldValue("avatar", profile);
-  }, [profile]);
+  }, [profile, submitprofile,dispatch]);
 
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh]">
@@ -92,15 +96,15 @@ const Profile = () => {
               className="w-32 flex bg-thirdcolor border border-bordercolor  p-2 rounded-full"
               alt=""
             />
-           <Input
-    id="picture"
-    name="avatar"
-    className="absolute h-full w-full cursor-pointer opacity-0"
-    type="file"
-    accept="image/*"
-    onChange={handleFileChange}
-    onBlur={handleBlur}
-/>
+            <Input
+              id="picture"
+              name="avatar"
+              className="absolute h-full w-full cursor-pointer opacity-0"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              onBlur={handleBlur}
+            />
 
             <div className="flex gap-1 items-center justify-center border border-buttonborder text-primarycolor hover:bg-thirdcolor py-1 px-3  bg-buttoncolor   mt-3 rounded-full mb-6">
               {" "}
@@ -108,15 +112,15 @@ const Profile = () => {
             </div>
             {/* error */}
             <div className="flex gap-2 items-center">
-                  {errors?.avatar  ? (
-                    <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
-                      <MdOutlineErrorOutline className="text-xl" />
-                      {errors?.avatar}
-                    </span>
-                  ) : (
-                    ""
-                  )}
-                </div>
+              {errors?.avatar ? (
+                <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
+                  <MdOutlineErrorOutline className="text-xl" />
+                  {errors?.avatar}
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         </div>
         {/* first grid */}
@@ -125,7 +129,13 @@ const Profile = () => {
             <h2 className="text-2xl text-primarycolor font-semibold">
               Setup your profile
             </h2>
-            <div onClick={()=>{LogOut()}}><DropdownMenuProfile /></div>
+            <div
+              onClick={() => {
+                LogOut();
+              }}
+            >
+              <DropdownMenuProfile />
+            </div>
           </div>
           <form className="w-full" onSubmit={handleSubmit}>
             <div className="md:grid md:grid-cols-2 gap-6 w-full px-6 mt-6">
@@ -201,31 +211,7 @@ const Profile = () => {
                 >
                   City
                 </Label>
-                {/* <Select
-                onChange={(e)=>{console.log(e.target?.value);}}
-                name="city"
-                  defaultValue="1"
-                  className="rounded-lg bg-inputbg_color border border-bordercolor text-primarycolor"
-                >
-                  <SelectItem
-                    value="1"
-                    className="bg-inputbg_color cursor-pointer "
-                  >
-                    Abbottabad
-                  </SelectItem>
-                  <SelectItem
-                    value="2"
-                    className="bg-inputbg_color cursor-pointer"
-                  >
-                    Manshera
-                  </SelectItem>
-                  <SelectItem
-                    value="3"
-                    className="bg-inputbg_color cursor-pointer"
-                  >
-                    Haripur
-                  </SelectItem>
-                </Select> */}
+
                 <select
                   onChange={handleChange}
                   name="city"

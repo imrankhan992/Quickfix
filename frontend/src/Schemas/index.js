@@ -26,4 +26,12 @@ export const submitProfileSchema = Yup.object().shape({
     zipcode: Yup.string().required('Zipcode is required'),
 });
 
+export const loginSchema = Yup.object({
+    
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  
+})
+
+
 

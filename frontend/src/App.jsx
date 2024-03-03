@@ -13,15 +13,18 @@ import {
 import Home from "./components/Home/Home";
 import SubmitProfile from "./components/Signup/SubmitProfile";
 import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
-import SetUprofilePrivate from './components/PrivateRoutes/SetupProfile';
-import { loadUserData } from "./components/Actions/Registration";
+import SetUprofilePrivate from "./components/PrivateRoutes/SetupProfile";
+
 import Login from "./components/Login/Login";
+import  { Toaster } from 'react-hot-toast';
+
+import AdminPrivate from "./components/PrivateRoutes/AdminPrivate";
+import Dashboard from "./components/Admin/Dashboard";
 
 function App() {
-  
-  
   return (
     <>
+      <Toaster />
       {/* <ChooseJob/> */}
       {/* <SPSignup/> */}
       {/* <Congratulation/> */}
@@ -33,17 +36,23 @@ function App() {
           <Route path="/signup" element={<ChooseJob />} />
           <Route path="/createaccount" element={<SPSignup />} />
           {/* verify email checking */}
-          <Route path="/api/v1/email/" element={<RegistrationPrivate route={"/api/v1/verify"}/>}>
+          <Route
+            path="/api/v1/email/"
+            element={<RegistrationPrivate route={"/api/v1/verify"} />}
+          >
             <Route path="account/verify/:token" element={<Congratulation />} />
           </Route>
-          <Route path="verifyemail" element={<CheckEmail />} />
+          <Route path="/verifyemail" element={<CheckEmail />} />
           <Route path="/login" element={<Login />} />
 
-        
-          <Route  element={<SetUprofilePrivate />}>
-          <Route path="/setup" element={<Profile />} />
+          <Route element={<SetUprofilePrivate />}>
+            <Route path="/setup" element={<Profile />} />
           </Route>
           <Route path="/submitprofile" element={<SubmitProfile />} />
+          {/* admin routes */}
+          <Route path="/admin/" element={<AdminPrivate/>}>
+            <Route path="dashboard" element={<Dashboard/>} />
+          </Route>
         </Routes>
       </Router>
     </>

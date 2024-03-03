@@ -7,6 +7,7 @@ const {
     logout,
     setupprofileRouteController,
     loaddata,
+    loginUserController,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -20,7 +21,23 @@ router
     .route("/setup")
     .post(isAuthenticated, upload.single("avatar"), setupProfileController);
 router.route("/admin/logout").get(logout);
-router.route("/user/mydata").get(isAuthenticated,loaddata);
+router.route("/user/mydata").get(isAuthenticated, loaddata);
+router.route("/login").post(loginUserController);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,16 +47,16 @@ router.route("/profile-setup/protect").get(isAuthenticated, (req, res) => {
         ok: true,
     });
 });
-router.route("/profile-setup/email-verified").get( isAuthenticated,async (req, res) => {
+router.route("/profile-setup/email-verified").get(isAuthenticated, async (req, res) => {
     const user = await registrationModel.findOne({ _id: req?.user?._id })
-   
+
     if (!user) {
-       return res.status(404).json({
+        return res.status(404).json({
             ok: false,
         });
     }
     if (!user?.emailVerify) {
-      return  res.status(200).json({
+        return res.status(200).json({
             ok: false,
         });
     }
@@ -48,6 +65,6 @@ router.route("/profile-setup/email-verified").get( isAuthenticated,async (req, r
     });
 });
 
-router.route("/profile-setup/protect-data").get(isAuthenticated,setupprofileRouteController);
+router.route("/profile-setup/protect-data").get(isAuthenticated, setupprofileRouteController);
 
 module.exports = router;

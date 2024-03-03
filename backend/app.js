@@ -1,5 +1,6 @@
 const express= require("express");
 const serviceProviderRegistration = require("./Routes/ServiceProvider/Registration/Registration")
+const AdminRoute = require("./Routes/Admin/AdminRoute")
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
@@ -23,4 +24,5 @@ const allowedOrigins = [
       credentials: true
   }));
 app.use("/api/v1/",serviceProviderRegistration)
+app.use("/api/v1/",AdminRoute)
 module.exports = app;

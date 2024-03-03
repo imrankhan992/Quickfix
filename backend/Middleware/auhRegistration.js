@@ -41,3 +41,18 @@ exports.isAuthenticated = async (req, res, next) => {
         });
     }
 };
+
+// check role
+
+exports.authorizeRoles = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req?.user?.role)) {
+            return res.status(401).json({
+                message: `Role: ${req?.user?.role} is not allowed to access this resource`,
+                success: false,
+            });
+        }
+        next();
+        
+    }
+}

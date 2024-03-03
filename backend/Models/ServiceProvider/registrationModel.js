@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -80,6 +81,18 @@ userSchema.methods.getverifyEmailToken = async function () {
     this.verifyEmailExpires = Date.now() + 15 * 60 * 1000
     return resetToken
 }
+// password encrypt before save
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        next();
+    }
+    this.password = await bcrypt.hash(this.password, 10);
+});
+
+// compare password
+userSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+};
 
 // jwt token
 userSchema.methods.getJwtToken = function () {

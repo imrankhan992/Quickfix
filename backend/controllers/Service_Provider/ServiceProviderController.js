@@ -31,8 +31,8 @@ exports.registerUserController = async (req, res) => {
                 email: newuser?.email,
                 message,
             });
-            // res.status(200).json({ success: true, user: newuser })
-            sendToken(newuser, 200, res);
+            res.status(200).json({ success: true, user: newuser })
+            // sendToken(newuser, 200, res);
         }
 
         if (userexist && !userexist?.emailVerify) {
@@ -50,8 +50,8 @@ exports.registerUserController = async (req, res) => {
                 message,
             });
 
-            // res.status(200).json({ success: true, user:userexist })
-            sendToken(userexist, 200, res);
+            res.status(200).json({ success: true, user:userexist })
+            // sendToken(userexist, 200, res);
         }
     } catch (error) {
 
@@ -182,21 +182,62 @@ exports.setupprofileRouteController = async (req, res) => {
 };
 
 // login user data 
-exports.loaddata = async(req,res)=>{
+exports.loaddata = async (req, res) => {
     try {
-        const user = await registrationModel.findOne({_id:req?.user?._id});
+        const user = await registrationModel.findOne({ _id: req?.user?._id });
         if (!user) {
             return res.status(404).json({
-                message:"User not found",
-                success:false
+                message: "User not found",
+                success: false
             })
         }
 
         res.status(200).json({
             user,
-            message:"User  found",
-            success:false
+            message: "User  found",
+            success: false
         })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+}
+
+
+// login user
+
+exports.loginUserController = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        console.log(req.body);
+        const user = await registrationModel.findOne({ email });
+        console.log(user);
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email and password",
+            })
+        }
+        if (!user?.emailVerify) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email and password",
+            })
+        }
+         // compare password
+         const comparePassword = await user.comparePassword(password);
+         if (!comparePassword) {
+             return res.status(401).send({
+                 success: false,
+                 message: "Invalid email and password",
+             });
+         }
+
+       
+        sendToken(user,200,res)
     } catch (error) {
         return res.status(500).json({
             success: false,

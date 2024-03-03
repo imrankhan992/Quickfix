@@ -6,14 +6,17 @@ import { Button } from "../ui/button";
 import { TextInput } from "@tremor/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { registration } from "@/Schemas";
+import { loginSchema, registration } from "@/Schemas";
 import { useDispatch, useSelector } from "react-redux";
-import { Registration } from "./../Actions/Registration";
+
 import { Loader2 } from "lucide-react";
+import { loadUserData, loginAction } from "../Actions/Registration";
+import { showtoast } from "@/Toast/Toast";
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, loading } = useSelector((state) => state.user);
+  const { user, success, setup,loading } = useSelector((state) => state.user);
 
   const {
     values,
@@ -25,24 +28,25 @@ const Login = () => {
     touched,
   } = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      
       email: "",
       password: "",
-      confirmPassword: "",
-      checked: false,
+      
     },
-    validationSchema: registration,
+    validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      //   dispatch(Registration(values));
+        dispatch(loginAction(values));
     },
   });
   useEffect(() => {
-    if (success) {
-      navigate("/verifyemail");
-      localStorage.setItem("userEmail", user?.email);
+    
+    if (setup && !user?.job===undefined && !user?.phoneNumber===undefined) {
+     navigate("/user/dashboard")
     }
-  }, [success]);
+    if(setup && user?.job===undefined && user?.phoneNumber===undefined){
+      navigate("/setup")
+    }
+  }, [setup]);
 
   return (
     <>
@@ -56,16 +60,17 @@ const Login = () => {
       </div>
       {/* form */}
       <div className=" w-full md:max-w-[1750px] mx-auto h-[100vh] ">
-        <div className="md:w-[40%] mx-auto flex flex-col justify-center  items-center px-5 ">
+        <div className="md:w-[80%]  flex flex-col justify-center  mx-auto items-center px-5 ">
           <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
             Log in to QuickFix
           </h1>
+          
           <form
-            className="md:grid md:grid-cols-2 flex flex-col gap-3 w-full py-5"
+            className="  py-5"
             onSubmit={handleSubmit}
           >
             {/* email */}
-            <div className="col-span-2">
+            <div className=" w-80">
               <Label
                 htmlFor="email"
                 className="font-normal text-primarycolor text-lg"
@@ -73,7 +78,8 @@ const Login = () => {
                 Email
               </Label>
               <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              // autoComplete="off"
+                className={`max-w-sm rounded-lg border border-bordercolor ${
                   errors?.email && touched?.email
                     ? "border-errorcolor border-2"
                     : ""
@@ -99,7 +105,7 @@ const Login = () => {
             </div>
 
             {/* password */}
-            <div className="col-span-2">
+            <div className="">
               <Label
                 htmlFor="hellopassword"
                 className="font-normal text-primarycolor text-lg"
@@ -107,7 +113,9 @@ const Login = () => {
                 Password
               </Label>
               <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              // autoComplete="off"
+
+                className={`max-w-sm rounded-lg border border-bordercolor ${
                   errors?.password && touched?.password
                     ? "border-errorcolor border-2"
                     : ""
@@ -134,7 +142,7 @@ const Login = () => {
             </div>
 
             {/* submit buttons */}
-            <div className="py-5 items-center flex justify-center col-span-2">
+            <div className="py-5 items-center flex justify-center ">
               {!loading && (
                 <Button
                   className="bg-buttoncolor outline outline-buttonborder"
@@ -151,25 +159,26 @@ const Login = () => {
               )}
             </div>
           </form>
-          <div className="w-full">
-            <div className="grid grid-cols-3 gap-3 justify-center items-center text-primarycolor  w-full">
-              <hr className="border" />
-              <div className="text-center text-sm ">
+          </div>
+          <div className="w-[70%] mx-auto">
+            <div className="flex flex-row gap-2  justify-center items-center text-primarycolor  w-full">
+              <hr className="w-20" />
+              <div className="text-center text-sm text-muted">
                 {" "}
                 Don't have an Quickfix account?{" "}
               </div>
-              <hr />
+              <hr className="w-20" />
             </div>
             <div className=" flex mt-10 items-center justify-center w-full">
              <Link to={"/signup"}>
-             <Button className="px-8 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
+             <Button className="px-12 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
                 Sign Up
               </Button>
              </Link>
             </div>
           </div>
         </div>
-      </div>
+      
     </>
   );
 };
