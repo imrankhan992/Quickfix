@@ -31,8 +31,8 @@ exports.registerUserController = async (req, res) => {
                 email: newuser?.email,
                 message,
             });
-            res.status(200).json({ success: true, user: newuser })
-            // sendToken(newuser, 200, res);
+            // res.status(200).json({ success: true, user: newuser })
+            sendToken(newuser, 200, res);
         }
 
         if (userexist && !userexist?.emailVerify) {
@@ -50,7 +50,7 @@ exports.registerUserController = async (req, res) => {
                 message,
             });
 
-            res.status(200).json({ success: true, user:userexist })
+            res.status(200).json({ success: true, user: userexist })
             // sendToken(userexist, 200, res);
         }
     } catch (error) {
@@ -88,7 +88,8 @@ exports.verifyEmailController = async (req, res) => {
         user.verifyEmailExpires = undefined;
         user.emailVerify = true;
         await user.save();
-        res.status(200).json({ success: true });
+        // res.status(200).json({ success: true });
+        sendToken(user, 200, res)
     } catch (error) {
 
         res.status(500).json({
@@ -227,17 +228,46 @@ exports.loginUserController = async (req, res) => {
                 message: "Invalid email and password",
             })
         }
-         // compare password
-         const comparePassword = await user.comparePassword(password);
-         if (!comparePassword) {
-             return res.status(401).send({
-                 success: false,
-                 message: "Invalid email and password",
-             });
-         }
+        // compare password
+        const comparePassword = await user.comparePassword(password);
+        if (!comparePassword) {
+            return res.status(401).send({
+                success: false,
+                message: "Invalid email and password",
+            });
+        }
 
-       
-        sendToken(user,200,res)
+
+        sendToken(user, 200, res)
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+}
+
+// submitProfileornot
+exports.submitProfileornot = async (req, res) => {
+    try {
+        const user = await registrationModel.findOne({ _id: req?.user?._id });
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "user not found",
+            });
+        }
+        if (user.job === undefined || user.experience === undefined) {
+            return res.status(200).send({
+                success: false,
+                message: "user have not submitted profile",
+            });
+        }
+        return res.status(200).send({
+            success: true,
+            message: "user have  submitted profile",
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,

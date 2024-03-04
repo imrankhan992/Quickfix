@@ -21,6 +21,7 @@ import  { Toaster } from 'react-hot-toast';
 import AdminPrivate from "./components/PrivateRoutes/AdminPrivate";
 import Dashboard from "./components/Admin/Dashboard";
 import ServiceDashboard from './components/User/ServiceProvider/Dashboard';
+import ServiceProviderPrivate from "./components/PrivateRoutes/ServiceproviderPrivate";
 
 function App() {
   return (
@@ -53,6 +54,11 @@ function App() {
           {/*user dashboard  */}
           <Route path="/user/dashboard/">
             <Route path="home" element={<ServiceDashboard/>} />
+          </Route>
+
+          {/* service provider dashboard */}
+          <Route path="/serviceprovider/dashboard/" element={<ServiceProviderPrivate/>}>
+            <Route path="My Profile" element={<ServiceDashboard/>} />
           </Route>
         </Routes>
       </Router>

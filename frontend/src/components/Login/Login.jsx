@@ -12,11 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { loadUserData, loginAction } from "../Actions/Registration";
 import { showtoast } from "@/Toast/Toast";
+import { AlertDestructive } from "../Alerts/ErrorAlert";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, setup, loading } = useSelector((state) => state.user);
+  const { user, success, setup, loading ,error} = useSelector((state) => state.user);
 
   const {
     values,
@@ -43,8 +44,9 @@ const Login = () => {
     if (setup && user?.job === undefined && user?.phoneNumber === undefined) {
       navigate("/setup");
     }
+   
   }, [setup]);
-
+  
   return (
     <>
       {/* header */}
@@ -61,6 +63,15 @@ const Login = () => {
           <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
             Log in to QuickFix
           </h1>
+      {/* error show */}
+      
+      {
+        error==="Invalid email and password" ? (AlertDestructive(error)):""
+       
+      }
+      
+        {/* <AlertDestructive/> */}
+    
 
           <form className="  py-5" onSubmit={handleSubmit}>
             {/* email */}

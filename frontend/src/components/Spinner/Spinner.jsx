@@ -1,8 +1,3 @@
-
-
-
-
-
 import React, { useEffect, useState } from 'react'
 import {InfinitySpin} from "react-loader-spinner"
 
@@ -10,18 +5,18 @@ import { useNavigate } from 'react-router-dom';
 
 const Loader = ({message, path="login"}) => {
    
-    // const navigate = useNavigate()
-    // const [count, setcount] = useState(3)
-    // useEffect(() => {
-    //  const interval = setInterval(() => {
-    //     setcount((prevalue)=>--prevalue)
-    //  }, 1000);
+    const navigate = useNavigate()
+    const [count, setcount] = useState(3)
+    useEffect(() => {
+     const interval = setInterval(() => {
+        setcount((prevalue)=>--prevalue)
+     }, 1000);
     
-    //  if (count===0) {
-    //     navigate("/");
-    //   }
-    //   return ()=>{clearInterval(interval)}
-    // }, [count,navigate,path])
+     if (count===0) {
+        navigate("/setup");
+      }
+      return ()=>{clearInterval(interval)}
+    }, [count,navigate,path])
     
     return <div className=" flex items-center justify-center flex-col h-screen">
     <InfinitySpin className="h-16 w-16 text-white" />

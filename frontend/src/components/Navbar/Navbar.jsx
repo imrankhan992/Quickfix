@@ -36,17 +36,14 @@ const profileMenuItems = [
     icon: MdArrowDropDown,
   },
   {
-    label: "Inbox",
+    label: "Settings",
     icon: MdArrowDropDown,
   },
   {
     label: "Help",
     icon: MdArrowDropDown,
   },
-  {
-    label: "Sign Out",
-    icon: MdArrowDropDown,
-  },
+ 
 ];
  
 function ProfileMenu({user}) {
@@ -100,7 +97,7 @@ function ProfileMenu({user}) {
                 className="font-normal "
                 color={isLastItem ? "red" : "inherit"}
               >
-                {label}
+                <Link to={`/${user?.role}/dashboard/${label}`}> {label}</Link>
               </Typography>
             </MenuItem>
           );

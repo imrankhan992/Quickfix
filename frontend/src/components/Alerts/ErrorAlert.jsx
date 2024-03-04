@@ -6,13 +6,13 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 
-export function AlertDestructive() {
+export function AlertDestructive(message) {
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" className="max-w-lg">
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>
-        Your session has expired. Please log in again.
+        {message}
       </AlertDescription>
     </Alert>
   )

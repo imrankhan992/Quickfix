@@ -20,11 +20,14 @@ const SubmitProfile = () => {
           </p>
         </div>
         <div className="flex md:flex-row flex-col  items-center justify-center gap-3">
-          {/* <Button className="px-8 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
+          <Link to={"/"}>
+          <Button className="px-8 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
             Home Page
-          </Button> */}
-          <Link to={"/"} className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder text-primarycolor py-2 ">
-            Go to Home
+          </Button>
+          </Link>
+
+          <Link to={"/serviceprovider/dashboard/home"} className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder text-primarycolor py-2 ">
+            Go to profile
           </Link>
         </div>
       </div>

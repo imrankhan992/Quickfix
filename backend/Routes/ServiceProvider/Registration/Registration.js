@@ -8,8 +8,9 @@ const {
     setupprofileRouteController,
     loaddata,
     loginUserController,
+    submitProfileornot,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
-const { isAuthenticated } = require("../../../Middleware/auhRegistration");
+const { isAuthenticated, authorizeRoles } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
 const upload = multer({ dest: "uploads/" });
 
@@ -17,12 +18,13 @@ const router = express.Router();
 
 router.route("/serviceProvider/registration").post(registerUserController);
 router.route("/verify/:token").get(verifyEmailController);
-router
-    .route("/setup")
-    .post(isAuthenticated, upload.single("avatar"), setupProfileController);
+router.route("/setup").post(isAuthenticated, upload.single("avatar"), setupProfileController);
 router.route("/admin/logout").get(logout);
 router.route("/user/mydata").get(isAuthenticated, loaddata);
 router.route("/login").post(loginUserController);
+
+// protected
+router.route("/protected-serviceprovider").get(isAuthenticated,authorizeRoles("serviceprovider"),submitProfileornot)
 
 
 

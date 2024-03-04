@@ -37,7 +37,8 @@ export const registrationReducer = (state = {}, action) => {
 
                 user: action.payload.user,
 
-                submitprofile: true
+                submitprofile: true,
+                error:null
             }
 
         case LOGIN_SUCCESS:
@@ -45,11 +46,11 @@ export const registrationReducer = (state = {}, action) => {
                 ...state,
                 loading: false,
                 isAuthenticated: true,
-                
                 success: true,
                 setup: true,
                 submitprofile: false,
                 user: action.payload.user,
+                error:null
             }
 
         case REGISTERATION_FAIL:

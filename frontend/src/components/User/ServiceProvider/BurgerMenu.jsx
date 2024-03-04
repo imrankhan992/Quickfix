@@ -46,7 +46,7 @@ export function BurgerMenu() {
   const closeDrawer = () => setIsDrawerOpen(false);
  
   return (
-    <div className="md:hidden block">
+    <div className="md:hidden block absolute">
       <IconButton variant="text" size="lg" onClick={openDrawer}>
         {isDrawerOpen ? (
           <RiPresentationFill className="h-8 w-8 stroke-2" />

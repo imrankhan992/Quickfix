@@ -39,6 +39,7 @@ module.exports = withMT({
         bordercolor:"#324053",
         buttonborder:"#641a23",
         errorcolor:"#9B211B",
+        mutedcolor:"#93A2B7",
         // tremor-background:"",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
