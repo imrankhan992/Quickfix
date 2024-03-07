@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { Button } from "../ui/button";
 import { TextInput } from "@tremor/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
 import { useDispatch, useSelector } from "react-redux";
-import { Registration } from "./../Actions/Registration";
+
 import { Loader2 } from "lucide-react";
-import { datasaveAction } from "../Actions/DataSave";
+import { userRegisterAction } from './../Actions/UserAction';
 import { AlertDestructive } from "../Alerts/ErrorAlert";
-const SPSignup = () => {
+const UserSignup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, loading,error } = useSelector((state) => state.user);
+  const { user, success, loading,error } = useSelector((state) => state.serviceProvider);
   const { data } = useSelector((state) => state.data);
   const {
     values,
@@ -36,19 +36,17 @@ const SPSignup = () => {
     },
     validationSchema: registration,
     onSubmit: async (values, { setSubmitting }) => {
-      dispatch(Registration(values));
+        dispatch(userRegisterAction(values));
     },
   });
   useEffect(() => {
-    
-    if (data!=="serviceprovider") {
-      navigate("/signup")
+  
+    if (data !== "client") {
+      navigate("/signup");
     }
     if (success) {
       navigate("/verifyemail");
-      localStorage.setItem('userEmail', user?.email);
-     
-    
+      localStorage.setItem("userEmail", user?.email);
     }
   }, [success]);
 
@@ -74,14 +72,15 @@ const SPSignup = () => {
       {/* form */}
       <div className=" w-full md:max-w-[1750px] mx-auto h-[100vh] ">
         <div className="md:w-[40%] mx-auto flex flex-col  items-center px-5 ">
-          
-          <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
-            Sign up to find work you love
-          </h1>
-          {
+             {/* error show */}
+      
+      {
         error ? (AlertDestructive(error)):""
        
       }
+          <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
+            Sign up to hire talent
+          </h1>
           <form
             className="md:grid md:grid-cols-2 flex flex-col gap-3 w-full py-5"
             onSubmit={handleSubmit}
@@ -293,7 +292,10 @@ const SPSignup = () => {
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
               {!loading && (
-                <Button className="bg-buttoncolor outline outline-buttonborder" type="submit">
+                <Button
+                  className="bg-buttoncolor outline outline-buttonborder"
+                  type="submit"
+                >
                   Create my account
                 </Button>
               )}
@@ -311,4 +313,4 @@ const SPSignup = () => {
   );
 };
 
-export default SPSignup;
+export default UserSignup;

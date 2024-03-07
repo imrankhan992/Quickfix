@@ -17,7 +17,9 @@ import { AlertDestructive } from "../Alerts/ErrorAlert";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, success, setup, loading ,error} = useSelector((state) => state.user);
+  const { user, success, setup, loading, error } = useSelector(
+    (state) => state.user
+  );
 
   const {
     values,
@@ -38,15 +40,19 @@ const Login = () => {
     },
   });
   useEffect(() => {
-    if (setup && user?.job !== undefined && user?.phoneNumber !== undefined) {
-      navigate(`/${user?.role}/dashboard/home`);
+    if (user?.role === "serviceprovider") {
+      if (setup && user?.job !== undefined && user?.phoneNumber !== undefined) {
+        navigate(`/${user?.role}/dashboard/My profile`);
+      }
+      if (setup && user?.job === undefined && user?.phoneNumber === undefined) {
+        navigate("/setup");
+      }
+    } else if (user?.role === "admin") {
+      navigate(`/${user?.role}/dashboard/My profile`);
+    } else {
     }
-    if (setup && user?.job === undefined && user?.phoneNumber === undefined) {
-      navigate("/setup");
-    }
-   
-  }, [setup]);
-  
+  }, [setup, user]);
+
   return (
     <>
       {/* header */}
@@ -63,15 +69,11 @@ const Login = () => {
           <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
             Log in to QuickFix
           </h1>
-      {/* error show */}
-      
-      {
-        error==="Invalid email and password" ? (AlertDestructive(error)):""
-       
-      }
-      
-        {/* <AlertDestructive/> */}
-    
+          {/* error show */}
+
+          {error === "Invalid Email or Password" ? AlertDestructive(error) : ""}
+
+          {/* <AlertDestructive/> */}
 
           <form className="  py-5" onSubmit={handleSubmit}>
             {/* email */}

@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { FaRegCircle, FaDotCircle, FaUserTie } from "react-icons/fa";
 import { GrUserWorker } from "react-icons/gr";
 import { Link } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
+import { datasaveAction } from "../Actions/DataSave";
+import  "./choosejob.css"
 const ChooseJob = () => {
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("notselected");
-
+  const { data } = useSelector((state) => state.data);
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
+  useEffect(() => {
+    dispatch(datasaveAction());
+    if (selectedOption !== "notselected") {
+      dispatch(datasaveAction(selectedOption));
+    }
+  }, [selectedOption]);
 
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh] ">
@@ -23,7 +32,7 @@ const ChooseJob = () => {
           <div className="grid md:grid-cols-2 gap-6 w-full px-6">
             {/* left */}
             <div
-              className={`overflow-y-auto cursor-pointer hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
+              className={`scrollbar-hide overflow-y-auto cursor-pointer hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
                 selectedOption === "client" && "border-greencolor "
               }`}
               onClick={() => handleOptionClick("client")}
@@ -43,9 +52,8 @@ const ChooseJob = () => {
             </div>
             {/* right */}
             <div
-              className={`overflow-y-auto relative hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
-                selectedOption === "serviceprovider" &&
-                "border-greencolor "
+              className={`scrollbar-hide overflow-y-auto relative hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
+                selectedOption === "serviceprovider" && "border-greencolor "
               }`}
               onClick={() => handleOptionClick("serviceprovider")}
             >
@@ -64,22 +72,20 @@ const ChooseJob = () => {
           </div>
           <div>
             {selectedOption && selectedOption !== "notselected" && (
-              <Link to={"/createaccount"}>
-              <Button className="bg-buttoncolor">
-                Join as a{" "}
-                {selectedOption
-                  ? selectedOption.charAt(0).toUpperCase() +
-                    selectedOption.slice(1)
-                  : "..."}
-              </Button>
+              <Link to={`/${data}/createaccount`}>
+                <Button className="bg-buttoncolor">
+                  Join as a{" "}
+                  {selectedOption
+                    ? selectedOption.charAt(0).toUpperCase() +
+                      selectedOption.slice(1)
+                    : "..."}
+                </Button>
               </Link>
             )}
             {selectedOption === "notselected" && (
-              
               <Button disabled className="cursor-not-allowed bg-buttoncolor">
                 Create Account
               </Button>
-             
             )}
           </div>
           {/* last div */}

@@ -26,7 +26,7 @@ const SubmitProfile = () => {
           </Button>
           </Link>
 
-          <Link to={"/serviceprovider/dashboard/home"} className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder text-primarycolor py-2 ">
+          <Link to={"/serviceprovider/dashboard/My Profile"} className="bg-buttoncolor border border-buttonborder px-8 rounded-xl outline outline-buttonborder text-primarycolor py-2 ">
             Go to profile
           </Link>
         </div>

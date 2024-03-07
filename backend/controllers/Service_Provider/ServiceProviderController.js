@@ -3,6 +3,8 @@ const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const { sendToken } = require("../../utils/sendToken");
 const cloudinary = require("../../Middleware/cloudinary");
+const UserModel = require("../../Models/User/UserModel");
+const { userToken } = require("../../utils/userToken");
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
@@ -10,6 +12,13 @@ exports.registerUserController = async (req, res) => {
             email: req.body.email,
         });
         if (userexist && userexist?.emailVerify) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already used",
+            });
+        }
+        const serviceconsumer = await UserModel.findOne({ email })
+        if (serviceconsumer && serviceconsumer?.emailVerify) {
             return res.status(400).json({
                 success: false,
                 message: "Email already used",
@@ -31,8 +40,8 @@ exports.registerUserController = async (req, res) => {
                 email: newuser?.email,
                 message,
             });
-            // res.status(200).json({ success: true, user: newuser })
-            sendToken(newuser, 200, res);
+            res.status(200).json({ success: true, user: newuser })
+            // sendToken(newuser, 200, res);
         }
 
         if (userexist && !userexist?.emailVerify) {
@@ -213,33 +222,22 @@ exports.loaddata = async (req, res) => {
 exports.loginUserController = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(req.body);
-        const user = await registrationModel.findOne({ email });
-        console.log(user);
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email and password",
-            })
+        const userExist1 = await registrationModel.findOne({ email });
+        const userExist2 = await UserModel.findOne({ email });
+        if (userExist1 && await userExist1.comparePassword(password) && userExist1.emailVerify) {
+            if (userExist2.role === "serviceprovider") {
+                userToken(userExist2, 200, res)
+            }
+            
+        } else if (userExist2 && await userExist2.comparePassword(password) && userExist2.emailVerify) {
+            if (userExist2.role === "user" || userExist2.role === "admin") {
+                userToken(userExist2, 200, res)
+            }
+        } else {
+            return res.status(409).json({ message: "Invalid Email or Password" });
         }
-        if (!user?.emailVerify) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid email and password",
-            })
-        }
-        // compare password
-        const comparePassword = await user.comparePassword(password);
-        if (!comparePassword) {
-            return res.status(401).send({
-                success: false,
-                message: "Invalid email and password",
-            });
-        }
-
-
-        sendToken(user, 200, res)
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "Internal Server Error",
