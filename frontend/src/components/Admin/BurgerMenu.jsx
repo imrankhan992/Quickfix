@@ -32,6 +32,7 @@ import {
 //   RiPresentationFill,
 // } from "@heroicons/react/24/outline";
 import { RiPresentationFill } from "react-icons/ri";
+import { FaBarsStaggered } from "react-icons/fa6";
 
 export function BurgerMenu() {
   const [open, setOpen] = React.useState(0);
@@ -46,12 +47,12 @@ export function BurgerMenu() {
   const closeDrawer = () => setIsDrawerOpen(false);
  
   return (
-    <div className="md:hidden block absolute">
+    <div className="md:hidden block absolute z-50 px-4">
       <IconButton variant="text" size="lg" onClick={openDrawer}>
         {isDrawerOpen ? (
-          <RiPresentationFill className="h-8 w-8 stroke-2" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-primarycolor" />
         ) : (
-          <RiPresentationFill className="h-8 w-8 stroke-2" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-primarycolor" />
         )}
       </IconButton>
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>
@@ -236,5 +237,5 @@ export function BurgerMenu() {
         </Card>
       </Drawer>
     </div>
-  )
+  );
 }

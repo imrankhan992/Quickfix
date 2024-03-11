@@ -1,9 +1,21 @@
-import React from 'react'
+import React from "react";
+
+import Aside from "./Aside";
+import Main from "./Main";
+import { BurgerMenu } from "./BurgerMenu";
 
 const Dashboard = () => {
   return (
-    <div className='text-primarycolor'>Admin  Dashboard</div>
-  )
-}
+    <>
+     <BurgerMenu />
+      <div className="flex relative">
+      
+        <Aside />
 
-export default Dashboard
+        <Main />
+      </div>
+    </>
+  );
+};
+
+export default Dashboard;

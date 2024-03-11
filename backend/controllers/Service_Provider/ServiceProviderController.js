@@ -224,15 +224,16 @@ exports.loginUserController = async (req, res) => {
         const { email, password } = req.body;
         const userExist1 = await registrationModel.findOne({ email });
         const userExist2 = await UserModel.findOne({ email });
+        
         if (userExist1 && await userExist1.comparePassword(password) && userExist1.emailVerify) {
-            if (userExist2.role === "serviceprovider") {
-                userToken(userExist2, 200, res)
-            }
-            
+
+            sendToken(userExist1, 200, res)
+
+
         } else if (userExist2 && await userExist2.comparePassword(password) && userExist2.emailVerify) {
-            if (userExist2.role === "user" || userExist2.role === "admin") {
-                userToken(userExist2, 200, res)
-            }
+
+            userToken(userExist2, 200, res)
+
         } else {
             return res.status(409).json({ message: "Invalid Email or Password" });
         }
