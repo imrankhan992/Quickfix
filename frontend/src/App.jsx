@@ -19,6 +19,7 @@ import UserSignup from "./components/UserSignup/UserSignup";
 import CongratsUser from "./components/UserSignup/CongratsUser";
 import { Users } from "./components/Admin/Users";
 import { SingleServiceProvider } from "./components/Admin/SingleServiceProvider";
+import { AddCategories } from "./components/Admin/AddCategories";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
             <Route path="My Profile" element={<Dashboard />} />
             <Route path="customers" element={<Users />} />
             <Route path="applicant/:id" element={<SingleServiceProvider />} />
+            <Route path="add/services" element={<AddCategories />} />
           </Route>
 
           {/* service provider dashboard */}

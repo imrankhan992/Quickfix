@@ -28,7 +28,7 @@ export function Sidebar({open}) {
       </div>
       <List>
         {/* dashboard */}
-        <Link onClick={() => handleOpen(1)} to={"/admin/dashboard/my profile"}>
+        <Link  to={"/admin/dashboard/my profile"}>
           <ListItem
             className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
               open === 1
@@ -42,10 +42,24 @@ export function Sidebar({open}) {
             Dashboard
           </ListItem>
         </Link>
-        {/* users */}
-        <Link onClick={() => handleOpen(2)} to={"/admin/dashboard/customers"}>
+
+        {/* services */}
+        <Link  to={"/admin/dashboard/add/services"}>
         <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
               open === 2
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <MdDashboard className="h-5 w-5" />
+          </ListItemPrefix>
+        Add Services
+        </ListItem>
+        </Link>
+        {/* users */}
+        <Link to={"/admin/dashboard/customers"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 3
                 ? "bg-buttoncolor text-primarycolor border-buttonborder border"
                 : ""
             }`}>
