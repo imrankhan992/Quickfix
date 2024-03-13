@@ -13,7 +13,7 @@ const Loader = ({message, path="login"}) => {
      }, 1000);
     
      if (count===0) {
-        navigate("/setup");
+        navigate("/login");
       }
       return ()=>{clearInterval(interval)}
     }, [count,navigate,path])
@@ -21,7 +21,7 @@ const Loader = ({message, path="login"}) => {
     return <div className=" flex items-center justify-center flex-col h-screen">
     <InfinitySpin className="h-16 w-16 text-white" />
     <p className='text-primarycolor text-2xl'>{message}</p>
-    {/* <h1>redirecting you in {count} second</h1> */}
+    <h1>redirecting you in {count} second</h1>
     </div>
 }
 

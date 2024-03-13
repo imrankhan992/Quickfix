@@ -1,235 +1,174 @@
+import { FaUserClock } from "react-icons/fa";
 
-  import { FaUserClock } from "react-icons/fa";
+import {
+  Card,
+  CardHeader,
+  Input,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Avatar,
+  IconButton,
+  Tooltip,
+} from "@material-tailwind/react";
+import { MdEdit } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { spDataAction } from "../Actions/SpAction";
 
-  import {
-    Card,
-    CardHeader,
-    Input,
-    Typography,
-    Button,
-    CardBody,
-    Chip,
-    CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
-    Avatar,
-    IconButton,
-    Tooltip,
-  } from "@material-tailwind/react";
-   
-  const TABS = [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Monitored",
-      value: "monitored",
-    },
-    {
-      label: "Unmonitored",
-      value: "unmonitored",
-    },
-  ];
-   
-  const TABLE_HEAD = ["Member", "Function", "Status", "Employed", "Action"];
-   
-  const TABLE_ROWS = [
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-      name: "John Michael",
-      email: "john@creative-tim.com",
-      job: "Manager",
-      org: "Organization",
-      online: true,
-      date: "23/04/18",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-      name: "Alexa Liras",
-      email: "alexa@creative-tim.com",
-      job: "Programator",
-      org: "Developer",
-      online: false,
-      date: "23/04/18",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-      name: "Laurent Perrier",
-      email: "laurent@creative-tim.com",
-      job: "Executive",
-      org: "Projects",
-      online: false,
-      date: "19/09/17",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-      name: "Michael Levi",
-      email: "michael@creative-tim.com",
-      job: "Programator",
-      org: "Developer",
-      online: true,
-      date: "24/12/08",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-      name: "Richard Gran",
-      email: "richard@creative-tim.com",
-      job: "Manager",
-      org: "Executive",
-      online: false,
-      date: "04/10/21",
-    },
-  ];
-   
-  export function ServiceProviderTable() {
-    return (
-      <Card className="h-full w-full rounded-none">
-        <CardHeader floated={false} shadow={false} className="rounded-none">
-          <div className="mb-8 flex items-center justify-between gap-8">
-            <div>
-              <Typography variant="h5" color="blue-gray">
-                Members list
-              </Typography>
-              <Typography color="gray" className="mt-1 font-normal">
-                See information about all members
-              </Typography>
-            </div>
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button variant="outlined" size="sm">
-                view all
-              </Button>
-              
-            </div>
+const TABS = [
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "Monitored",
+    value: "monitored",
+  },
+  {
+    label: "Unmonitored",
+    value: "unmonitored",
+  },
+];
+
+const TABLE_HEAD = ["Member",  "Status", "Date"];
+
+
+
+export function ServiceProviderTable() {
+  const dispatch = useDispatch()
+  const { SPuser, SPloading, SPsuccess, SPerror } = useSelector(
+    (state) => state.spData
+  );
+  useEffect(() => {
+    dispatch(spDataAction());
+  }, []);
+  
+  return (
+    <Card className="h-full w-full rounded-none bg-thirdcolor">
+      <CardHeader
+        floated={false}
+        shadow={false}
+        className="rounded-none bg-thirdcolor"
+      >
+        <div className="mb-8 flex items-center justify-between gap-8">
+          <div>
+            <Typography variant="h5" className="text-primarycolor">
+              Members list
+            </Typography>
+            <Typography color="gray" className="mt-1 font-normal text-primarycolor">
+              See information about all members
+            </Typography>
           </div>
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <Tabs value="all" className="w-full md:w-max">
-              <TabsHeader>
-                {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                  </Tab>
-                ))}
-              </TabsHeader>
-            </Tabs>
-            <div className="w-full md:w-72">
-              <Input
-                label="Search"
-                icon={<FaUserClock className="h-5 w-5" />}
-              />
-            </div>
+          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+            <Button variant="outlined" size="sm">
+              view all
+            </Button>
           </div>
-        </CardHeader>
-        <CardBody className="overflow-scroll px-0">
-          <table className="mt-4 w-full min-w-max table-auto text-left">
-            <thead>
-              <tr>
-                {TABLE_HEAD.map((head, index) => (
-                  <th
-                    key={head}
-                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+        </div>
+        <div className="flex flex-col items-center justify-between gap-4 md:flex-row bg-thirdcolor">
+          <Tabs value="all" className="w-full md:w-max bg-thirdcolor">
+            <TabsHeader>
+              {TABS.map(({ label, value }) => (
+                <Tab key={value} value={value}>
+                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                </Tab>
+              ))}
+            </TabsHeader>
+          </Tabs>
+          <div className="w-full md:w-72">
+            <Input label="Search" icon={<FaUserClock className="h-5 w-5" />} />
+          </div>
+        </div>
+      </CardHeader>
+      <CardBody className="px-0 bg-thirdcolor text-primarycolor overflow-auto">
+        <table className="mt-4 w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              {TABLE_HEAD.map((head, index) => (
+                <th
+                  key={head}
+                  className="cursor-pointer border-y border-blue-gray-100 bg-thirdcolor p-4 transition-colors hover:bg-blue-gray-50 hover:text-hoverblack"
+                >
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-primarycolor"
                   >
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                    >
-                      {head}{" "}
-                      {index !== TABLE_HEAD.length - 1 && (
-                        <FaUserClock strokeWidth={2} className="h-4 w-4" />
-                      )}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {TABLE_ROWS.map(
-                ({ img, name, email, job, org, online, date }, index) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
-                  const classes = isLast
-                    ? "p-4"
-                    : "p-4 border-b border-blue-gray-50";
-   
-                  return (
-                    <tr key={name}>
-                      <td className={classes}>
-                        <div className="flex items-center gap-3">
-                          <Avatar src={img} alt={name} size="sm" />
-                          <div className="flex flex-col">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {name}
-                            </Typography>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal opacity-70"
-                            >
-                              {email}
-                            </Typography>
-                          </div>
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <div className="flex flex-col">
+                    {head}{" "}
+                    
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {SPuser?.map(
+              ({ avatar, name, email, job, org, accountStatus, date }, index) => {
+                const isLast = index === SPuser?.length - 1;
+                const classes = isLast
+                  ? "p-4"
+                  : "p-4 border-b border-blue-gray-50 ";
+
+                return (
+                  <tr key={name}>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+                        <Avatar src={avatar?.url} alt={name} size="sm" />
+                        <div className="flex flex-col ">
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal"
+                            className="font-normal text-primarycolor"
                           >
-                            {job}
+                            {name}
                           </Typography>
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal opacity-70"
+                            className="font-normal opacity-70 text-primarycolor"
                           >
-                            {org}
+                            {email}
                           </Typography>
                         </div>
-                      </td>
-                      <td className={classes}>
-                        <div className="w-max">
-                          <Chip
-                            variant="ghost"
-                            size="sm"
-                            value={online ? "online" : "offline"}
-                            color={online ? "green" : "blue-gray"}
-                          />
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {date}
-                        </Typography>
-                      </td>
-                      <td className={classes}>
-                        <Tooltip content="Edit User">
-                          <IconButton variant="text">
-                            <FaUserClock className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>
-                      </td>
-                    </tr>
-                  );
-                },
-              )}
-            </tbody>
-          </table>
-        </CardBody>
-       
-      </Card>
-    );
-  }
+                      </div>
+                    </td>
+                   
+                    <td className={classes}>
+                      <div className="w-max ">
+                        <Chip
+                        className="text-primarycolor"
+                          variant="ghost"
+                          size="sm"
+                          value={accountStatus}
+                          color={accountStatus==="pending" ? "yellow" : "blue-gray"}
+                        />
+                      </div>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal text-primarycolor"
+                      >
+                        11/2/24
+                      </Typography>
+                    </td>
+                    
+                  </tr>
+                );
+              }
+            )}
+          </tbody>
+        </table>
+      </CardBody>
+    </Card>
+  );
+}
 
 
-  ServiceProviderTable

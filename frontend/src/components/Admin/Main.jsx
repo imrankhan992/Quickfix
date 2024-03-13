@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 
 import { IoCartOutline } from "react-icons/io5";
@@ -8,8 +8,22 @@ import { FaUserFriends } from "react-icons/fa";
 import { GrUserWorker } from "react-icons/gr";
 import { FaRupeeSign } from "react-icons/fa6";
 import { ServiceProviderTable } from "./ServiceProviderTable";
+import axiosInstance from "@/ulities/axios";
 
 const Main = () => {
+  const [users, setusers] = useState(0)
+  const [spuser, setspuser] = useState(0)
+  const countingFunc = async()=>{
+    const {data} = await axiosInstance.get("/api/v1/admin/counting");
+    if (data?.success) {
+      setusers(data?.usersCount)
+      setspuser(data?.spUsersCount)
+    }
+  }
+  useEffect(() => {
+    countingFunc()
+  }, [])
+  
   return (
     <>
       <main className="lg:w-[100%] w-full  min-h-screen">
@@ -43,7 +57,7 @@ const Main = () => {
                 <FaUserFriends className="absolute w-16 h-16 right-0 text-[#B2EBD9]" />
                 <h2 className="text-[18px] uppercase font-semibold text-hoverblack">
                 NEW CUSTOMERS</h2>
-                <h2 className="text-3xl font-medium text-hoverblack">532</h2>
+                <h2 className="text-3xl font-medium text-hoverblack">{users}</h2>
                 <p className="text-[15px] text-mutedcolor font-normal">
                   <span className="text-red-800">3.5%</span> New Sessions
                   Today
@@ -61,7 +75,7 @@ const Main = () => {
                 <GrUserWorker  className="absolute w-16 h-16 right-0 text-[#FF72C6]" />
                 <h2 className="text-[18px] uppercase font-semibold text-hoverblack">
                 Service Providers</h2>
-                <h2 className="text-3xl font-medium text-hoverblack">32</h2>
+                <h2 className="text-3xl font-medium text-hoverblack">{spuser}</h2>
                 <p className="text-[15px] text-mutedcolor font-normal">
                   <span className="text-red-800">3.5%</span> New Sessions
                   Today

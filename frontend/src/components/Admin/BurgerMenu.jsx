@@ -47,7 +47,7 @@ export function BurgerMenu() {
   const closeDrawer = () => setIsDrawerOpen(false);
  
   return (
-    <div className="md:hidden block absolute z-50 px-4">
+    <div className="md:hidden block  z-50 px-4">
       <IconButton variant="text" size="lg" onClick={openDrawer}>
         {isDrawerOpen ? (
           <FaBarsStaggered className="h-8 w-8 stroke-2 text-primarycolor" />

@@ -31,16 +31,26 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { AvatarPicture } from "./Avatar"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { adminAction } from "../Actions/AdminAction"
   
   export function Menu() {
+    const dispatch = useDispatch()
+    const {Adminuser} = useSelector((state)=>state.admin)
+    
+    useEffect(() => {
+      dispatch(adminAction())
+    }, [])
+    
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="">
           <Button className="p-0 bg-bodycolor hover:bg-bodycolor rounded-full flex    gap-2">
             <AvatarPicture/>
            <div className="flex justify-start flex-col p-2">
-            <p>Imran Khan</p>
-            <p className="text-sm text-mutedcolor">admin</p>
+            <p>{Adminuser?.firstname + " "+ Adminuser?.lastname}</p>
+            <p className="text-sm text-mutedcolor">{Adminuser?.role}</p>
            </div>
           </Button>
           

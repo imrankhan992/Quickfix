@@ -224,7 +224,7 @@ exports.loginUserController = async (req, res) => {
         const { email, password } = req.body;
         const userExist1 = await registrationModel.findOne({ email });
         const userExist2 = await UserModel.findOne({ email });
-        
+
         if (userExist1 && await userExist1.comparePassword(password) && userExist1.emailVerify) {
 
             sendToken(userExist1, 200, res)
@@ -275,3 +275,22 @@ exports.submitProfileornot = async (req, res) => {
         });
     }
 }
+
+// get all sp provider
+
+exports.getallServiceprovider = async (req, res) => {
+    try {
+        const sp_provider = await registrationModel.find({emailVerify:true});
+        res.status(200).json({
+            success: true,
+            user: sp_provider
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message,
+        });
+    }
+}
+

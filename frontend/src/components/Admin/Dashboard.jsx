@@ -5,12 +5,13 @@ import Main from "./Main";
 import { BurgerMenu } from "./BurgerMenu";
 
 const Dashboard = () => {
+  
   return (
     <>
      <BurgerMenu />
-      <div className="flex relative">
+      <div className="flex ">
       
-        <Aside />
+        <Aside open={1} />
 
         <Main />
       </div>

@@ -22,7 +22,6 @@ router.route("/setup").post(isAuthenticated, upload.single("avatar"), setupProfi
 router.route("/admin/logout").get(logout);
 router.route("/user/mydata").get(isAuthenticated, loaddata);
 router.route("/login").post(loginUserController);
-
 // protected
 router.route("/protected-serviceprovider").get(isAuthenticated,authorizeRoles("serviceprovider"),submitProfileornot)
 
