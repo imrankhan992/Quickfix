@@ -1,49 +1,118 @@
 import { FaUserClock } from "react-icons/fa";
-
 import {
   Card,
   CardHeader,
   Input,
   Typography,
-  
   CardBody,
   Chip,
-  
   Avatar,
-  
-  Tooltip,
 } from "@material-tailwind/react";
 import logo from "../../assets/quickfix logo.png";
 import { BurgerMenu } from "./BurgerMenu";
 import Aside from "./Aside";
 import Header from "./Header";
-import { MdEdit } from "react-icons/md";
-import { AlertDialog } from "./AlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { spDataAction } from "../Actions/SpAction";
 import Loader from "../Spinner/Spinner";
-import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
-
 import { CiFilter } from "react-icons/ci";
-
-
-import { FaPlus } from "react-icons/fa6";
-
+import { CreateCategory } from "./CreateCategory";
+import { errorToast, showtoast } from "@/Toast/Toast";
+import axiosInstance from "@/ulities/axios";
 const TABLE_HEAD = ["Name", "Products", "Action"];
-
+import { MdOutlineDelete } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
+import { DeleteCategory } from "./DeleteCategory";
+import { EditCategory } from "./EditCategory";
 
 export function AddCategories() {
-    
+  const [service, setservices] = useState("");
+  const [loading, setloading] = useState(false);
+  const [success, setsuccess] = useState(false);
+  const [categores, setcategores] = useState([]);
+  const [categorys, setcategory] = useState("");
+  // create category
+  const createService = async () => {
+    try {
+      setloading(true);
+      const { data } = await axiosInstance.post(
+        "/api/v1/admin/create-services",
+        { service },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (data?.success) {
+        setloading(false);
+        setsuccess(true);
+        showtoast(data?.message);
+        setservices("");
+        getallCategories();
+      }
+      if (!data?.success) {
+        setloading(false);
+        errorToast(data?.message);
+        setservices("");
+      }
+    } catch (error) {
+      setloading(false);
+      errorToast(error.response.data.message);
+      setservices("");
+    }
+  };
   const dispatch = useDispatch();
   const { SPuser, SPloading, SPsuccess, SPerror } = useSelector(
     (state) => state.spData
   );
+
+  const getallCategories = async () => {
+    const { data } = await axiosInstance.get(
+      "/api/v1/admin/get-all-categories"
+    );
+    if (data?.success) {
+      setcategores(data?.categories);
+    }
+  };
+  //   delete category
+  const deleteCategory = async (id) => {
+    try {
+      const { data } = await axiosInstance.delete(
+        `/api/v1/admin/delete-category/${id}`
+      );
+      if (data?.success) {
+        showtoast(data?.message);
+        getallCategories();
+      }
+    } catch (error) {
+      errorToast(error.response.data.message);
+    }
+  };
+  // update category
+  const updateCategory = async (id) => {
+    try {
+      const { data } = await axiosInstance.put(
+        `/api/v1/admin/update-category/${id}`,
+        { category: categorys },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      if (data?.success) {
+        showtoast(data?.message);
+        getallCategories();
+      }
+    } catch (error) {
+      errorToast(error.response.data.message);
+    }
+  };
   useEffect(() => {
     dispatch(spDataAction());
+    getallCategories();
   }, [dispatch]);
-
+  console.log(categores);
   return (
     <>
       <BurgerMenu />
@@ -56,10 +125,15 @@ export function AddCategories() {
             {/* heading */}
 
             <div className="flex justify-between">
-            <h3 className="text-primarycolor text-2xl">
-             Add Services
-            </h3>
-            <Button className="bg-buttoncolor border border-buttonborder flex gap-2 items-center justify-center capitalize text-sm"><FaPlus /> Add new Service</Button>
+              <h3 className="text-primarycolor text-2xl">Add Services</h3>
+
+              <CreateCategory
+                createService={createService}
+                setservices={setservices}
+                service={service}
+                loading={loading}
+                success={success}
+              />
             </div>
             {/* table */}
             {!SPloading && (
@@ -69,16 +143,18 @@ export function AddCategories() {
                   shadow={false}
                   className="rounded-none bg-thirdcolor"
                 >
-                 
-                  <div className="flex flex-col items-center  gap-4 md:flex-row bg-thirdcolor">
-                    
+                  <div className="flex justify-start items-center  gap-4 md:flex-row bg-thirdcolor">
                     <div className="w-full md:w-72">
                       <Input
                         label="Search"
                         icon={<FaUserClock className="h-5 w-5" />}
                       />
                     </div>
-                    <div><Button className="bg-buttoncolor text-primarycolor border border-buttonborder capitalize text-sm flex gap-1 items-center justify-center py-2 px-2"><CiFilter className="text-[18px] font-bold" /> Filter</Button></div>
+                    <div>
+                      <Button className="bg-buttoncolor text-primarycolor border border-buttonborder capitalize text-sm flex gap-1 items-center justify-center py-2 px-2">
+                        <CiFilter className="text-[18px] font-bold" /> Filter
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardBody className="px-0 bg-thirdcolor text-primarycolor overflow-auto">
@@ -88,12 +164,12 @@ export function AddCategories() {
                         {TABLE_HEAD.map((head, index) => (
                           <th
                             key={head}
-                            className="cursor-pointer border-y border-blue-gray-100 bg-thirdcolor p-4 transition-colors hover:bg-blue-gray-50 hover:text-hoverblack"
+                            className="cursor-pointer border-y border-blue-gray-100 p-4 transition-colors  bg-bodycolor"
                           >
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-primarycolor"
+                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70   text-primarycolor"
                             >
                               {head}{" "}
                             </Typography>
@@ -102,83 +178,60 @@ export function AddCategories() {
                       </tr>
                     </thead>
                     <tbody>
-                      {SPuser?.map(
-                        (
-                          {
-                            avatar,
-                            firstname,
-                            lastname,
-                            email,
-                            _id,
-                            org,
-                            accountStatus,
-                            date,
-                          },
-                          index
-                        ) => {
-                          const isLast = index === SPuser?.length - 1;
-                          const classes = isLast
-                            ? "p-4"
-                            : "p-4 border-b border-blue-gray-50 ";
+                      {categores?.map(({ category, _id }, index) => {
+                        const isLast = index === categores?.length - 1;
+                        const classes = isLast
+                          ? "p-4"
+                          : "p-4 border-b border-bordercolor ";
 
-                          return (
-                            <tr key={firstname}>
-                              <td className={classes}>
-                                <div className="flex items-center gap-3">
-                                  <Avatar
-                                    src={avatar?.url}
-                                    alt={firstname}
-                                    size="sm"
-                                  />
-                                  <div className="flex flex-col ">
-                                    <Typography
-                                      variant="small"
-                                      color="blue-gray"
-                                      className="font-normal text-primarycolor"
-                                    >
-                                      {firstname + " " + lastname}
-                                    </Typography>
-                                    <Typography
-                                      variant="small"
-                                      color="blue-gray"
-                                      className="font-normal opacity-70 text-primarycolor"
-                                    >
-                                      {email}
-                                    </Typography>
-                                  </div>
-                                </div>
-                              </td>
-
-                              <td className={classes}>
-                                <div className="w-max ">
-                                  <Chip
-                                    className="text-primarycolor"
-                                    variant="ghost"
-                                    size="sm"
-                                    value={accountStatus}
-                                    color={
-                                      accountStatus === "pending"
-                                        ? "yellow"
-                                        : "blue-gray"
-                                    }
-                                  />
-                                </div>
-                              </td>
-                              <td className={classes}>
+                        return (
+                          <tr key={index}>
+                            <td className={classes}>
+                              <div className="flex items-center gap-3 ">
                                 <Typography
                                   variant="small"
                                   color="blue-gray"
                                   className="font-normal text-primarycolor"
                                 >
-                                  23/3/4
+                                  {category}
                                 </Typography>
-                              </td>
-                              
-                             
-                            </tr>
-                          );
-                        }
-                      )}
+                              </div>
+                            </td>
+
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal text-primarycolor"
+                              >
+                                3 products
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal text-primarycolor"
+                              >
+                                <div className="flex items-center justify-center gap-3">
+                                  <EditCategory
+                                    setcategory={setcategory}
+                                    category={categorys}
+                                    currentCategory={category}
+                                    updateCategory={updateCategory}
+                                    _id={_id}
+                                  />
+
+                                  <DeleteCategory
+                                    deleteCategory={deleteCategory}
+                                    _id={_id}
+                                  />
+                                </div>
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </CardBody>
@@ -187,7 +240,6 @@ export function AddCategories() {
 
             {/* if sp data loading */}
             {SPloading && <Loader />}
-            
           </div>
           {/* testing */}
         </main>
@@ -195,4 +247,3 @@ export function AddCategories() {
     </>
   );
 }
-

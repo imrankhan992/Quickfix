@@ -17,3 +17,7 @@ export const promisToast = () => {
         }
     );
 }
+
+export const errorToast = (title) => {
+    toast.error(title);
+};
