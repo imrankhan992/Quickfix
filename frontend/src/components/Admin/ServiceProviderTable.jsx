@@ -82,7 +82,7 @@ export function ServiceProviderTable() {
             </TabsHeader>
           </Tabs>
           <div className="w-full md:w-72">
-            <Input label="Search" icon={<FaUserClock className="h-5 w-5" />} />
+            <Input label="Search" color="white" icon={<FaUserClock className="h-5 w-5" />} className="disabled:bg-green-500 placeholder-shown:border-red-500 outline-none focus:border-primarycolor" />
           </div>
         </div>
       </CardHeader>

@@ -20,6 +20,7 @@ import CongratsUser from "./components/UserSignup/CongratsUser";
 import { Users } from "./components/Admin/Users";
 import { SingleServiceProvider } from "./components/Admin/SingleServiceProvider";
 import { AddCategories } from "./components/Admin/AddCategories";
+import {CreateProduct} from "./components/Admin/CreateProduct";
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
             <Route path="customers" element={<Users />} />
             <Route path="applicant/:id" element={<SingleServiceProvider />} />
             <Route path="add/services" element={<AddCategories />} />
+            <Route path="create-product" element={<CreateProduct />} />
           </Route>
 
           {/* service provider dashboard */}

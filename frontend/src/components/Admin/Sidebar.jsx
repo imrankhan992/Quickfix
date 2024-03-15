@@ -5,15 +5,14 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
+  
 } from "@material-tailwind/react";
 
 import { MdDashboard } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { TbCategoryPlus } from "react-icons/tb";
+import { GrUserWorker } from "react-icons/gr";
+import { GiCardboardBoxClosed } from "react-icons/gi";
 
 export function Sidebar({open}) {
 
@@ -51,9 +50,9 @@ export function Sidebar({open}) {
                 : ""
             }`}>
           <ListItemPrefix>
-            <MdDashboard className="h-5 w-5" />
+            <TbCategoryPlus className="h-5 w-5" />
           </ListItemPrefix>
-        Add Services
+        Add Category
         </ListItem>
         </Link>
         {/* users */}
@@ -64,12 +63,24 @@ export function Sidebar({open}) {
                 : ""
             }`}>
           <ListItemPrefix>
-            <MdDashboard className="h-5 w-5" />
+            <GrUserWorker className="h-5 w-5" />
           </ListItemPrefix>
-          Service Provider
+          Service Providers
         </ListItem>
         </Link>
-        
+          {/* create new service */}
+          <Link to={"/admin/dashboard/create-product"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 4
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <GiCardboardBoxClosed className="h-5 w-5" />
+          </ListItemPrefix>
+          Add Product
+        </ListItem>
+        </Link>
       </List>
     </Card>
   );

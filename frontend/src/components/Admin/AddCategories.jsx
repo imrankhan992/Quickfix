@@ -148,6 +148,7 @@ export function AddCategories() {
                       <Input
                         label="Search"
                         icon={<FaUserClock className="h-5 w-5" />}
+                        
                       />
                     </div>
                     <div>
