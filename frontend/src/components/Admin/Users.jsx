@@ -84,6 +84,7 @@ export function Users() {
                       <Input
                         label="Search"
                         icon={<FaUserClock className="h-5 w-5" />}
+                        className="focus-visible:ring-offset-0 focus:outline-none"
                       />
                     </div>
                   </div>

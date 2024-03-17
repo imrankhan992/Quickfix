@@ -81,6 +81,20 @@ export function Sidebar({open}) {
           Add Product
         </ListItem>
         </Link>
+
+        {/* get all product */}
+        <Link to={"/admin/dashboard/all-products"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 5
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <GiCardboardBoxClosed className="h-5 w-5" />
+          </ListItemPrefix>
+          All Products
+        </ListItem>
+        </Link>
       </List>
     </Card>
   );

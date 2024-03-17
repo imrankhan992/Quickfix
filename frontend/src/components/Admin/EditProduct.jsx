@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { spDataAction } from "../Actions/SpAction";
 import Loader from "../Spinner/Spinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Input } from "../ui/input";
 import {
@@ -27,7 +27,7 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 
 import { useFormik } from "formik";
-import { createProductSchema } from "@/Schemas";
+import { createProductSchema, editProductSchema } from "@/Schemas";
 
 import { TextInput } from "@tremor/react";
 import { Button } from "@material-tailwind/react";
@@ -37,7 +37,24 @@ import { Loader2 } from "lucide-react";
 
 const TABLE_HEAD = ["Member", "Status", "Date", "View", "Quick Action"];
 
-export function CreateProduct() {
+export function EditProduct() {
+  const { id } = useParams();
+  const [initialdata, setinitialdata] = useState({});
+  const [success, setsuccess] = useState(false);
+  const { title, price, description, category } = initialdata;
+  const getSingleProductDetails = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        `/api/v1/admin/single-product/${id}`
+      );
+      if (data?.success) {
+        setinitialdata(data?.product);
+        setsuccess(true);
+      }
+    } catch (error) {
+      errorToast(error.response.data.message);
+    }
+  };
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
   const {
@@ -53,30 +70,30 @@ export function CreateProduct() {
     initialValues: {
       title: "",
       picture: null,
-
       description: "",
       price: "",
       category: "",
     },
-    validationSchema: createProductSchema,
+    validationSchema: editProductSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      try {
-        setloading(true);
+      console.log(values);
+        try {
+          setloading(true);
 
-        const { data } = await axiosInstance.post(
-          "/api/v1/admin/create-product",
-          values,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-        if (data?.success) {
-          showtoast(data?.message);
+          const { data } = await axiosInstance.put(
+            `/api/v1/admin/update-product/${id}`,
+            values,
+            { headers: { "Content-Type": "multipart/form-data" } }
+          );
+          if (data?.success) {
+            showtoast(data?.message);
+            setloading(false);
+            navigate("/admin/dashboard/all-products");
+          }
+        } catch (error) {
           setloading(false);
-          navigate("/admin/dashboard/all-products");
+          errorToast(error.response.data.message);
         }
-      } catch (error) {
-        setloading(false);
-        errorToast(error.response.data.message);
-      }
     },
   });
 
@@ -99,11 +116,6 @@ export function CreateProduct() {
     }
   };
 
-  useEffect(() => {
-    setFieldValue("picture", coverpicture);
-    setFieldValue("category", categoryset);
-    getallcategories();
-  }, [coverpicture, categoryset]);
   const handleFileChange = (e) => {
     setcoverpicture(e.target.files[0]);
     const reader = new FileReader();
@@ -117,11 +129,28 @@ export function CreateProduct() {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  useEffect(() => {
+    if (success) {
+      setFieldValue("category", initialdata?.category?._id);
+      setFieldValue("title", initialdata?.title);
+      setFieldValue("description", initialdata?.description);
+      setFieldValue("price", initialdata?.price);
+    }
+    setFieldValue("picture", coverpicture);
+    if (categoryset) {
+        setFieldValue("category", categoryset);
+    }
+    getallcategories();
+    getSingleProductDetails();
+  }, [coverpicture, categoryset, success]);
+
+//   console.log(initialdata?.category?._id);
+  console.log(values);
   return (
     <>
       <BurgerMenu />
       <div className="flex ">
-        <Aside open={4} />
+        <Aside open={5} />
 
         <main className="lg:w-[100%] w-full  min-h-screen">
           <Header />
@@ -163,8 +192,7 @@ export function CreateProduct() {
                         />
                       ) : (
                         <>
-                          Upload cover picture
-                          <AiOutlineCloudUpload className="text-white text-[60px] cursor-pointer" />
+                          <img src={initialdata?.picture?.url} alt="" />
                         </>
                       )}
                     </p>
@@ -180,6 +208,7 @@ export function CreateProduct() {
                     id="title"
                     type="text"
                     name="title"
+                    value={values?.title}
                     placeholder="Title"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -199,34 +228,27 @@ export function CreateProduct() {
                   <Label htmlFor="category" className="text-primarycolor">
                     Category
                   </Label>
-                  <Select
-                    id="category"
+
+                  <select
                     name="category"
+                    value={values?.category}
+                 className="bg-inputbg_color border border-bordercolor rounded-lg text-primarycolor"
                     onBlur={handleBlur}
-                    onValueChange={(e) => {
-                      setcategoryset(e);
-                    }}
-                    className="focus-visible:ring-offset-0"
+                    onChange={handleChange}
                   >
-                    <SelectTrigger className="bg-inputbg_color focus-visible:ring-offset-0 focus:outline-none border border-bordercolor text-primarycolor">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent className="focus-visible:ring-offset-0 bg-inputbg_color text-primarycolor cursor-pointer">
-                      <SelectGroup className="">
-                        <SelectLabel>Select Category</SelectLabel>
-                        {allcategories?.map((cat) => {
-                          return (
-                            <SelectItem
-                              value={cat?._id}
-                              className="cursor-pointer"
-                            >
-                              {cat?.category}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                    {allcategories?.map((cat) => {
+                      return (
+                        <option
+                          key={cat?._id}
+                          value={cat?._id}
+                          className="cursor-pointer"
+                        >
+                          {cat?.category}
+                        </option>
+                      );
+                    })}
+                  </select>
+
                   {/* error */}
                   <div className="flex gap-2 items-center">
                     {errors?.category && touched?.category ? (
@@ -245,6 +267,7 @@ export function CreateProduct() {
                     name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    value={values?.description}
                     placeholder="Type your Description here."
                     id="description"
                     className="focus-visible:ring-offset-0 focus:outline-none bg-inputbg_color border border-bordercolor text-primarycolor"
@@ -268,6 +291,7 @@ export function CreateProduct() {
                     name="price"
                     type="number"
                     placeholder="Price"
+                    value={values?.price}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className="bg-inputbg_color border border-bordercolor text-primarycolor focus:outline-none focus-visible:ring-offset-0"

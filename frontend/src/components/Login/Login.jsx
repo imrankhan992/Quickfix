@@ -40,6 +40,7 @@ const Login = () => {
     },
   });
   useEffect(() => {
+    dispatch(loadUserData)
     if (user?.role === "serviceprovider") {
       if (setup && user?.job !== undefined && user?.phoneNumber !== undefined) {
         navigate(`/${user?.role}/dashboard/My profile`);
@@ -50,8 +51,9 @@ const Login = () => {
     } else if (user?.role === "admin") {
       navigate(`/${user?.role}/dashboard/My profile`);
     } else {
+
     }
-  }, [setup, user]);
+  }, [setup, user,dispatch]);
 
   return (
     <>

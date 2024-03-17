@@ -33,5 +33,25 @@ export const loginSchema = Yup.object({
   
 })
 
+export const createProductSchema = Yup.object().shape({
+    picture: Yup.mixed().required('Cover picture is required').test('fileType', 'Unsupported file format', (value) => {
+        if (!value) return true; // No file selected, let the required validation handle it
+        return value && ['image/jpeg', 'image/png', 'image/gif','image/webp'].includes(value.type);
+    }),
+    title: Yup.string().required('Title  is required'),
+    category: Yup.string().required('category is required'),
+    description: Yup.string().required('description  is required'),
+    price: Yup.number().required('price is required'),
+    
+});
+
+export const editProductSchema = Yup.object().shape({
+    
+    title: Yup.string().required('Title  is required'),
+    category: Yup.string().required('category is required'),
+    description: Yup.string().required('description  is required'),
+    price: Yup.number().required('price is required'),
+    
+});
 
 

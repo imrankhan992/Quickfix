@@ -21,6 +21,8 @@ import { Users } from "./components/Admin/Users";
 import { SingleServiceProvider } from "./components/Admin/SingleServiceProvider";
 import { AddCategories } from "./components/Admin/AddCategories";
 import {CreateProduct} from "./components/Admin/CreateProduct";
+import AllProducts from "./components/Admin/AllProducts";
+import { EditProduct } from "./components/Admin/EditProduct";
 
 function App() {
   return (
@@ -72,6 +74,8 @@ function App() {
             <Route path="applicant/:id" element={<SingleServiceProvider />} />
             <Route path="add/services" element={<AddCategories />} />
             <Route path="create-product" element={<CreateProduct />} />
+            <Route path="all-products" element={<AllProducts />} />
+            <Route path="edit-product/:id" element={<EditProduct />} />
           </Route>
 
           {/* service provider dashboard */}

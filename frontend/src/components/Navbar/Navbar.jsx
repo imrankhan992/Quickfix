@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   MobileNav,
@@ -12,6 +12,7 @@ import {
   Card,
   IconButton,
 } from "@material-tailwind/react";
+import tools from "../../assets/tools.png"
 import { FaServicestack,FaMapMarkedAlt,FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { GrContactInfo } from "react-icons/gr";
@@ -24,6 +25,7 @@ import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { loadUserData } from "../Actions/Registration";
+import axiosInstance from "@/ulities/axios";
 
 // profile menu component
 const profileMenuItems = [
@@ -63,8 +65,8 @@ function ProfileMenu({user}) {
             variant="circular"
             size="sm"
             alt="profile"
-            className="border border-primarycolor p-0.5"
-            src={`${user?.avatar?.url}?${user?.avatar?.url}:"https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"`}
+            className="border border-primarycolor bg-thirdcolor p-0.5"
+            src={`${user?.avatar?.url}`}
           />
           <MdArrowDropDown
             // strokeWidth={2.5}
@@ -126,17 +128,17 @@ const navListMenuItems = [
   },
 ];
  
-function NavListMenu() {
+function NavListMenu({allcategories}) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
  
-  const renderItems = navListMenuItems.map(({ title, description }) => (
-    <a href="#" key={title}>
-      <MenuItem>
-        <Typography variant="h6" color="blue-gray" className="mb-1">
-          {title}
+  const renderItems = allcategories?.map(({ category, description,_id }) => (
+    <a href="#" key={_id}>
+      <MenuItem className="bg-thirdcolor text-primarycolor">
+        <Typography variant="h6"  className="mb-1 text-primarycolor">
+          {category}
         </Typography>
         <Typography variant="small" color="gray" className="font-normal">
-          {description}
+          .
         </Typography>
       </MenuItem>
     </a>
@@ -147,7 +149,7 @@ function NavListMenu() {
       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
         <MenuHandler>
           <Typography as="a" href="#" variant="small" className="font-normal text-primarycolor">
-            <MenuItem className="hidden items-center gap-2 font-medium text-primarycolor lg:flex lg:rounded-full">
+            <MenuItem className="hidden items-center gap-2 font-medium text-primarycolor lg:flex lg:rounded-full bg-thirdcolor">
               <FaServicestack className="h-[18px] w-[18px] text-primarycolor" />{" "}
               Services{" "}
               <MdArrowDropDown
@@ -159,14 +161,15 @@ function NavListMenu() {
             </MenuItem>
           </Typography>
         </MenuHandler>
-        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid">
+        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid bg-thirdcolor" >
           <Card
             color="blue"
             shadow={false}
             variant="gradient"
             className="col-span-3 grid h-full w-full place-items-center rounded-md"
           >
-            <MdArrowDropDown strokeWidth={1} className="h-28 w-28" />
+            {/* <MdArrowDropDown strokeWidth={1} className="h-28 w-28" /> */}
+            <img src={tools} alt="" />
           </Card>
           <ul className="col-span-4 flex w-full flex-col gap-1">
             {renderItems}
@@ -210,9 +213,9 @@ const navListItems2 = [
       
   ];
  
-function NavList() {
+function NavList({allcategories}) {
   return (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center ">
      
       {navListItems.map(({ label, icon }, key) => (
         <Typography
@@ -221,15 +224,15 @@ function NavList() {
           href="#"
           variant="small"
           color="white"
-          className="font-medium text-blue-gray-500"
+          className="font-medium text-blue-gray-500 "
         >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full">
+          <MenuItem className="flex items-center gap-2 lg:rounded-full bg-thirdcolor">
             {React.createElement(icon, { className: "h-[18px] w-[18px] text-primarycolor" })}{" "}
             <span className="text-primarycolor"> {label}</span>
           </MenuItem>
         </Typography>
       ))}
-       <NavListMenu />
+       <NavListMenu allcategories={allcategories} />
        {navListItems2.map(({ label, icon }, key) => (
         <Typography
           key={label}
@@ -239,7 +242,7 @@ function NavList() {
           color="white"
           className="font-medium text-blue-gray-500"
         >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full">
+          <MenuItem className="flex items-center gap-2 lg:rounded-full bg-thirdcolor">
             {React.createElement(icon, { className: "h-[18px] w-[18px] text-primarycolor" })}{" "}
             <span className="text-primarycolor"> {label}</span>
           </MenuItem>
@@ -249,12 +252,28 @@ function NavList() {
   );
 }
  
+
 export function ComplexNavbar() {
+  const [allcategories, setallcategories] = useState()
+    // get all categories
+    const getallcategories = async (req, res) => {
+      try {
+        const { data } = await axiosInstance.get(
+          "/api/v1/admin/get-all-categories"
+        );
+        if (data?.success) {
+          setallcategories(data?.categories);
+        }
+      } catch (error) {
+        errorToast(error.response.data.message);
+      }
+    };
   const dispatch = useDispatch()
   useEffect(() => {
 dispatch(loadUserData())
-    
+    getallcategories()
   }, [])
+  console.log(allcategories);
   const [isNavOpen, setIsNavOpen] = React.useState(false);
  const {user,isAuthenticated} = useSelector((state)=>state.user)
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -267,7 +286,7 @@ dispatch(loadUserData())
   }, []);
  
   return (
-    <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-full lg:pl-6 bg-bodycolor text-primarycolor">
+    <Navbar className="border-none  p-2   bg-bodycolor  rounded-none text-primarycolor sticky top-0">
       <div className="relative mx-auto flex items-center justify-between text-primarycolor">
         <Typography
           as="a"
@@ -277,7 +296,7 @@ dispatch(loadUserData())
           QuickFix
         </Typography>
         <div className="hidden lg:block">
-          <NavList />
+          <NavList allcategories={allcategories} />
         </div>
         <IconButton
           size="sm"
