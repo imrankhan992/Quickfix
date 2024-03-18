@@ -28,18 +28,28 @@ exports.countingController = async (req, res) => {
 exports.loadAdminData = async (req, res) => {
     try {
         const user = await UserModel.findOne({ _id: req?.user?._id });
-        if (!user) {
+        const serviceprovider = await registrationModel.findOne({ _id: req?.user?._id });
+        if (!user && !serviceprovider) {
             return res.status(404).json({
                 message: "User not found",
                 success: false,
             });
         }
 
-        res.status(200).json({
-            user,
-            message: "User  found",
-            success: false,
-        });
+        if (user) {
+            return res.status(200).json({
+                user,
+                message: "User  found",
+                success: false,
+            });
+        }
+        if (serviceprovider) {
+            return res.status(200).json({
+                user,
+                message: "User  found",
+                success: false,
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -418,7 +428,7 @@ exports.singleProductController = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        res.cookie("usertoken", null, {
+        res.cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
         });

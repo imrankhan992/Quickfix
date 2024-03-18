@@ -194,19 +194,30 @@ exports.setupprofileRouteController = async (req, res) => {
 // login user data 
 exports.loaddata = async (req, res) => {
     try {
-        const user = await registrationModel.findOne({ _id: req?.user?._id });
-        if (!user) {
+        const user = await UserModel.findOne({ _id: req?.user?._id });
+        const serviceprovider = await registrationModel.findOne({ _id: req?.user?._id });
+        console.log(serviceprovider);
+        if (!user && !serviceprovider) {
             return res.status(404).json({
                 message: "User not found",
-                success: false
-            })
+                success: false,
+            });
         }
 
-        res.status(200).json({
-            user,
-            message: "User  found",
-            success: false
-        })
+        if (user) {
+            return res.status(200).json({
+                user,
+                message: "User  found",
+                success: true,
+            });
+        }
+        if (serviceprovider) {
+            return res.status(200).json({
+                user:serviceprovider,
+                message: "User  found",
+                success: true,
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -232,7 +243,7 @@ exports.loginUserController = async (req, res) => {
 
         } else if (userExist2 && await userExist2.comparePassword(password) && userExist2.emailVerify) {
 
-            userToken(userExist2, 200, res)
+            sendToken(userExist2, 200, res)
 
         } else {
             return res.status(409).json({ message: "Invalid Email or Password" });

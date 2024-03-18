@@ -5,7 +5,7 @@ const UserModel = require("../Models/User/UserModel");
 exports.isAuthenticated = async (req, res, next) => {
     try {
         const { token } = req.cookies;
-    
+
         if (!token) {
             return res.status(401).json({
                 message: "Please log in to access this resource",
@@ -14,17 +14,24 @@ exports.isAuthenticated = async (req, res, next) => {
         }
 
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY_JWT);
-        const user = await registrationModel.findById(verifyToken.id).select("-password");
+        const serviceprovier = await registrationModel.findById(verifyToken.id).select("-password");
+        const user = await UserModel.findById(verifyToken.id).select("-password");
 
-        if (!user) {
+        if (!serviceprovier && !user) {
             return res.status(401).json({
                 message: "User not found. Please log in again.",
                 success: false,
             });
         }
 
-        req.user = user; 
-        next();
+        if (user) {
+            req.user = user;
+            next();
+        }
+        if (serviceprovier) {
+            req.user = serviceprovier;
+            next();
+        }
 
     } catch (error) {
         if (error.name === "JsonWebTokenError") {
@@ -54,7 +61,7 @@ exports.authorizeRoles = (...roles) => {
             });
         }
         next();
-        
+
     }
 }
 
@@ -62,7 +69,7 @@ exports.authorizeRoles = (...roles) => {
 exports.isIserAuthenticated = async (req, res, next) => {
     try {
         const { usertoken } = req.cookies;
-    
+
         if (!usertoken) {
             return res.status(401).json({
                 message: "Please log in to access this resource",
@@ -80,7 +87,7 @@ exports.isIserAuthenticated = async (req, res, next) => {
             });
         }
 
-        req.user = user; 
+        req.user = user;
         next();
 
     } catch (error) {

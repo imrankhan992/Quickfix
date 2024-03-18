@@ -5,7 +5,7 @@ export const adminReducer = (state = {}, action) => {
         case ADMIN_DATA_REQUEST:
             return {
                 Adminloading: true,
-
+                isAuthenticated:false,
                 Adminsuccess: false,
             };
 
@@ -13,7 +13,7 @@ export const adminReducer = (state = {}, action) => {
             return {
                 ...state,
                 Adminloading: false,
-
+                isAuthenticated:true,
                 Adminuser: action.payload.user,
                 Adminsuccess: true,
             };
@@ -22,7 +22,7 @@ export const adminReducer = (state = {}, action) => {
             return {
                 ...state,
                 Adminloading: false,
-
+                isAuthenticated:false,
                 Adminerror: action.payload,
                 Adminsuccess: false,
                 Adminuser: null,
