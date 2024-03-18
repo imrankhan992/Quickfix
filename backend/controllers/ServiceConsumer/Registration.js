@@ -89,7 +89,7 @@ exports.verifyUserEmailController = async (req, res) => {
             verifyEmailToken,
             verifyEmailExpires: { $gt: Date.now() },
         });
-console.log(user);
+
         if (!user) {
             return res.status(400).json({
                 message: "Verify Email Token is invalid or has been expired",

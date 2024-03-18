@@ -1,18 +1,18 @@
 const CategoryModel = require("../../Models/Admin/CategoryModel");
+const ProductModel = require("../../Models/Product/ProductModel");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const UserModel = require("../../Models/User/UserModel");
 const sendEmail = require("../../utils/sendEmail");
-
+const cloudinary = require("cloudinary");
 exports.countingController = async (req, res) => {
-
     try {
         const spUsersCount = await registrationModel.countDocuments();
         const usersCount = await UserModel.countDocuments();
         res.status(200).json({
             success: true,
             spUsersCount,
-            usersCount
-        })
+            usersCount,
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -21,7 +21,7 @@ exports.countingController = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
 
 // load data
 
@@ -31,15 +31,15 @@ exports.loadAdminData = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 message: "User not found",
-                success: false
-            })
+                success: false,
+            });
         }
 
         res.status(200).json({
             user,
             message: "User  found",
-            success: false
-        })
+            success: false,
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -47,37 +47,38 @@ exports.loadAdminData = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
 
 // update account status
 
 exports.updateAccountController = async (req, res) => {
     try {
         const { id } = req.params;
-        const { accountStatus } = req.body
+        const { accountStatus } = req.body;
         const user = await registrationModel.findOne({ _id: id });
         if (!user) {
             res.status(200).json({
                 success: false,
-                message: "user not found"
-            })
+                message: "user not found",
+            });
         }
         user.accountStatus = accountStatus;
-        await user.save()
+        await user.save();
 
-        let message = user.accountStatus === "approve" ? `Congratulations your Account has been ${user.accountStatus} ` : `your Account has been ${user.accountStatus}`;
+        let message =
+            user.accountStatus === "approve"
+                ? `Congratulations your Account has been ${user.accountStatus} `
+                : `your Account has been ${user.accountStatus}`;
         await sendEmail({
             subject: "Account Status",
             email: user?.email,
             message,
-            name: user?.firstname
-
+            name: user?.firstname,
         });
         res.status(200).json({
             success: true,
-            user
-        })
-
+            user,
+        });
     } catch (error) {
         if (error.name === "CastError") {
             return res.status(500).json({
@@ -91,23 +92,22 @@ exports.updateAccountController = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
 
 exports.getsingleServiceProviderController = async (req, res) => {
     try {
-        const user = await registrationModel.findOne({ _id: req.params.id })
+        const user = await registrationModel.findOne({ _id: req.params.id });
         if (!user) {
             res.status(200).json({
                 success: false,
-                message: "user not found"
-            })
+                message: "user not found",
+            });
         }
 
         res.status(200).json({
             success: true,
-            user
-        })
-
+            user,
+        });
     } catch (error) {
         if (error.name === "CastError") {
             return res.status(500).json({
@@ -121,7 +121,7 @@ exports.getsingleServiceProviderController = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
 
 // createCategoryController
 exports.createCategoryController = async (req, res) => {
@@ -131,19 +131,19 @@ exports.createCategoryController = async (req, res) => {
         if (category) {
             return res.status(200).json({
                 success: false,
-                message: "This service is already exist"
-            })
+                message: "This service is already exist",
+            });
         }
 
         const createCategory = new CategoryModel({
-            category: service
+            category: service,
         });
 
         await createCategory.save();
         return res.status(200).json({
             success: true,
-            message: "new service created successfully"
-        })
+            message: "new service created successfully",
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -151,7 +151,7 @@ exports.createCategoryController = async (req, res) => {
             error: error,
         });
     }
-}
+};
 
 // get all category
 
@@ -160,7 +160,7 @@ exports.getallcategoryiesController = async (req, res) => {
         const categories = await CategoryModel.find();
         return res.status(200).json({
             success: true,
-            categories
+            categories,
         });
     } catch (error) {
         return res.status(500).json({
@@ -169,24 +169,24 @@ exports.getallcategoryiesController = async (req, res) => {
             error: error,
         });
     }
-}
+};
 
 // delete category
 exports.deleteCategoryController = async (req, res) => {
     try {
-        const updateCategory = await CategoryModel.findByIdAndDelete({ _id: req.params.id })
+        const updateCategory = await CategoryModel.findByIdAndDelete({
+            _id: req.params.id,
+        });
         if (!updateCategory) {
             return res.status(404).json({
                 success: false,
                 message: `Category with this id not found`,
-
             });
         }
         if (updateCategory) {
             return res.status(200).json({
                 success: true,
                 message: `Category deleted successfully`,
-
             });
         }
     } catch (error) {
@@ -202,7 +202,7 @@ exports.deleteCategoryController = async (req, res) => {
             error: error,
         });
     }
-}
+};
 
 // updateCategoryController
 
@@ -227,7 +227,9 @@ exports.updateCategoryController = async (req, res) => {
         );
 
         if (!updatedCategory) {
-            return res.status(404).json({ success: false, message: "Category not found" });
+            return res
+                .status(404)
+                .json({ success: false, message: "Category not found" });
         }
 
         return res.status(200).json({
@@ -248,4 +250,187 @@ exports.updateCategoryController = async (req, res) => {
             error: error,
         });
     }
+};
+
+exports.createProductController = async (req, res) => {
+    try {
+        const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+        const { title, category, description, price } = req.body;
+        console.log(req.body);
+        const product = new ProductModel({
+            title,
+            category,
+            description,
+            price,
+            picture: {
+                url: cloudinaryResult.secure_url,
+                public_id: cloudinaryResult.public_id,
+            },
+        });
+        const saveproduct = await product.save();
+        res.status(200).json({
+            success: true,
+            message: "product create successfully",
+            product: saveproduct,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+};
+
+// get all products
+
+exports.getallProductsController = async (req, res) => {
+    try {
+        const products = await ProductModel.find({});
+        res.status(200).json({
+            success: true,
+            products,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+};
+
+// delete product
+
+exports.deleteProductController = async (req, res) => {
+    try {
+        const deleteProduct = await ProductModel.findByIdAndDelete({
+            _id: req?.params?.id,
+        });
+        if (!deleteProduct) {
+            return res.status(404).json({
+                success: false,
+                message: `Product with this id not found`,
+            });
+        }
+        if (deleteProduct) {
+            return res.status(200).json({
+                success: true,
+                message: `Product deleted successfully`,
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+};
+
+// updateProductController
+exports.updateProductController = async (req, res) => {
+    try {
+        const { title, category, description, price } = req.body;
+        const product = await ProductModel.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found with this id",
+            });
+        }
+
+        if (req.file) {
+            await cloudinary.uploader.destroy(product.picture.public_id);
+
+            const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+
+            product.picture = {
+                public_id: cloudinaryResult.public_id,
+                url: cloudinaryResult.secure_url,
+            };
+        }
+
+        // Update product details
+        product.title = title;
+        product.category = category;
+        product.description = description;
+        product.price = price;
+
+        // Save the updated product
+        await product.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            product,
+        });
+    } catch (error) {
+        console.log(error);
+        if (error.name === "CastError") {
+            return res.status(500).json({
+                success: false,
+                message: "Invalid id",
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+};
+
+exports.singleProductController = async (req, res) => {
+    try {
+        const product = await ProductModel.findById({ _id: req.params.id }).populate("category")
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found with this id",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            product
+        })
+    } catch (error) {
+        console.log(error);
+        if (error.name === "CastError") {
+            return res.status(500).json({
+                success: false,
+                message: "Invalid id",
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
 }
+
+// logout
+
+exports.logout = async (req, res) => {
+    try {
+        res.cookie("usertoken", null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+        });
+        res.status(200).json({
+            success: true,
+            message: "Logout Successfully",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+};
