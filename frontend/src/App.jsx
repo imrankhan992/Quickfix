@@ -23,6 +23,9 @@ import { AddCategories } from "./components/Admin/AddCategories";
 import {CreateProduct} from "./components/Admin/CreateProduct";
 import AllProducts from "./components/Admin/AllProducts";
 import { EditProduct } from "./components/Admin/EditProduct";
+import UserPrivate from "./components/PrivateRoutes/UserPrivate";
+import UserDashboard from './components/User/serviceConsumer/Dashboard';
+import Services from "./components/User/serviceConsumer/Services";
 
 function App() {
   return (
@@ -64,8 +67,9 @@ function App() {
           <Route path="/submitprofile" element={<SubmitProfile />} />
          
           {/*user dashboard  */}
-          <Route path="/user/dashboard/">
-            <Route path="home" element={<ServiceDashboard />} />
+          <Route path="/user/dashboard/"  element={<UserPrivate/>}>
+            <Route path="my profile" element={<UserDashboard />} />
+            <Route path="services" element={<Services />} />
           </Route>
           {/* admin dashboard */}
           <Route path="/admin/dashboard/" element={<AdminPrivate/>}>

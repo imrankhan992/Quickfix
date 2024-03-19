@@ -58,7 +58,7 @@ const AllProducts = () => {
     getallProducts();
     dispatch(spDataAction());
   }, [dispatch]);
-console.log(products);
+
   return (
     <>
       <BurgerMenu />

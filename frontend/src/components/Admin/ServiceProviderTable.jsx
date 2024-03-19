@@ -62,7 +62,7 @@ export function ServiceProviderTable() {
               Members list
             </Typography>
             <Typography color="gray" className="mt-1 font-normal text-primarycolor">
-              See information about all members
+              See information about all service providers
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -72,15 +72,7 @@ export function ServiceProviderTable() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row bg-thirdcolor">
-          <Tabs value="all" className="w-full md:w-max bg-thirdcolor">
-            <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
-            </TabsHeader>
-          </Tabs>
+          
           <div className="w-full md:w-72">
             <Input label="Search" color="white" icon={<FaUserClock className="h-5 w-5" />} className="disabled:bg-green-500 placeholder-shown:border-red-500 outline-none focus:border-primarycolor" />
           </div>

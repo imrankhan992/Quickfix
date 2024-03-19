@@ -297,7 +297,7 @@ exports.createProductController = async (req, res) => {
 
 exports.getallProductsController = async (req, res) => {
     try {
-        const products = await ProductModel.find({});
+        const products = await ProductModel.find({}).populate("category");
         res.status(200).json({
             success: true,
             products,

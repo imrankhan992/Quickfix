@@ -4,6 +4,7 @@ import { DropdownMenu } from "../ui/dropdown-menu";
 import { ActionProduct } from "./Action";
 
 export function ProductsCard({ products,getallProducts }) {
+  
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
