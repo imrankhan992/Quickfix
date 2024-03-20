@@ -1,12 +1,17 @@
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
-
+const cloudinary = require("cloudinary")
 const UserModel = require("../../Models/User/UserModel");
 const { userToken } = require("../../utils/userToken");
+
 exports.userRegistrationController = async (req, res) => {
     try {
+
         const { firstname, lastname, email, password } = req.body;
+        
+
+
         const userexist = await UserModel.findOne({
             email: req.body.email,
         });
@@ -29,6 +34,10 @@ exports.userRegistrationController = async (req, res) => {
                 lastname,
                 email,
                 password,
+                avatar: {
+                    public_id:"cloudinaryResult.public_id",
+                    url: "https://res.cloudinary.com/dbcopekhr/image/upload/v1710947946/profile_ptqoxy.png",
+                }
             });
 
             const verifyToken = await newuser.getverifyEmailToken();
@@ -49,6 +58,10 @@ exports.userRegistrationController = async (req, res) => {
             userexist.lastname = lastname;
             userexist.email = email;
             userexist.password = password;
+            userexist.avatar = {
+                public_id:"cloudinaryResult.public_id",
+                url: "https://res.cloudinary.com/dbcopekhr/image/upload/v1710947946/profile_ptqoxy.png",
+            }
             const verifyToken = await userexist.getverifyEmailToken();
             await userexist.save({ validateBeforeSave: false });
             const verifyEmailUrl = `${process.env.FRONTENT_URL}/api/v2/email/user/account/verify/${verifyToken}`;
@@ -71,7 +84,7 @@ exports.userRegistrationController = async (req, res) => {
             error,
             sucess: false,
         });
-        
+
     }
 };
 
@@ -112,3 +125,44 @@ exports.verifyUserEmailController = async (req, res) => {
         });
     }
 };
+
+
+exports.updatePrfileController = async(req,res)=>{
+    try {
+        const {firstname,lastname} = req.body;
+        const user = await UserModel.findOne({_id:req?.user?._id});
+        if (!user) {
+            return res.status(404).json({
+                message:"user not found",
+                success:false
+            })
+        }
+
+        user.firstname=firstname;
+        user.lastname=lastname
+
+        if (req.file) {
+            
+
+            const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+
+            user.avatar = {
+                public_id: cloudinaryResult.public_id,
+                url: cloudinaryResult.secure_url,
+            };
+        }
+
+        await user.save();
+        res.status(200).json({
+            success:true,
+            message:"update successfully"
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Internal server error",
+            error,
+            sucess: false,
+        }); 
+    }
+}

@@ -226,9 +226,9 @@ const Profile = () => {
                   <option disabled value={"Please Select City"}>
                     Please Select City
                   </option>
-                  <option value="saab">Saab</option>
-                  <option value="mercedes">Mercedes</option>
-                  <option value="audi">Audi</option>
+                  <option value="Abbottabad">Abbottabad</option>
+                  <option value="Mansehra">Mansehra</option>
+                  <option value="Haripur">Haripur</option>
                 </select>
                 {/* error */}
                 <div className="flex gap-2 items-center">
@@ -263,9 +263,9 @@ const Profile = () => {
                   <option value="Please Select Job" disabled>
                     Please Select Job
                   </option>
-                  <option value="saab">Saab</option>
-                  <option value="mercedes">Mercedes</option>
-                  <option value="audi">Audi</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
                 </select>
                 {/* error */}
                 <div className="flex gap-2 items-center">

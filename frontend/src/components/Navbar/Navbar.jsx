@@ -128,12 +128,12 @@ const navListMenuItems = [
   },
 ];
  
-function NavListMenu({allcategories}) {
+function NavListMenu({allcategories,setid}) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
  
   const renderItems = allcategories?.map(({ category, description,_id }) => (
-    <a href="#" key={_id}>
-      <MenuItem className="bg-thirdcolor text-primarycolor">
+    <Link  to={"/single/services/"+category+"/"+_id} key={_id} onClick={()=>getsingleserviceByCategory}>
+      <MenuItem onClick={()=>{setid(_id)}} className="bg-thirdcolor text-primarycolor" >
         <Typography variant="h6"  className="mb-1 text-primarycolor">
           {category}
         </Typography>
@@ -141,7 +141,7 @@ function NavListMenu({allcategories}) {
           .
         </Typography>
       </MenuItem>
-    </a>
+    </Link>
   ));
  
   return (
@@ -213,7 +213,7 @@ const navListItems2 = [
       
   ];
  
-function NavList({allcategories}) {
+function NavList({allcategories,setid}) {
   return (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center ">
      
@@ -221,7 +221,7 @@ function NavList({allcategories}) {
         <Typography
           key={label}
           as="a"
-          href="#"
+          href="/"
           variant="small"
           color="white"
           className="font-medium text-blue-gray-500 "
@@ -232,7 +232,7 @@ function NavList({allcategories}) {
           </MenuItem>
         </Typography>
       ))}
-       <NavListMenu allcategories={allcategories} />
+       <NavListMenu allcategories={allcategories} setid={setid} />
        {navListItems2.map(({ label, icon }, key) => (
         <Typography
           key={label}
@@ -253,7 +253,7 @@ function NavList({allcategories}) {
 }
  
 
-export function ComplexNavbar() {
+export function ComplexNavbar({setid}) {
   const [allcategories, setallcategories] = useState()
     // get all categories
     const getallcategories = async (req, res) => {
@@ -296,7 +296,7 @@ dispatch(loadUserData())
           QuickFix
         </Typography>
         <div className="hidden lg:block">
-          <NavList allcategories={allcategories} />
+          <NavList allcategories={allcategories} setid={setid} />
         </div>
         <IconButton
           size="sm"

@@ -26,8 +26,24 @@ import { EditProduct } from "./components/Admin/EditProduct";
 import UserPrivate from "./components/PrivateRoutes/UserPrivate";
 import UserDashboard from './components/User/serviceConsumer/Dashboard';
 import Services from "./components/User/serviceConsumer/Services";
+import ServiceproviderServices from "./components/User/ServiceProvider/Services";
+import Orders from "./components/User/serviceConsumer/Orders";
+import PreviousOrders from "./components/User/serviceConsumer/PreviousOrders";
+import store from "./Store";
+
+import { loadUserData } from "./components/Actions/Registration";
+import Settings from "./components/User/serviceConsumer/Settings";
+import ServiceProviderOrders from "./components/User/ServiceProvider/ServiceProviderOrders";
+import ServiceProviderPreviousOrders from "./components/User/ServiceProvider/ServiceProviderPreviousOrders";
+import ServiceProviderProfile from './components/User/ServiceProvider/Profile';
+import SingleServices from "./components/SingleServices/SingleServices";
 
 function App() {
+  
+  useEffect(() => {
+    store.dispatch(loadUserData());
+  
+  }, []);
   return (
     <>
       <Toaster />
@@ -38,6 +54,8 @@ function App() {
           <Route path="/signup" element={<ChooseJob />} />
           <Route path="/serviceprovider/createaccount" element={<SPSignup />} />
           <Route path="/client/createaccount" element={<UserSignup />} />
+          {/* single service page */}
+          <Route path="/single/services/:services/:id" element={<SingleServices />} />
           {/* verify email checking */}
           <Route
             path="/api/v1/email/"
@@ -70,6 +88,9 @@ function App() {
           <Route path="/user/dashboard/"  element={<UserPrivate/>}>
             <Route path="my profile" element={<UserDashboard />} />
             <Route path="services" element={<Services />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="previous-orders" element={< PreviousOrders/>} />
+            <Route path="settings" element={< Settings/>} />
           </Route>
           {/* admin dashboard */}
           <Route path="/admin/dashboard/" element={<AdminPrivate/>}>
@@ -88,6 +109,10 @@ function App() {
             element={<ServiceProviderPrivate />}
           >
             <Route path="My Profile" element={<ServiceDashboard />} />
+            <Route path="services" element={<ServiceproviderServices />} />
+            <Route path="orders" element={<ServiceProviderOrders />} />
+            <Route path="previous-orders" element={<ServiceProviderPreviousOrders />} />
+            <Route path="yours/profile" element={<ServiceProviderProfile />} />
           </Route>
         </Routes>
       </Router>

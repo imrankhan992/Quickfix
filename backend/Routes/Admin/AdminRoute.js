@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const { isAuthenticated, authorizeRoles, isIserAuthenticated } = require("../../Middleware/auhRegistration");
 const { getallServiceprovider } = require("../../controllers/Service_Provider/ServiceProviderController");
-const { countingController, loadAdminData, updateAccountController, getsingleServiceProviderController, createCategoryController, getallcategoryiesController, deleteCategoryController, updateCategoryController, createProductController, getallProductsController, deleteProductController, updateProductController, singleProductController, logout } = require("../../controllers/Admin/Admincontroller");
+const { countingController, loadAdminData, updateAccountController, getsingleServiceProviderController, createCategoryController, getallcategoryiesController, deleteCategoryController, updateCategoryController, createProductController, getallProductsController, getallproductsByCategory,deleteProductController, updateProductController, singleProductController, logout } = require("../../controllers/Admin/Admincontroller");
 const router = express.Router();
 const upload = multer({ dest: "pictures/" });
 router.route("/admin/get-all-sp-provider").get(isAuthenticated, authorizeRoles("admin"), getallServiceprovider)
@@ -15,9 +15,11 @@ router.route("/admin/delete-category/:id").delete(isAuthenticated, authorizeRole
 router.route("/admin/update-category/:id").put(isAuthenticated, authorizeRoles("admin"), updateCategoryController)
 router.route("/admin/create-product").post(isAuthenticated, authorizeRoles("admin"), upload.single("picture"), createProductController)
 router.route("/admin/get-all-products").get(getallProductsController)
+router.route("/admin/get-all-products/by-category/:services").get(getallproductsByCategory)
 router.route("/admin/delete-product/:id").delete(isAuthenticated, authorizeRoles("admin"), deleteProductController)
 router.route("/admin/update-product/:id").put(isAuthenticated, authorizeRoles("admin"), upload.single("picture"), updateProductController)
 router.route("/admin/single-product/:id").get(isAuthenticated, authorizeRoles("admin"), singleProductController)
+
 router.route("/logout").get(logout)
 
 

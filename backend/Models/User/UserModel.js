@@ -39,11 +39,7 @@ const userSchema = new mongoose.Schema({
         type: String,
 
     },
-    accountStatus: {
-        type: String,
-        enum: ["approve", "reject", "deactivate", "pending", "disabled"],
-        default: "pending",
-    },
+    
     avatar: {
         public_id: {
             type: String,

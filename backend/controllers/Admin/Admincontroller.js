@@ -357,7 +357,7 @@ exports.updateProductController = async (req, res) => {
         if (req.file) {
             await cloudinary.uploader.destroy(product.picture.public_id);
 
-            const cloudinaryResult = await cloudinary.uploader.upload(req.file.path);
+            const cloudinaryResult = await cloudinary.uploader.upload(c);
 
             product.picture = {
                 public_id: cloudinaryResult.public_id,
@@ -444,3 +444,33 @@ exports.logout = async (req, res) => {
         });
     }
 };
+
+
+// getallproductsByCategory
+
+exports.getallproductsByCategory = async (req, res) => {
+    try {
+        console.log(req.params.services);
+        const products = await ProductModel.find({ category: req.params.services });
+        if (products.length===0) {
+            return res.status(404).json({ success: false, message: "No Services avaliable" })
+        }
+        return res.status(200).json({
+            success: true,
+            products
+        })
+        
+    } catch (error) {
+        if (error.name === "CastError") {
+            return res.status(500).json({
+                success: false,
+                message: "Invalid id",
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+}

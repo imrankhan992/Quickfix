@@ -54,4 +54,11 @@ export const editProductSchema = Yup.object().shape({
     
 });
 
+export const settingSchema = Yup.object().shape({
+    
+    firstname: Yup.string().required('First name is required'),
+    lastname: Yup.string().required('Last name is required'),
+    
+});
+
 

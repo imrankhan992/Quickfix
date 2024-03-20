@@ -32,9 +32,9 @@ const Dashboard = () => {
  
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  useEffect(() => {
-    dispatch(loadUserData())
-   }, []);
+  // useEffect(() => {
+  //   dispatch(loadUserData())
+  //  }, []);
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
       <div className="flex relative">

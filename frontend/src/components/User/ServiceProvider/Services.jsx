@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BurgerMenu } from "./BurgerMenu";
-import Aside from "./Aside";
 import { loadUserData } from "@/components/Actions/Registration";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./Header";
@@ -8,8 +7,10 @@ import ReactStars from "react-rating-stars-component";
 import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
+import Aside from "./Aside";
 
 const Services = () => {
+  
   const [category, setcategory] = useState("All");
   const [products, setproducts] = useState([]);
   const [newfilterproducts, setnewfilterproducts] = useState([]);
@@ -73,7 +74,7 @@ const Services = () => {
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
       <div className="flex relative">
         <BurgerMenu />
-        <Aside open={2} />
+        <Aside user={user} open={2} />
         <main className="text-primarycolor w-full">
           <div>
             <Header user={user} />
