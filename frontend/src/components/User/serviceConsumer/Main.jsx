@@ -71,7 +71,7 @@ const Main = ({ user, products }) => {
                               size={20}
                               activeColor="#ffd700"
                               edit={false}
-                              value={3.3}
+                              value={0}
                               half={true}
                             />
                           </p>

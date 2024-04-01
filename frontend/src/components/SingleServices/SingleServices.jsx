@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ComplexNavbar } from "../Navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { errorToast } from "@/Toast/Toast";
 import axiosInstance from "@/ulities/axios";
 import ReactStars from "react-rating-stars-component";
@@ -50,7 +50,7 @@ const SingleServices = () => {
           <div className="grid grid-cols-3 gap-3">
             {products?.map((product, index) => {
               return (
-                <div
+                <Link to={`/service/detail/single/service/${product?._id}`}
                   key={index}
                   className="flex gap-2 border p-4 rounded-lg bg-thirdcolor"
                 >
@@ -73,14 +73,14 @@ const SingleServices = () => {
                             size={20}
                             activeColor="#ffd700"
                             edit={false}
-                            value={3.3}
+                            value={0}
                             half={true}
                           />
                         </p>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

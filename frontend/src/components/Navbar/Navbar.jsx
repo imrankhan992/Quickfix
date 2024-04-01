@@ -12,15 +12,19 @@ import {
   Card,
   IconButton,
 } from "@material-tailwind/react";
-import tools from "../../assets/tools.png"
-import { FaServicestack,FaMapMarkedAlt,FaSignInAlt, FaUserPlus, FaSignOutAlt } from "react-icons/fa";
+import tools from "../../assets/tools.png";
+import {
+  FaServicestack,
+  FaMapMarkedAlt,
+  FaSignInAlt,
+  FaUserPlus,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { GrContactInfo } from "react-icons/gr";
-import { MdArrowDropDown,MdPermContactCalendar } from "react-icons/md";
+import { MdArrowDropDown, MdPermContactCalendar } from "react-icons/md";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { RxCross1 } from "react-icons/rx";
-
-
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -33,28 +37,15 @@ const profileMenuItems = [
     label: "My Profile",
     icon: MdArrowDropDown,
   },
-  {
-    label: "Edit Profile",
-    icon: MdArrowDropDown,
-  },
-  {
-    label: "Settings",
-    icon: MdArrowDropDown,
-  },
-  {
-    label: "Help",
-    icon: MdArrowDropDown,
-  },
- 
 ];
- 
-function ProfileMenu({user}) {
+
+function ProfileMenu({ user }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
+
   const closeMenu = () => setIsMenuOpen(false);
- 
+
   return (
-    <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end" >
+    <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
         <Button
           variant="text"
@@ -65,7 +56,7 @@ function ProfileMenu({user}) {
             variant="circular"
             size="sm"
             alt="profile"
-            className="border border-primarycolor bg-thirdcolor p-0.5"
+            className="border border-hoverblack bg-thirdcolor p-0.5"
             src={`${user?.avatar?.url}`}
           />
           <MdArrowDropDown
@@ -108,7 +99,7 @@ function ProfileMenu({user}) {
     </Menu>
   );
 }
- 
+
 // nav list menu
 const navListMenuItems = [
   {
@@ -127,14 +118,23 @@ const navListMenuItems = [
       "A complete set of UI Elements for building faster websites in less time.",
   },
 ];
- 
-function NavListMenu({allcategories,setid}) {
+
+function NavListMenu({ allcategories, setid }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
- 
-  const renderItems = allcategories?.map(({ category, description,_id }) => (
-    <Link  to={"/single/services/"+category+"/"+_id} key={_id} onClick={()=>getsingleserviceByCategory}>
-      <MenuItem onClick={()=>{setid(_id)}} className="bg-thirdcolor text-primarycolor" >
-        <Typography variant="h6"  className="mb-1 text-primarycolor">
+
+  const renderItems = allcategories?.map(({ category, description, _id }) => (
+    <Link
+      to={"/single/services/" + category + "/" + _id}
+      key={_id}
+      onClick={() => getsingleserviceByCategory}
+    >
+      <MenuItem
+        onClick={() => {
+          setid(_id);
+        }}
+        className=" text-hoverblack bg-bodycolor"
+      >
+        <Typography variant="h6" className="mb-1 text-hoverblack">
           {category}
         </Typography>
         <Typography variant="small" color="gray" className="font-normal">
@@ -143,25 +143,27 @@ function NavListMenu({allcategories,setid}) {
       </MenuItem>
     </Link>
   ));
- 
+
   return (
     <React.Fragment>
       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
-        <MenuHandler>
-          <Typography as="a" href="#" variant="small" className="font-normal text-primarycolor">
-            <MenuItem className="hidden items-center gap-2 font-medium text-primarycolor lg:flex lg:rounded-full bg-thirdcolor">
-              <FaServicestack className="h-[18px] w-[18px] text-primarycolor" />{" "}
-              Services{" "}
+        <MenuHandler className="">
+          <Link to="#" className="text-[16px] text-hoverblack ">
+            <MenuItem className="hidden items-center gap-2 font-medium bg-bodycolor lg:flex lg:rounded-full   hover:bg-texthovercolor">
+              <p className="text-hoverblack text-[16px] font-semibold">
+                {" "}
+                Services
+              </p>{" "}
               <MdArrowDropDown
                 // strokeWidth={2}
-                className={`text-primarycolor h-[18px] w-[18px] transition-transform ${
+                className={`text-hoverblack h-[18px]  w-[18px] transition-transform ${
                   isMenuOpen ? "rotate-180" : ""
                 }`}
               />
             </MenuItem>
-          </Typography>
+          </Link>
         </MenuHandler>
-        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid bg-thirdcolor" >
+        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid bg-thirdcolor">
           <Card
             color="blue"
             shadow={false}
@@ -176,9 +178,8 @@ function NavListMenu({allcategories,setid}) {
           </ul>
         </MenuList>
       </Menu>
-      <MenuItem className="flex items-center gap-2 font-medium  lg:hidden text-primarycolor">
-        <MdArrowDropDown className="h-[18px] w-[18px] text-primarycolor" />{" "}
-        Pages{" "}
+      <MenuItem className="flex items-center gap-2 font-medium  lg:hidden text-hoverblack">
+        <MdArrowDropDown className="h-[18px] w-[18px] text-hoverblack" /> Pages{" "}
       </MenuItem>
       <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
         {renderItems}
@@ -186,115 +187,96 @@ function NavListMenu({allcategories,setid}) {
     </React.Fragment>
   );
 }
- 
+
 // nav list component
 const navListItems = [
   {
     label: "Home",
     icon: IoMdHome,
   },
-  
 ];
 
 const navListItems2 = [
-    
-    {
-        label: "About us",
-        icon: GrContactInfo,
-      },
-      {
-        label: "Areas we cover",
-        icon: FaMapMarkedAlt,
-      },
-      {
-        label: "Contact us",
-        icon: MdPermContactCalendar,
-      },
-      
-  ];
- 
-function NavList({allcategories,setid}) {
+  {
+    label: "About us",
+    icon: GrContactInfo,
+  },
+  {
+    label: "Areas we cover",
+    icon: FaMapMarkedAlt,
+  },
+  {
+    label: "Contact us",
+    icon: MdPermContactCalendar,
+  },
+];
+
+function NavList({ allcategories, setid }) {
   return (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center ">
-     
       {navListItems.map(({ label, icon }, key) => (
-        <Typography
-          key={label}
-          as="a"
-          href="/"
-          variant="small"
-          color="white"
-          className="font-medium text-blue-gray-500 "
-        >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full bg-thirdcolor">
-            {React.createElement(icon, { className: "h-[18px] w-[18px] text-primarycolor" })}{" "}
-            <span className="text-primarycolor"> {label}</span>
+        <Link key={label} href="/" className="  text-[16px] ">
+          <MenuItem className="flex items-center gap-2 lg:rounded-full   bg-bodycolor">
+            <span className="text-hoverblack font-semibold "> {label}</span>
           </MenuItem>
-        </Typography>
+        </Link>
       ))}
-       <NavListMenu allcategories={allcategories} setid={setid} />
-       {navListItems2.map(({ label, icon }, key) => (
-        <Typography
-          key={label}
-          as="a"
-          href="#"
-          variant="small"
-          color="white"
-          className="font-medium text-blue-gray-500"
-        >
-          <MenuItem className="flex items-center gap-2 lg:rounded-full bg-thirdcolor">
-            {React.createElement(icon, { className: "h-[18px] w-[18px] text-primarycolor" })}{" "}
-            <span className="text-primarycolor"> {label}</span>
+      <NavListMenu allcategories={allcategories} setid={setid} />
+      {navListItems2.map(({ label, icon }, key) => (
+        <Link key={label} to="/aboutus" className="text-[16px] ">
+          <MenuItem className="flex items-center gap-2 lg:rounded-full bg-bodycolor  hover:bg-texthovercolor">
+            <span className="text-hoverblack text-[16px]  font-semibold ">
+              {" "}
+              {label}
+            </span>
           </MenuItem>
-        </Typography>
+        </Link>
       ))}
     </ul>
   );
 }
- 
 
-export function ComplexNavbar({setid}) {
-  const [allcategories, setallcategories] = useState()
-    // get all categories
-    const getallcategories = async (req, res) => {
-      try {
-        const { data } = await axiosInstance.get(
-          "/api/v1/admin/get-all-categories"
-        );
-        if (data?.success) {
-          setallcategories(data?.categories);
-        }
-      } catch (error) {
-        errorToast(error.response.data.message);
+export function ComplexNavbar({ setid }) {
+  const [allcategories, setallcategories] = useState();
+  // get all categories
+  const getallcategories = async (req, res) => {
+    try {
+      const { data } = await axiosInstance.get(
+        "/api/v1/admin/get-all-categories"
+      );
+      if (data?.success) {
+        setallcategories(data?.categories);
       }
-    };
-  const dispatch = useDispatch()
+    } catch (error) {
+      errorToast(error.response.data.message);
+    }
+  };
+  const dispatch = useDispatch();
   useEffect(() => {
-dispatch(loadUserData())
-    getallcategories()
-  }, [])
+    dispatch(loadUserData());
+    getallcategories();
+  }, []);
   console.log(allcategories);
   const [isNavOpen, setIsNavOpen] = React.useState(false);
- const {user,isAuthenticated} = useSelector((state)=>state.user)
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
- 
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
-      () => window.innerWidth >= 960 && setIsNavOpen(false),
+      () => window.innerWidth >= 960 && setIsNavOpen(false)
     );
   }, []);
- 
+
   return (
-    <Navbar className="border-none  p-2   bg-bodycolor  rounded-none text-primarycolor sticky top-0">
-      <div className="relative mx-auto flex items-center justify-between text-primarycolor">
-        <Typography
-          as="a"
-          href="#"
-          className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
+    <Navbar className="border-none  p-4 shadow-none    rounded-none text-hoverblack ">
+      <div className="relative mx-auto flex items-center justify-between text-hoverblack">
+        <Link
+          to="/"
+          className="mr-4 ml-2 cursor-pointer py-1.5 font-semibold text-2xl"
         >
           QuickFix
-        </Typography>
+        </Link>
         <div className="hidden lg:block">
           <NavList allcategories={allcategories} setid={setid} />
         </div>
@@ -305,31 +287,35 @@ dispatch(loadUserData())
           onClick={toggleIsNavOpen}
           className="ml-auto mr-2 lg:hidden"
         >
-         {!isNavOpen&&( <HiBars3BottomRight className="h-6 w-6 text-primarycolor" />)}
-         {isNavOpen&&( <RxCross1 className="h-6 w-6 text-primarycolor" />)}
+          {!isNavOpen && (
+            <HiBars3BottomRight className="h-6 w-6 text-hoverblack" />
+          )}
+          {isNavOpen && <RxCross1 className="h-6 w-6 text-hoverblack" />}
         </IconButton>
- 
-        {
-            !isAuthenticated && (<div placement="bottom-end">
-                <Link to={"/login"}>
-                    
-            <Button size="sm" variant="text" className="text-primarycolor">
-            <span>Log In</span>
-          </Button>
-          </Link>
-          <Link to={"/signup"}>
-         
-          <Button size="sm" variant="text" className="text-primarycolor">
-            <span>Sign up</span>
-          </Button>
-          </Link>
-            </div> )
-        }
-        {
-            isAuthenticated && (
-                <ProfileMenu user={user} />
-            )
-        }
+
+        {!isAuthenticated && (
+          <div className="bottom-end flex gap-2">
+            <Link to={"/login"}>
+              <Button
+                size="sm"
+                variant="text"
+                className="text-hoverblack hover:text-texthovercolor  border-hoverblack rounded-xl"
+              >
+                <span className="font-semibold text-[16px] ">Log In</span>
+              </Button>
+            </Link>
+            <Link to={"/signup"}>
+              <Button
+                size="sm"
+                variant="text"
+                className="text-hoverblack hover:text-texthovercolor  border border-hoverblack rounded-xl "
+              >
+                <span className="font-semibold text-[16px]">Sign up</span>
+              </Button>
+            </Link>
+          </div>
+        )}
+        {isAuthenticated && <ProfileMenu user={user} />}
       </div>
       <MobileNav open={isNavOpen} className="overflow-scroll">
         <NavList />

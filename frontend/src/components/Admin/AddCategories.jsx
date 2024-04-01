@@ -1,4 +1,6 @@
 import { FaUserClock } from "react-icons/fa";
+import { AiOutlineProfile } from "react-icons/ai";
+
 import {
   Card,
   CardHeader,
@@ -147,7 +149,9 @@ export function AddCategories() {
                     <div className="w-full md:w-72">
                       <Input
                         label="Search"
-                        icon={<FaUserClock className="h-5 w-5" />}
+                        color="white"
+                      className=""
+                        icon={<AiOutlineProfile className="h-5 w-5" />}
                         
                       />
                     </div>

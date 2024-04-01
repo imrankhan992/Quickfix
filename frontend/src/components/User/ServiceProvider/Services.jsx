@@ -66,6 +66,7 @@ const Services = () => {
   useEffect(() => {
     getallProducts();
     // dispatch(loadUserData());
+   
     getallcategories();
   }, []);
   //   console.log(newfilterproducts);
@@ -80,17 +81,17 @@ const Services = () => {
             <Header user={user} />
           </div>
           {/* all services */}
-          <div className="px-8 py-6">
+          {/* <div className="px-8 py-6">
             <div className="flex items-center justify-start">
               <Filter allcategories={allcategories} setcategory={setcategory} />
             </div>
-          </div>
-          <div className="px-8 ">
+          </div> */}
+          <div className="px-8 pt-6">
             <div className="flex items-center justify-start text-3xl">
               All Services
             </div>
           </div>
-          <div className=" grid grid-cols-3   w-full px-8 py-16">
+          <div className=" grid grid-cols-3 gap-3  w-full px-8 py-16">
             {filteredProducts &&
               filteredProducts?.map((product, index) => {
                 return (
@@ -117,7 +118,7 @@ const Services = () => {
                               size={20}
                               activeColor="#ffd700"
                               edit={false}
-                              value={3.3}
+                              value={0}
                               half={true}
                             />
                           </p>
