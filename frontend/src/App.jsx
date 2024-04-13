@@ -37,6 +37,7 @@ import ServiceProviderOrders from "./components/User/ServiceProvider/ServiceProv
 import ServiceProviderPreviousOrders from "./components/User/ServiceProvider/ServiceProviderPreviousOrders";
 import ServiceProviderProfile from './components/User/ServiceProvider/Profile';
 import SingleServices from "./components/SingleServices/SingleServices";
+import GoogleMapPage from "./components/Services/GoogleMap";
 
 function App() {
   
@@ -54,6 +55,7 @@ function App() {
           <Route path="/signup" element={<ChooseJob />} />
           <Route path="/serviceprovider/createaccount" element={<SPSignup />} />
           <Route path="/client/createaccount" element={<UserSignup />} />
+          <Route path="/googlemap" element={<GoogleMapPage />} />
           {/* single service page */}
           <Route path="/single/services/:services/:id" element={<SingleServices />} />
           {/* verify email checking */}

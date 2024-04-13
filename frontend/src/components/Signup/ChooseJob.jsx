@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+
 import { FaRegCircle, FaDotCircle, FaUserTie } from "react-icons/fa";
 import { GrUserWorker } from "react-icons/gr";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { datasaveAction } from "../Actions/DataSave";
-import  "./choosejob.css"
+import "./choosejob.css";
+import { Button } from "@material-tailwind/react";
 const ChooseJob = () => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("notselected");
@@ -23,16 +24,16 @@ const ChooseJob = () => {
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh] ">
       <div className="px-8">Header</div>
-      <div className="flex flex-col md:justify-center md:items-center w-full h-full">
-        <div className="py-5 mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center ">
-          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 text-primarycolor">
+      <div className="flex flex-col md:justify-center md:items-center w-full h-full ">
+        <div className="py-5 mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center bg-cardbg rounded-3xl border border-hoverblack shadow-3xl">
+          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 text-hoverblack arimo">
             Join as a client or Service Provider
           </h1>
 
           <div className="grid md:grid-cols-2 gap-6 w-full px-6">
             {/* left */}
             <div
-              className={`scrollbar-hide overflow-y-auto cursor-pointer hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
+              className={`scrollbar-hide overflow-y-auto cursor-pointer hover:bg-hovercolor text-hoverblack hover:text-hoverblack hover:border-greencolor relative p-6 h-[12rem] rounded-lg  border-[3px] ${
                 selectedOption === "client" && "border-greencolor "
               }`}
               onClick={() => handleOptionClick("client")}
@@ -47,12 +48,12 @@ const ChooseJob = () => {
               <FaUserTie className="text-2xl " />
               <div className="md:text-2xl sm:text-2xl text-[20px] py-3 ">
                 {" "}
-                <h2>I’m a client, hiring for a project</h2>
+                <h2 className="arimo">I’m a client, hiring for a project</h2>
               </div>
             </div>
             {/* right */}
             <div
-              className={`scrollbar-hide overflow-y-auto relative hover:bg-hovercolor text-primarycolor hover:text-hoverblack hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
+              className={`scrollbar-hide overflow-y-auto relative hover:bg-hovercolor text-hoverblack hover:text-hoverblack hover:border-greencolor cursor-pointer p-6 h-[12rem] rounded-lg  border-[3px] ${
                 selectedOption === "serviceprovider" && "border-greencolor "
               }`}
               onClick={() => handleOptionClick("serviceprovider")}
@@ -66,14 +67,16 @@ const ChooseJob = () => {
               <GrUserWorker className="text-2xl" />
               <div className="md:text-2xl sm:text-2xl text-[20px] py-3">
                 {" "}
-                <h2>I’m a service provider, looking for job</h2>
+                <h2 className="arimo">
+                  I’m a service provider, looking for job
+                </h2>
               </div>
             </div>
           </div>
           <div>
             {selectedOption && selectedOption !== "notselected" && (
               <Link to={`/${data}/createaccount`}>
-                <Button className="bg-buttoncolor">
+                <Button className="bg-hoverblack arimo text-[16px] text-primarycolor">
                   Join as a{" "}
                   {selectedOption
                     ? selectedOption.charAt(0).toUpperCase() +
@@ -83,18 +86,21 @@ const ChooseJob = () => {
               </Link>
             )}
             {selectedOption === "notselected" && (
-              <Button disabled className="cursor-not-allowed bg-buttoncolor">
+              <Button
+                disabled
+                className="cursor-not-allowed bg-hoverblack text-primarycolor"
+              >
                 Create Account
               </Button>
             )}
           </div>
           {/* last div */}
           <div>
-            <p className="text-primarycolor">
+            <p className="text-hoverblack arimo">
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-greencolor underline text-lg font-bold"
+                className="text-greencolor underline text-lg font-bold arimo"
               >
                 Log In
               </Link>

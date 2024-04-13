@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "../ui/button";
-import { TextInput } from "@tremor/react";
+
+
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { loginSchema, registration } from "@/Schemas";
@@ -13,7 +13,10 @@ import { Loader2 } from "lucide-react";
 import { loadUserData, loginAction } from "../Actions/Registration";
 import { showtoast } from "@/Toast/Toast";
 import { AlertDestructive } from "../Alerts/ErrorAlert";
-
+import { Input } from "../ui/input";
+import { Button } from "@material-tailwind/react";
+import { ComplexNavbar } from "../Navbar/Navbar";
+import loginpageimage from "../../assets/loginpageimage.jpg"
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,19 +63,14 @@ const Login = () => {
 
   return (
     <>
-      {/* header */}
-      <div className="w-full h-full ">
-        <div className="max-w-[1750px] mx-auto">
-          <div className="flex py-4 px-8  justify-between items-center  text-white">
-            <div>QuickFix</div>
-          </div>
-        </div>
-      </div>
+     
       {/* form */}
-      <div className=" w-full md:max-w-[1750px] mx-auto h-[100vh] ">
-        <div className="md:w-[80%]  flex flex-col justify-center  mx-auto items-center px-5 ">
-          <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
-            Log in to QuickFix
+      <div className="grid grid-cols-3 bg-cardbg rounded-3xl ">
+      <div className="w-full p-14">
+        <div className="w-full  flex flex-col justify-center    ">
+          <h2 className="arimo text-4xl font-bold text-start pb-8">QuickFix</h2>
+          <h1 className="  text-hoverblack arimo text-2xl font-semibold px-2 py-5 text-center">
+          Log in to your account
           </h1>
           {/* error show */}
 
@@ -80,20 +78,20 @@ const Login = () => {
 
           {/* <AlertDestructive/> */}
 
-          <form className="  py-5" onSubmit={handleSubmit}>
+          <form className="w-full   " onSubmit={handleSubmit}>
             {/* email */}
-            <div className=" w-80">
+            <div className=" ">
               <Label
                 htmlFor="email"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 Email
               </Label>
-              <TextInput
+              <Input
                 // autoComplete="off"
-                className={`max-w-sm rounded-lg border border-bordercolor ${
+                className={`arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.email && touched?.email
-                    ? "border-errorcolor border-2"
+                    ? "border-errorcolor border"
                     : ""
                 }`}
                 onBlur={handleBlur}
@@ -106,7 +104,7 @@ const Login = () => {
               {/* error */}
               <div className="flex gap-2 items-center ">
                 {errors?.email && touched?.email ? (
-                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
+                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
                     <MdOutlineErrorOutline className="text-xl" />
                     {errors?.email}
                   </span>
@@ -120,16 +118,16 @@ const Login = () => {
             <div className="">
               <Label
                 htmlFor="hellopassword"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-[16px] arimo text-hoverblack"
               >
                 Password
               </Label>
-              <TextInput
+              <Input
                 // autoComplete="off"
 
-                className={`max-w-sm rounded-lg border border-bordercolor ${
+                className={` arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.password && touched?.password
-                    ? "border-errorcolor border-2"
+                    ? "border-errorcolor border"
                     : ""
                 }`}
                 onBlur={handleBlur}
@@ -141,9 +139,9 @@ const Login = () => {
                 placeholder=""
               />
               {/* error */}
-              <div className="flex gap-2 items-center ">
+              <div className="flex gap-2 items-center arimo">
                 {errors?.password && touched?.password ? (
-                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem]">
+                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
                     <MdOutlineErrorOutline className="text-xl" />
                     {errors?.password}
                   </span>
@@ -154,17 +152,17 @@ const Login = () => {
             </div>
 
             {/* submit buttons */}
-            <div className="py-5 items-center flex justify-center ">
+            <div className="py-5 w-full items-center flex justify-center ">
               {!loading && (
                 <Button
-                  className="bg-buttoncolor outline outline-buttonborder"
+                  className="bg-hoverblack hover:bg-bl w-full arimo text-[16px]"
                   type="submit"
                 >
                   Login
                 </Button>
               )}
               {loading && (
-                <Button disabled>
+                <Button disabled className="w-full flex arimo gap-3 items-center justify-center text-[16px]">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Please wait
                 </Button>
@@ -172,23 +170,28 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div className="w-[70%] mx-auto">
-          <div className="flex flex-row gap-2  justify-center items-center text-primarycolor  w-full">
+        <div className="">
+          <div className="flex flex-row gap-2  justify-center items-center text-hoverblack  w-full">
             <hr className="w-20" />
-            <div className="text-center text-sm text-muted">
-              {" "}
-              Don't have an Quickfix account?{" "}
-            </div>
+            <p className="text-center text-sm text-muted text-hoverblack arimo">
+              
+              Don't have an Quickfix account?
+            </p>
             <hr className="w-20" />
           </div>
           <div className=" flex mt-10 items-center justify-center w-full">
             <Link to={"/signup"}>
-              <Button className="px-12 rounded-xl bg-thirdcolor text-primarycolor  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
+              <Button className="px-12 rounded-xl bg-buttoncolor  text-hoverblack  hover:text-hoverblack hover:bg-hovercolor outline outline-primarycolor">
                 Sign Up
               </Button>
             </Link>
           </div>
         </div>
+      </div>
+        <div className="col-span-2">
+          <img src={loginpageimage} className="w-full h-[100vh]" alt="" />
+        </div>
+       
       </div>
     </>
   );

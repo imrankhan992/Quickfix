@@ -21,8 +21,12 @@ import danishkaremhomepic from "../../assets/danishkaremhomepic.jpg";
 import { FiArrowUpRight } from "react-icons/fi";
 
 import "swiper/css";
-import { Button } from "../ui/button";
+import { Button } from "@material-tailwind/react";
+
 import { Link } from "react-router-dom";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 const Home = () => {
   return (
@@ -39,8 +43,8 @@ const Home = () => {
          </div> */}
           <div className="grid grid-cols-2 px-10  gap-4 w-full  ">
             <div className="flex flex-col justify-center">
-              <h2 className="text-5xl font-medium text-hoverblack arimo">
-                Home improvements you can trust
+              <h2 className="text-5xl font-bold  text-hoverblack arimo">
+                #Home improvements you can trust
               </h2>
               <p className="py-6 text-hoverblack arimo text-justify">
                 Quick Fix is a one stop shop for any small or large jobs around
@@ -50,7 +54,7 @@ const Home = () => {
               </p>
 
               <div>
-                <button className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] hover:text-hoverblack font-bold">
+                <button className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
                   Get Start
                 </button>
               </div>
@@ -163,9 +167,121 @@ const Home = () => {
           </div>
         </div>
 
+        <div className="pt-28  px-12 pb-10">
+          <div className=" grid grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+              Join QuickFix
+            </h2>
+            <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
+              Meet the skilled and experienced team behind our successful
+              digital marketing strategies
+            </p>
+          </div>
+        </div>
+        {/* cards */}
+        <div className="px-10 bg-hoverblack p-12 rounded-3xl">
+          <JoinUsCard />
+        </div>
+
+        {/* our team */}
+
+        <div className="pt-28 pb-10 px-12">
+          <div className=" grid grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+              Our Team
+            </h2>
+            <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
+              Meet the skilled and experienced team behind our successful
+              digital marketing strategies
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-6">
+          {/* imran khan */}
+          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
+            <div className="flex gap-3 items-center justify-center">
+              <img
+                src={imranhomepic}
+                className="h-20 w-20  rounded-3xl"
+                alt=""
+              />
+              <div className="flex flex-col ">
+                {" "}
+                <h1 className="arimo text-[16px] font-extrabold">Imran khan</h1>
+                <p className="arimo  font-normal text-[16px]">
+                  Founder & Web Developer{" "}
+                </p>
+              </div>
+            </div>
+            <hr className="border my-5 border-hoverblack" />
+            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">
+              Leading the way in digital marketing, Darshan Prajapati, founder
+              of Unicus Creatives blends{" "}
+            </p>
+            <p className="arimo text-hoverblack text-[16px] font-normal">
+              {" "}
+              artistry with analytics.
+            </p>
+          </div>
+          {/* danish */}
+
+          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
+            <div className="flex gap-3 items-center justify-center">
+              <img
+                src={danishkaremhomepic}
+                className="h-20 w-20  rounded-3xl"
+                alt=""
+              />
+              <div className="flex flex-col ">
+                {" "}
+                <h1 className="arimo text-[16px] font-extrabold">
+                  Danish kareem
+                </h1>
+                <p className="arimo  font-normal text-[16px]">CEO </p>
+              </div>
+            </div>
+            <hr className="border my-5 border-hoverblack" />
+            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">
+              Leading the way in digital marketing, Darshan Prajapati, founder
+              of Unicus Creatives blends{" "}
+            </p>
+            <p className="arimo text-hoverblack text-[16px] font-normal">
+              {" "}
+              artistry with analytics.
+            </p>
+          </div>
+          {/* atta ur rehman */}
+          {/* imran khan */}
+          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
+            <div className="flex gap-3 items-center justify-center">
+              <img
+                src={attaurrehamanhomepic}
+                className="h-20 w-20  rounded-3xl"
+                alt=""
+              />
+              <div className="flex flex-col ">
+                {" "}
+                <h1 className="arimo text-[16px] font-extrabold">
+                  Atta ur rehman
+                </h1>
+                <p className="arimo  font-normal text-[16px]">Co-Founder </p>
+              </div>
+            </div>
+            <hr className="border my-5 border-hoverblack" />
+            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">
+              Leading the way in digital marketing, Darshan Prajapati, founder
+              of Unicus Creatives blends{" "}
+            </p>
+            <p className="arimo text-hoverblack text-[16px] font-normal">
+              {" "}
+              artistry with analytics.
+            </p>
+          </div>
+        </div>
+
         {/* about us */}
 
-        {/* services */}
         <div className="pt-28 pb-10 px-12">
           <div className=" grid grid-cols-4 gap-6 ">
             <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
@@ -206,142 +322,53 @@ const Home = () => {
             <FiArrowUpRight className="text-3xl text-buttoncolor" />{" "}
           </Link>
         </div>
-
-        {/* our team */}
+        {/* area we cover */}
+        {/* Areas we cover  */}
 
         <div className="pt-28 pb-10 px-12">
           <div className=" grid grid-cols-4 gap-6 ">
             <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
-              Our Team
+              Contact us
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
-              Meet the skilled and experienced team behind our successful
-              digital marketing strategies
+              Quick Fix is based in Haripur , Abbottabad & Mansehra and we cover
+              the whole of the those cities.
             </p>
           </div>
         </div>
+        <div className="">
+          <div className="grid grid-cols-3  bg-cardbg rounded-3xl items-center justify-center">
+            <div className="col-span-2 p-20 flex flex-col gap-4">
+              {/* name */}
+           <div className="flex flex-col gap-4">
+           <Label htmlFor="Name" className="arimo text-[16px] font-normal">Name</Label>
+            <Input type="text" id="Name" placeholder="Please enter your full name" className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl" />
+           </div>
+             {/* email */}
+             <div className="flex flex-col gap-4">
+           <Label htmlFor="Email" className="arimo text-[16px] font-normal">Email</Label>
+            <Input type="text" id="Email" placeholder="Please enter a valid email" className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl" />
+           </div>
+            {/* message */}
+            <div className="flex flex-col gap-4">
+           <Label htmlFor="message" className="arimo text-[16px] font-normal">Message</Label>
+            <Textarea  id="message" placeholder="Display your  message briefly"   className="h-20 arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 rounded-xl" />
+              <Button className="arimo text-[16px] hover:bg-buttoncolor hover:text-hoverblack">Send Message</Button>
+           </div>
+            </div>
+            <div>
+              <img src={homepagestars} alt="" />
+            </div>
+          </div>
+          
 
-        <div className="grid grid-cols-3 gap-6">
-          {/* imran khan */}
-          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
-            <div className="flex gap-3 items-center justify-center">
-              <img src={imranhomepic} className="h-20 w-20  rounded-3xl" alt="" />
-              <div className="flex flex-col ">
-                {" "}
-                <h1 className="arimo text-[16px] font-extrabold">Imran khan</h1>
-                <p className="arimo  font-normal text-[16px]">Founder & Web Developer  </p>
-              </div>
+          
             
-            </div>
-            <hr className="border my-5 border-hoverblack"/>
-            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">Leading the way in digital marketing, Darshan Prajapati, founder of Unicus Creatives blends </p>
-            <p className="arimo text-hoverblack text-[16px] font-normal"> artistry with analytics.</p>
-          </div>
-          {/* danish */}
-
-          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
-            <div className="flex gap-3 items-center justify-center">
-              <img src={danishkaremhomepic} className="h-20 w-20  rounded-3xl" alt="" />
-              <div className="flex flex-col ">
-                {" "}
-                <h1 className="arimo text-[16px] font-extrabold">Danish kareem</h1>
-                <p className="arimo  font-normal text-[16px]">CEO </p>
-              </div>
-            
-            </div>
-            <hr className="border my-5 border-hoverblack"/>
-            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">Leading the way in digital marketing, Darshan Prajapati, founder of Unicus Creatives blends </p>
-            <p className="arimo text-hoverblack text-[16px] font-normal"> artistry with analytics.</p>
-          </div>
-          {/* atta ur rehman */}
-          {/* imran khan */}
-          <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
-            <div className="flex gap-3 items-center justify-center">
-              <img src={attaurrehamanhomepic} className="h-20 w-20  rounded-3xl" alt="" />
-              <div className="flex flex-col ">
-                {" "}
-                <h1 className="arimo text-[16px] font-extrabold">Atta ur rehman</h1>
-                <p className="arimo  font-normal text-[16px]">Co-Founder </p>
-              </div>
-            
-            </div>
-            <hr className="border my-5 border-hoverblack"/>
-            <p className="arimo text-justify text-hoverblack text-[16px] font-normal">Leading the way in digital marketing, Darshan Prajapati, founder of Unicus Creatives blends </p>
-            <p className="arimo text-hoverblack text-[16px] font-normal"> artistry with analytics.</p>
-          </div>
+          
         </div>
-        {/* cards */}
-        <div className="px-10 py-6">
-          <div className="pb-20 grid grid-cols-3">
-            <div className="col-span-2"> </div>
-          </div>
-          <JoinUsCard />
-        </div>
-        {/* area we cover */}
-        <div className="px-10 py-8">
-          <h3 className="text-primarycolor text-4xl py-4 underline">
-            Areas we cover :
-          </h3>
-          <div className="flex  gap-2 items-center justify-between ">
-            <div className="w-full">
-              <img src={areawecovera} className="opacity-60 p-4" alt="" />
-            </div>
-            <div className="flex flex-col w-full items-center gap-5 p-10  border-[#e21c34] ">
-              {/* <AccordianHomes /> */}
-              <h4 className="text-primarycolor text-5xl underline">Cities:</h4>
-              <h3 className="text-7xl font-bold text-[#ff6b00]">Abbottabad</h3>
-              <h3 className="text-7xl font-bold text-[#146EF5]">Haripur</h3>
-              <h3 className="text-7xl font-bold text-[#ED52CB]">Mansehra</h3>
-              {/* <Spiral/> */}
-            </div>
-          </div>
-          {/* contact us
-          <div className="">
-            <h2 className="text-6xl text-primarycolor text-center ">
-              Contact us:
-            </h2>
-            <div class="grid grid-cols-2 p-16">
-              <div class=" border-[4px] shadow-xl shadow-gray-900 bg-thirdcolor rounded-2xl hover:border-blue-500 transition-all duration-200">
-                <div class="mx-auto   flex items-center space-y-4 py-16 px-12 font-semibold text-gray-500 flex-col">
-                  
-                  <h1 class="text-white text-2xl">Submit your quries:</h1>
-                  <input
-                    class="w-full  p-2 bg-blue-900 rounded-md border border-gray-700 focus:border-blue-700 hover:border-blue-500 transition-all duration-200"
-                    placeholder="Email"
-                    type="email"
-                    name="email"
-                    id=""
-                  />
-                  <input
-                    class="w-full p-2 bg-blue-900 rounded-md border border-gray-700 focus:border-blue-700 hover:border-blue-500 transition-all duration-200"
-                    placeholder="Password"
-                    type="password"
-                    name="password"
-                    id=""
-                  />
-                  <textarea
-                    class="w-full p-2 bg-blue-900 rounded-md border border-gray-700 focus:border-blue-700 hover:border-blue-500 transition-all duration-200"
-                    name=""
-                    id=""
-                    cols="10"
-                    rows=""
-                  ></textarea>
-                  <input
-                    class="w-full p-2 bg-gray-50 rounded-full font-bold text-gray-900 border-[4px] border-gray-700 hover:border-blue-500 transition-all duration-200"
-                    type="submit"
-                    id=""
-                  />
-                </div>
-              </div>
-              <div></div>
-            </div>
-          </div> */}
-
-          <div>
-            <Footer />
-          </div>
-        </div>
+      
       </div>
+      <Footer />
     </div>
   );
 };
