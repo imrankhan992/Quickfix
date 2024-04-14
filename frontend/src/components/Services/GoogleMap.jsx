@@ -1,93 +1,145 @@
+import React, { useMemo, useRef, useState, useEffect } from "react";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  Autocomplete,
+  DirectionsRenderer,
+  Circle,
+  LoadScript,
+} from "@react-google-maps/api";
 
+import { Skeleton } from "../ui/skeleton";
+import { MdEdit, MdModeEdit } from "react-icons/md";
 
+function GoogleMapPage({
+  currentLocation,
+  setCurrentLocation,
+  openmap,
+  height,
+  width,
+  currentaddress,
+  setopenmap,
+  marker,
+  setcurrentCityname,
+  setCurrentZipcode
+ 
+}) {
+  const containerStyle = {
+    width: width,
+    height: height,
+    borderRadius: "10px",
+    overflow: "hidden",
+  };
+  const [directionResponse, setdirectionResponse] = useState(null);
+  const [distance, setdistance] = useState("");
+  const [duration, setduration] = useState("");
+  const originRef = useRef();
+  const destinationRef = useRef();
 
-import React, { useRef, useState } from 'react'
-import { GoogleMap, useJsApiLoader,Marker,Autocomplete,DirectionsRenderer } from '@react-google-maps/api';
-import { Skeleton } from '../ui/skeleton';
-
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
-
-const center = {
-  lat: 48.8584,
-  lng: 2.2945
-};
-
-function GoogleMapPage() {
-    const [directionResponse, setdirectionResponse] = useState(null)
-    const [distance, setdistance] = useState('')
-    const [duration, setduration] = useState('');
-    const originRef = useRef()
-    const destinationRef = useRef()
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU",
-    libraries:["places"]
-  })
-console.log(originRef?.current?.value);
-  const [map, setMap] = React.useState(null)
-
-  const onLoad = React.useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
-
-    setMap(map)
-  }, [])
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null)
-  }, [])
-
-  async function calculateRoute() {
-    if (originRef.current.value==="" || destinationRef.current.value==="") {
-        return
+  const [cityColor, setCityColor] = useState("#ff0000"); // Default color
+  
+  const libraries = ["places", "maps"]; // Define libraries as a constant
+  const [CityName, setCityName] = useState('')
+  const [ZipCode, setZipCode] = useState("")
+  // Fetch city name and zip code when currentLocation changes
+  useEffect(() => {
+    if (CityName) {
+      setcurrentCityname(CityName)
     }
-    const directionservice = new google.maps.DirectionsService()
-    const result =await directionservice.route({
-        origin:originRef.current.value,
-        destination:destinationRef.current.value,
-        travelMode:google.maps.TravelMode.DRIVING
-    })
-    setdirectionResponse(result)
-    setdistance(result.routes[0].legs[0].distance.text)
-    setduration(result.routes[0].legs[0].duration.text)
+    if (ZipCode) {
+      setCurrentZipcode(ZipCode)
+    }
+    if (currentLocation) {
+      fetchCityDetails();
+    }
+  }, [currentLocation,CityName,ZipCode]);
+// console.log( ZipCode);
+const fetchCityDetails = async () => {
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.lat},${currentLocation.lng}&key=AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU`
+    );
+    const data = await response.json();
+    if (data.status === "OK") {
+      const result = data.results[0];
+      console.log(result); // Log the entire result object to inspect its structure
+
+      const addressComponents = result.address_components;
+      const cityComponent = addressComponents.find(
+        (component) => component.types.includes("locality")
+      );
+      const zipComponent = addressComponents.find(
+        (component) => component.types.includes("postal_code")
+      );
+
+      if (cityComponent) {
+        setCityName(cityComponent.long_name);
+      }
+      if (zipComponent) {
+        setZipCode(zipComponent.long_name);
+       
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching city details:", error);
   }
-console.log(directionResponse);
+};
+
+
+
+
+
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU",
+  });
+
+  const options = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
+  
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(!open);
   return isLoaded ? (
-   <>
-    <Autocomplete>
-        <input type="text" placeholder='Origin' ref={originRef} />
-    </Autocomplete>
-    <Autocomplete>
-        <input type="text" placeholder='destination' ref={destinationRef}/>
-    </Autocomplete>
-    <button className='bg-red-500 p-2 rounded-xl text-primarycolor arimo' onClick={calculateRoute}>Calculate route</button>
-      <p>duration : {duration}</p>
-      <p>distance : {distance}</p>
+    <>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
+        center={currentLocation || { lat: 30.3753, lng: 69.3451 }}
+        zoom={currentLocation ? 15 : 5}
+        options={options}
       >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <>
-        <Marker position={center}/>
-        {
-            directionResponse && <DirectionsRenderer directions={directionResponse}/>
-        }
-        </>
+        {marker}
+        <Marker position={{ lat: 30.3753, lng: 69.3451 }} />
+        {!marker && <Marker position={currentLocation} />}
       </GoogleMap>
-   </>
-  ) : <>
-  <Skeleton/>
-  </>
+      {currentLocation && (
+        <div className="flex  gap-2 py-2">
+          <div className="flex flex-col gap-2">
+            <p className="arimo font-bold text-hoverblack">Current Location</p>
+            <p className="arimo text-hoverblack">{currentaddress}</p>
+          </div>
+          {/* edit map */}
+          <div className="flex items-center justify-center text-red-900">
+            {!openmap && (
+              <MdModeEdit
+                className={`text-2xl text-red-900 cursor-pointer`}
+                onClick={() => setopenmap(true)}
+              />
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  ) : (
+    <Skeleton />
+  );
 }
 
-
- 
- export default GoogleMapPage
+export default GoogleMapPage;

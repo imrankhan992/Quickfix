@@ -122,6 +122,7 @@ exports.setupProfileController = async (req, res) => {
             city,
             job,
             zipcode,
+            currentlocation
         } = req.body;
         const user = await registrationModel.findOne({ _id: req?.user?._id });
         user.phoneNumber = phoneNumber;
@@ -131,6 +132,10 @@ exports.setupProfileController = async (req, res) => {
         user.city = city;
         user.job = job;
         user.zipcode = zipcode;
+        user.currentlocation ={
+            lat:currentlocation.lat,
+            lng:currentlocation.lng
+        }
         user.avatar = {
             url: cloudinaryResult.secure_url,
             public_id: cloudinaryResult.public_id,

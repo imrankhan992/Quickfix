@@ -69,6 +69,14 @@ const userSchema = new mongoose.Schema({
     dateOfBirth: {
         type: Date,
     },
+    currentlocation: {
+        lat: {
+            type: Number,
+        },
+        lng: {
+            type: Number,
+        },
+    },
     verifyEmailToken:String,
     verifyEmailExpires:Date
 });

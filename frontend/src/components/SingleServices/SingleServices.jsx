@@ -51,7 +51,7 @@ const SingleServices = () => {
           <div className="grid grid-cols-3 gap-3  ">
             {products?.map((product, index) => {
               return (
-                <Link to={`/service/detail/single/service/${product?._id}`}
+                <div 
                   key={index}
                   className="flex gap-2 border p-4 rounded-xl border-hoverblack bg-cardbg shadow-xl"
                 >
@@ -80,10 +80,10 @@ const SingleServices = () => {
                         </p>
                       </div>
                       {/* select */}
-                      <Button className="arimo capitalize rounded-xl bg-hoverblack text-[12px] px-4 py-2">Select</Button>
+                      <Link className="arimo capitalize rounded-xl text-primarycolor bg-hoverblack text-[12px] px-4 py-2" to={`/service/find/serviceproviders/nearby/${product?._id}`}>Select</Link>
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>
