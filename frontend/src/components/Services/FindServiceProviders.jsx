@@ -220,7 +220,7 @@ const FindServiceProviders = () => {
           );
         })}
       </div>
-      <div className="col-span-6">
+      <div className="col-span-6 relative">
         <Find
           currentLocation={currentLocation}
           currentServiceProviders={currentServiceProviders}
