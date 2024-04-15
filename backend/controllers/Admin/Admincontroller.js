@@ -450,16 +450,16 @@ exports.logout = async (req, res) => {
 
 exports.getallproductsByCategory = async (req, res) => {
     try {
-        console.log(req.params.services);
+
         const products = await ProductModel.find({ category: req.params.services });
-        if (products.length===0) {
+        if (products.length === 0) {
             return res.status(404).json({ success: false, message: "No Services avaliable" })
         }
         return res.status(200).json({
             success: true,
             products
         })
-        
+
     } catch (error) {
         if (error.name === "CastError") {
             return res.status(500).json({
@@ -472,5 +472,53 @@ exports.getallproductsByCategory = async (req, res) => {
             message: "Internal Server Error",
             error: error,
         });
+    }
+}
+
+// get single product using id
+
+exports.getsingleServiceById = async (req, res) => {
+    try {
+        const SingleService = await ProductModel.findById({ _id: req?.params?.id }).populate("category")
+        if (!SingleService) {
+            return res.status(404).json({
+                success: false,
+                message: "Invalid id"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            service: SingleService
+        })
+    } catch (error) {
+        if (error.name === "CastError") {
+            return res.status(500).json({
+                success: false,
+                message: "Invalid id",
+            });
+        }
+    }
+}
+
+// find service provider 
+
+exports.findserviceProviders = async (req, res) => {
+
+
+    try {
+        const { city, currentLocation,job } = req.body;
+        const { lng, lat } = currentLocation;
+        // Query service providers based on city and location
+        const serviceProviders = await registrationModel.find({
+            city,
+            accountStatus: "approve",
+           
+        });
+
+        res.json({ serviceProviders });
+    } catch (error) {
+        console.error('Error finding service providers:', error);
+        res.status(500).json({ error });
     }
 }

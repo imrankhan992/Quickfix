@@ -114,7 +114,7 @@ const Profile = () => {
     }
     setFieldValue("avatar", profile);
   }, [profile, submitprofile, dispatch,CityName,ZipCode,currentaddress,currentLocation]);
-console.log(values);
+
   const getmycurrentLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

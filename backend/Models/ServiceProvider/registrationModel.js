@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
     },
     city:{
         type: String,
-        
     },
     job:{
         type: String,
@@ -80,11 +79,10 @@ const userSchema = new mongoose.Schema({
     verifyEmailToken:String,
     verifyEmailExpires:Date
 });
+userSchema.index({ currentlocation: "2dsphere" });
 //creating password reset token
 userSchema.methods.getverifyEmailToken = async function () {
-    //generating token
     const resetToken = crypto.randomBytes(20).toString("hex");
-    //hash reset token and add to user schema
     this.verifyEmailToken = crypto.createHash("sha256").update(resetToken).digest("hex");
     this.verifyEmailExpires = Date.now() + 15 * 60 * 1000
     return resetToken
