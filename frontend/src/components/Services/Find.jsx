@@ -9,6 +9,7 @@ import {
   Chip,
   Typography,
   Avatar,
+  Badge,
 } from "@material-tailwind/react";
 import {
   Circle,
@@ -86,6 +87,7 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   return isLoaded ? (
     <>
+    
       <div className=" relative ">
         <Popover open={isPopoverOpen} handler={setIsPopoverOpen}>
           <PopoverHandler>
@@ -99,12 +101,21 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
               className="absolute cursor-pointer right-4  text-xl top-2 border-hoverblack rounded-full border mb-2 text-hoverblack "
             />
             <div className="mb-2 flex items-center justify-between gap-4 mt-2">
-              <Avatar
-                size="md"
-                variant="circular"
-                src={singleserviceprovider?.avatar?.url}
-                alt="tania andrew"
-              />
+            <Badge overlap="circular" color={`${
+                    singleserviceprovider?.activeStatus === "Offline"
+                      ? "red"
+                      : "green"
+                  }`} className="">
+                  <Avatar
+                    src={singleserviceprovider?.avatar?.url}
+                    alt="Photo by Drew Beamer"
+                    className={`object-cover rounded-full w-14 h-14 border-2 border-${
+                        singleserviceprovider?.activeStatus === "Online"
+                          ? "online"
+                          : "offline"
+                      }`}
+                  />
+                </Badge>
               <Button
                 variant="gradient"
                 size="sm"
@@ -120,8 +131,8 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
                   singleserviceprovider?.lastname}
               </Typography>
               <Chip
-                value="Public"
-                className="rounded-full px-2 py-1 font-medium capitalize tracking-wide"
+                value={"Online"}
+                className="rounded-full px-2 py-1 font-medium capitalize tracking-wide bg-greencolor"
               />
             </div>
             <Typography

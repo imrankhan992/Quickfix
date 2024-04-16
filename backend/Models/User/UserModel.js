@@ -3,6 +3,13 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
+    activeStatus:{
+        type: String,
+        default:"Offline"
+    },
+    lastActive: {
+        type: Date,
+    },
     firstname: {
         type: String,
         required: true,
@@ -23,23 +30,13 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    experience: {
-        type: String,
 
-    },
-    city: {
-        type: String,
 
-    },
-    job: {
-        type: String,
-
-    },
     zipcode: {
         type: String,
 
     },
-    
+
     avatar: {
         public_id: {
             type: String,
@@ -62,9 +59,7 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
     },
-    dateOfBirth: {
-        type: Date,
-    },
+
     verifyEmailToken: String,
     verifyEmailExpires: Date
 });

@@ -25,12 +25,15 @@ import axiosInstance from "@/ulities/axios";
 import { loadUserData } from "@/components/Actions/Registration";
 
 
-export function Menu({user}) {
+export function Menu() {
+  const { user } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const logout = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/v1/logout");
+      const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
+
       if (data?.success) {
         showtoast(data?.message);
         

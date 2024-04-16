@@ -3,6 +3,14 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
+    
+    activeStatus:{
+        type: String,
+        default:"Offline"
+    },
+    lastActive: {
+        type: Date,
+    },
     firstname: {
         type: String,
         required: true,

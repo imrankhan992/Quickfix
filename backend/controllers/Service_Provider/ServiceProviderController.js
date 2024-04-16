@@ -242,12 +242,14 @@ exports.loginUserController = async (req, res) => {
         const userExist2 = await UserModel.findOne({ email });
 
         if (userExist1 && await userExist1.comparePassword(password) && userExist1.emailVerify) {
-
+            userExist1.activeStatus="Online"
+            await userExist1.save()
             sendToken(userExist1, 200, res)
 
 
         } else if (userExist2 && await userExist2.comparePassword(password) && userExist2.emailVerify) {
-
+            userExist2.activeStatus="Online"
+            await userExist2.save()
             sendToken(userExist2, 200, res)
 
         } else {

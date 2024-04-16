@@ -39,6 +39,7 @@ import ServiceProviderProfile from './components/User/ServiceProvider/Profile';
 import SingleServices from "./components/SingleServices/SingleServices";
 import GoogleMapPage from "./components/Services/GoogleMap";
 import FindServiceProviders from "./components/Services/FindServiceProviders";
+import IdleTimerContainer from "./components/IdleTimerContainer";
 
 function App() {
   
@@ -50,6 +51,7 @@ function App() {
     <>
       <Toaster />
 
+     <IdleTimerContainer>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -119,6 +121,8 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      </IdleTimerContainer>
+     
     </>
   );
 }

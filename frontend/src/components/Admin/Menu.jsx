@@ -28,9 +28,11 @@ export function Menu() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { Adminuser } = useSelector((state) => state.admin);
+  const { user } = useSelector((state) => state.user);
+
   const logout = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/v1/logout");
+      const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
       if (data?.success) {
         showtoast(data?.message);
         dispatch(adminAction());

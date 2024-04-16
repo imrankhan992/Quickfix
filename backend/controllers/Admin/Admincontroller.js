@@ -428,11 +428,18 @@ exports.singleProductController = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
+
+        await registrationModel.findByIdAndUpdate(req?.params?.id, {
+            activeStatus: "Offline",
+            lastActive: new Date(Date.now())
+        });
+
+
         res.cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
         });
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "Logout Successfully",
         });
@@ -507,18 +514,38 @@ exports.findserviceProviders = async (req, res) => {
 
 
     try {
-        const { city, currentLocation,job } = req.body;
+        const { city, currentLocation, job } = req.body;
         const { lng, lat } = currentLocation;
         // Query service providers based on city and location
         const serviceProviders = await registrationModel.find({
             city,
             accountStatus: "approve",
-           
+
         });
 
         res.json({ serviceProviders });
     } catch (error) {
         console.error('Error finding service providers:', error);
         res.status(500).json({ error });
+    }
+}
+
+exports.updatetheAccountStatus = async (req, res) => {
+    try {
+        const { activeStatus, lastActive } = req.body;
+        if (activeStatus && lastActive) {
+            await registrationModel.findByIdAndUpdate(req?.user?._id, {
+                activeStatus,
+                lastActive
+            });
+        }
+        await registrationModel.findByIdAndUpdate(req?.user?._id, {
+            activeStatus,
+        });
+        res.status(200).json({ success: true, message: 'Service provider status updated successfully.' });
+    } catch (error) {
+        // Handle errors
+        console.error('Error updating service provider status:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
     }
 }

@@ -30,11 +30,13 @@ import {
 } from "@material-tailwind/react";
 import { Marker } from "@react-google-maps/api";
 const Profile = () => {
-  
+  const { user, success, setup, loading, submitprofile } = useSelector(
+    (state) => state.user
+  );
   const navigate = useNavigate();
   const LogOut = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/v1/admin/logout");
+      const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
      
       if (data?.success) {
         dispatch(loadUserData());
@@ -45,9 +47,7 @@ const Profile = () => {
   };
   const dispatch = useDispatch();
   
-  const { user, success, setup, loading, submitprofile } = useSelector(
-    (state) => state.user
-  );
+ 
   const [profile, setprofile] = useState();
   const [avatarPreview, setavatarPreview] = useState();
   const [openmap, setopenmap] = useState(false);

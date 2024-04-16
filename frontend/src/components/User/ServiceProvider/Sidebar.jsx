@@ -12,7 +12,7 @@ import {
 
 import { RiPresentationFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loadUserData } from "@/components/Actions/Registration";
 import axiosInstance from "@/ulities/axios";
 import { showtoast } from "@/Toast/Toast";
@@ -21,12 +21,14 @@ export function Sidebar() {
   const [openAlert, setOpenAlert] = React.useState(true);
 const dispatch = useDispatch();
 const navigate = useNavigate()
+const { user } = useSelector((state) => state.user);
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
   const LogOut = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/v1/admin/logout");
+      const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
      
       if (data?.success) {
         dispatch(loadUserData())

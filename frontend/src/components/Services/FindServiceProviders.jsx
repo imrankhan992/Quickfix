@@ -6,7 +6,7 @@ import Find from "./Find";
 import { Typography } from "@material-tailwind/react";
 import axiosInstance from "@/ulities/axios";
 import { useParams } from "react-router-dom";
-import ReactStars  from 'react-rating-stars-component';
+import ReactStars from "react-rating-stars-component";
 
 const FindServiceProviders = () => {
   const [cityCoordinates, setCityCoordinates] = useState();
@@ -85,7 +85,7 @@ const FindServiceProviders = () => {
     if (currentLocation && CityName && currentservice?.category?.category) {
       getallserviceProvidersnearMe();
     }
-  }, [currentLocation, CityName]);
+  }, [currentLocation, CityName, currentservice?.category?.category]);
   //   get address using co ordinates
 
   const fetchAddressFromCoordinates = async ({ lat, lng }) => {
@@ -160,6 +160,29 @@ const FindServiceProviders = () => {
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
+  const formatLastActive = (lastActive) => {
+    const currentTime = new Date();
+    const lastActiveTime = new Date(lastActive);
+    const timeDifference = Math.abs(currentTime - lastActiveTime); // Difference in milliseconds
+
+    const secondsDifference = Math.floor(timeDifference / 1000);
+    const minutesDifference = Math.floor(secondsDifference / 60);
+    const hoursDifference = Math.floor(minutesDifference / 60);
+    const daysDifference = Math.floor(hoursDifference / 24);
+
+    if (daysDifference > 0) {
+      return `${daysDifference} day${daysDifference > 1 ? "s" : ""} ago`;
+    } else if (hoursDifference > 0) {
+      return `${hoursDifference} hour${hoursDifference > 1 ? "s" : ""} ago`;
+    } else if (minutesDifference > 0) {
+      return `${minutesDifference} minute${
+        minutesDifference > 1 ? "s" : ""
+      } ago`;
+    } else {
+      return "Just now";
+    }
+  };
+
   return (
     <div className="grid grid-cols-8 ">
       <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 px-4 ">
@@ -182,13 +205,25 @@ const FindServiceProviders = () => {
         )}
         {currentServiceProviders?.map((serviceprovider) => {
           return (
-            <div className="flex items-center gap-2 justify-between bg-primarycolor px-4 py-1 rounded-[6px] shadow-md">
+            <div className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
               <div className="flex gap-3 items-center justify-center">
-                <Badge overlap="circular" color="green" className="">
+                <Badge
+                  overlap="circular"
+                  color={`${
+                    serviceprovider?.activeStatus === "Offline"
+                      ? "red"
+                      : "green"
+                  }`}
+                  className={``}
+                >
                   <Avatar
                     src={serviceprovider?.avatar?.url}
                     alt="Photo by Drew Beamer"
-                    className="object-cover rounded-full w-14 h-14 border-2 border-[#29B40B]"
+                    className={`object-cover rounded-full w-14 h-14 border-2 border-${
+                      serviceprovider?.activeStatus === "Online"
+                        ? "online"
+                        : "offline"
+                    }`}
                   />
                 </Badge>
                 <div>
@@ -197,9 +232,13 @@ const FindServiceProviders = () => {
                       " " +
                       serviceprovider?.lastname}
                   </p>
-                  <p className="arimo text-sm">Active 2 hour ago</p>
+                  <p className="arimo text-[12px]">
+                     active{" "}
+                    {serviceprovider?.activeStatus === "Offline" &&
+                      formatLastActive(serviceprovider?.lastActive)}
+                  </p>{" "}
                   <div className="flex justify-between items-center ">
-                  <ReactStars
+                    <ReactStars
                       count={5}
                       onChange={ratingChanged}
                       size={20}
@@ -214,7 +253,7 @@ const FindServiceProviders = () => {
               </div>
 
               <div>
-                <BadgeOutline status={"Online"} color="text-green-600" />
+                <BadgeOutline  status={serviceprovider?.activeStatus==="Online"?"Online":"Offline"} color={`${serviceprovider?.activeStatus==="Offline"?"bg-offline":"bg-online"}`} />
               </div>
             </div>
           );
