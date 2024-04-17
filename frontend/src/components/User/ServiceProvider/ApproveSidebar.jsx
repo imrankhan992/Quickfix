@@ -5,7 +5,6 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  
 } from "@material-tailwind/react";
 
 import { MdDashboard } from "react-icons/md";
@@ -19,12 +18,9 @@ import { BsClockHistory } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiProfileLine } from "react-icons/ri";
 
-export function ApproveSidebar({open}) {
-
-  
-
+export function ApproveSidebar({ open }) {
   return (
-    <Card className="h-full   rounded-none bg-thirdcolor ">
+    <Card className="h-full   rounded-none bg-sidebarbg ">
       <div className="mb-2 p-4 flex items-center justify-center">
         <Typography variant="h5" className="text-primarycolor">
           QuickFix
@@ -32,11 +28,11 @@ export function ApproveSidebar({open}) {
       </div>
       <List>
         {/* dashboard */}
-        <Link  to={"/serviceprovider/dashboard/my profile"}>
+        <Link to={"/serviceprovider/dashboard/my profile"}>
           <ListItem
-            className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 1
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}
           >
@@ -48,60 +44,65 @@ export function ApproveSidebar({open}) {
         </Link>
 
         {/* services */}
-        <Link  to={"/serviceprovider/dashboard/services"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        <Link to={"/serviceprovider/dashboard/services"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 2
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
-            }`}>
-          <ListItemPrefix>
-
-            <MdCleaningServices className="h-5 w-5" />
-          </ListItemPrefix>
-        Services
-        </ListItem>
+            }`}
+          >
+            <ListItemPrefix>
+              <MdCleaningServices className="h-5 w-5" />
+            </ListItemPrefix>
+            Services
+          </ListItem>
         </Link>
         {/* users */}
         <Link to={"/serviceprovider/dashboard/orders"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 3
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
-            }`}>
-          <ListItemPrefix>
-
-            <GiClick className="h-5 w-5" />
-          </ListItemPrefix>
-          My orders
-        </ListItem>
+            }`}
+          >
+            <ListItemPrefix>
+              <GiClick className="h-5 w-5" />
+            </ListItemPrefix>
+            My orders
+          </ListItem>
         </Link>
-          {/* previous order */}
-          <Link to={"/serviceprovider/dashboard/previous-orders"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        {/* previous order */}
+        <Link to={"/serviceprovider/dashboard/previous-orders"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 4
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
-            }`}>
-          <ListItemPrefix>
-            <BsClockHistory className="h-5 w-5" />
-          </ListItemPrefix>
-          Previous Orders
-        </ListItem>
+            }`}
+          >
+            <ListItemPrefix>
+              <BsClockHistory className="h-5 w-5" />
+            </ListItemPrefix>
+            Previous Orders
+          </ListItem>
         </Link>
 
         {/* get all product */}
         <Link to={"/serviceprovider/dashboard/yours/profile"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 5
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
-            }`}>
-          <ListItemPrefix>
-
-            <RiProfileLine  className="h-5 w-5" />
-          </ListItemPrefix>
-          Profile
-        </ListItem>
+            }`}
+          >
+            <ListItemPrefix>
+              <RiProfileLine className="h-5 w-5" />
+            </ListItemPrefix>
+            Profile
+          </ListItem>
         </Link>
       </List>
     </Card>

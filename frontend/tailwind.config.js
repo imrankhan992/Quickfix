@@ -26,11 +26,12 @@ module.exports = withMT({
     extend: {
       colors: {
         // primarycolor:"#041E49",
+        sidebarbg:"#1f1e30",
         online:"#29B40B",
         offline:"#F70000",
         navbarcolor:"#131921",
         texthovercolor:"#F08804",
-        cardbg:"#F3F3F3",
+        cardbg:"#F7F7F5",
         bodycolor:"#FFFFFF",
         primarycolor:"#FFFFFF",
         primarycolorhover:"#042c6e",

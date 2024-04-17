@@ -131,8 +131,8 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
                   singleserviceprovider?.lastname}
               </Typography>
               <Chip
-                value={"Online"}
-                className="rounded-full px-2 py-1 font-medium capitalize tracking-wide bg-greencolor"
+                value={singleserviceprovider?.activeStatus==="Online"?"Online":"Offline"}
+                className={`rounded-full px-2 py-1 font-medium capitalize tracking-wide ${singleserviceprovider?.activeStatus==="Online"?"bg-online":"bg-offline"}`}
               />
             </div>
             <Typography

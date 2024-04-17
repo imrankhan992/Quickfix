@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "../ui/button";
-import { TextInput } from "@tremor/react";
+
+
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
@@ -12,6 +12,8 @@ import { Registration } from "./../Actions/Registration";
 import { Loader2 } from "lucide-react";
 import { datasaveAction } from "../Actions/DataSave";
 import { AlertDestructive } from "../Alerts/ErrorAlert";
+import { Input } from "../ui/input";
+import { Button } from "@material-tailwind/react";
 const SPSignup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,14 +60,14 @@ const SPSignup = () => {
       <div className="w-full h-full ">
         <div className="max-w-[1750px] mx-auto">
           <div className="flex py-4 px-8  justify-between items-center  text-white">
-            <div>logo here</div>
-            <div className="md:hidden">Login</div>
+            <div className="text-hoverblack">logo here</div>
+            <div className="md:hidden text-hoverblack">Login</div>
             <div className="ms-auto md:flex justify-end gap-4 items-center hidden">
               <div>
-                <p>Here to hire talent?</p>
+                <p className="text-hoverblack">Here to hire talent?</p>
               </div>
               <div>
-                <a>Join as a Client</a>
+                <Link to={"/signup"} className="text-hoverblack">Join as a Client</Link>
               </div>
             </div>
           </div>
@@ -75,11 +77,11 @@ const SPSignup = () => {
       <div className=" w-full md:max-w-[1750px] mx-auto h-[100vh] ">
         <div className="md:w-[40%] mx-auto flex flex-col  items-center px-5 ">
           
-          <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
+          <h1 className=" text-hoverblack text-3xl font-semibold px-2 py-5 text-center ">
             Sign up to find work you love
           </h1>
           {
-        error ? (AlertDestructive(error)):""
+        error!=="Please log in to access this resource" ? (AlertDestructive(error)):""
        
       }
           <form
@@ -90,22 +92,23 @@ const SPSignup = () => {
             <div>
               <Label
                 htmlFor="name"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack text-lg"
               >
                 First name
               </Label>
-              <TextInput
+              <Input
                 onChange={handleChange}
                 onBlur={handleBlur}
                 name="firstname"
                 value={values?.firstname}
+                placeholder=""
                 id="name"
-                className={` rounded-lg border border-bordercolor ${
+                className={` arimo bg-hoverlatext-hoverblack  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.firstname && touched?.firstname
                     ? "border-errorcolor border-2"
                     : ""
                 }`}
-                placeholder=""
+               
               />
               {/* error */}
               <div className="flex gap-2 items-center">
@@ -124,12 +127,12 @@ const SPSignup = () => {
             <div>
               <Label
                 htmlFor="lastname"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack text-lg"
               >
                 Last name
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={` arimo bg-hoverlatext-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.lastname && touched?.lastname
                     ? "border-errorcolor border-2"
                     : ""
@@ -158,12 +161,12 @@ const SPSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="email"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack text-lg"
               >
                 Email
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={`arimo bg-hoverlatext-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.email && touched?.email
                     ? "border-errorcolor border-2"
                     : ""
@@ -192,12 +195,12 @@ const SPSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="hellopassword"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack text-lg"
               >
                 Password
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={`arimo bg-hoverlatext-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.password && touched?.password
                     ? "border-errorcolor border-2"
                     : ""
@@ -226,12 +229,12 @@ const SPSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="confirmPassword"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack text-lg"
               >
                 Confirm Password
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={`arimo bg-hoverlatext-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.confirmPassword && touched?.confirmPassword
                     ? "border-errorcolor border-2"
                     : ""
@@ -265,13 +268,13 @@ const SPSignup = () => {
                 type="checkbox"
                 onChange={handleChange}
                 name="checked"
-                className="rounded-md bg-inputbg_color border border-bordercolor"
+                className="rounded-md bg-buttoncolor border border-bordercolor focus:ring-0 "
               />
 
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="terms1"
-                  className="text-sm font-medium text-primarycolor leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium text-hoverblack leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Accept terms and conditions
                 </label>
@@ -293,7 +296,7 @@ const SPSignup = () => {
             </div>
             <div className="py-5 items-center flex justify-center col-span-2">
               {!loading && (
-                <Button className="bg-buttoncolor outline outline-buttonborder" type="submit">
+                <Button className="bg-buttoncolor w-full text-hoverblack capitalize text-[16px] rounded-xl border-b-2 hover:border-t-2 hover:border-b-0 border-hoverblack" type="submit">
                   Create my account
                 </Button>
               )}

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 const Aside = ({open}) => {
   const {user} = useSelector((state)=>state.user)
   return (
-    <aside className="w-[25%]  border-e border-bordercolor h-screen sticky top-0  md:block hidden bg-thirdcolor text-primarycolor">
+    <aside className="w-[25%]  border-e border-bordercolor h-screen sticky top-0  md:block hidden bg-sidebarbg text-primarycolor">
        {
         user?.accountStatus==="pending"&&( <Sidebar/>)
        }

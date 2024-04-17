@@ -39,7 +39,7 @@ const { user } = useSelector((state) => state.user);
   };
 
   return (
-    <Card className="h-[calc(100vh)]  rounded-none w-full max-w-[20rem] overflow-y-auto  bg-thirdcolor text-primarycolor scrollbar-hide ">
+    <Card className="h-[calc(100vh)]  rounded-none w-full max-w-[20rem] overflow-y-auto  bg-sidebarbg text-primarycolor scrollbar-hide ">
       <div className="mb-2 flex items-center justify-center text-primarycolor">
         
        

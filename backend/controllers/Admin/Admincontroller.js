@@ -520,10 +520,13 @@ exports.findserviceProviders = async (req, res) => {
         const serviceProviders = await registrationModel.find({
             city,
             accountStatus: "approve",
-
+            job
         });
+        if (serviceProviders?.length === 0) {
+            return res.json({ success: false, serviceProviders });
+        }
 
-        res.json({ serviceProviders });
+        res.json({ success: true, serviceProviders });
     } catch (error) {
         console.error('Error finding service providers:', error);
         res.status(500).json({ error });

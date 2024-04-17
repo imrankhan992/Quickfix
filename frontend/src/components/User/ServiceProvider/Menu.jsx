@@ -24,10 +24,9 @@ import { errorToast, showtoast } from "@/Toast/Toast";
 import axiosInstance from "@/ulities/axios";
 import { loadUserData } from "@/components/Actions/Registration";
 
-
 export function Menu() {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
   const logout = async () => {
@@ -35,7 +34,7 @@ export function Menu() {
       const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
       if (data?.success) {
         showtoast(data?.message);
-        
+
         dispatch(loadUserData());
         navigate("/login");
       }
@@ -43,20 +42,16 @@ export function Menu() {
       errorToast(error.response.data.message);
     }
   };
- 
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="">
-        <Button className="p-0 bg-bodycolor hover:bg-bodycolor rounded-full flex    gap-2">
+        <Button className="p-0 bg-cardbg hover:bg-cardbg rounded-full flex    gap-2">
           <AvatarPicture user={user} />
-          <div className="flex justify-start flex-col p-2">
-            <p>{user?.firstname + " " + user?.lastname}</p>
-            <p className="text-sm text-mutedcolor">{user?.role}</p>
-          </div>
+          
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 bg-cardbg shadow-lg cursor-pointer">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

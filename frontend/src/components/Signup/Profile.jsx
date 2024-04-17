@@ -37,7 +37,7 @@ const Profile = () => {
   const LogOut = async () => {
     try {
       const { data } = await axiosInstance.get(`/api/v1/logout/${user?._id}`);
-     
+
       if (data?.success) {
         dispatch(loadUserData());
         showtoast(data?.message);
@@ -46,8 +46,7 @@ const Profile = () => {
     } catch (error) {}
   };
   const dispatch = useDispatch();
-  
- 
+
   const [profile, setprofile] = useState();
   const [avatarPreview, setavatarPreview] = useState();
   const [openmap, setopenmap] = useState(false);
@@ -75,14 +74,14 @@ const Profile = () => {
       city: "",
       job: "",
       zipcode: "",
-      currentlocation:""
+      currentlocation: "",
     },
     validationSchema: submitProfileSchema,
     onSubmit: async (values, { setSubmitting }) => {
       dispatch(submitProfileAction(values));
     },
   });
- 
+
   const handleFileChange = (e) => {
     setprofile(e.currentTarget.files[0]);
     const reader = new FileReader();
@@ -95,31 +94,54 @@ const Profile = () => {
 
     reader.readAsDataURL(e.target.files[0]);
   };
+  const [allcategories, setallcategories] = useState();
+  // get all categories
+  const getallcategories = async (req, res) => {
+    try {
+      const { data } = await axiosInstance.get(
+        "/api/v1/admin/get-all-categories"
+      );
+      if (data?.success) {
+        setallcategories(data?.categories);
+      }
+    } catch (error) {
+      errorToast(error.response.data.message);
+    }
+  };
+
   useEffect(() => {
     if (CityName) {
-      setFieldValue("city",CityName)
+      setFieldValue("city", CityName);
     }
     if (ZipCode) {
-      setFieldValue("zipcode",ZipCode)
+      setFieldValue("zipcode", ZipCode);
     }
     if (currentaddress) {
-      setFieldValue("address",currentaddress)
+      setFieldValue("address", currentaddress);
     }
     if (currentLocation) {
-      setFieldValue("currentlocation",currentLocation)
+      setFieldValue("currentlocation", currentLocation);
     }
     dispatch(loadUserData);
     if (user?.address !== undefined || user?.dateOfBirth) {
       navigate("/submitprofile");
     }
+    getallcategories();
     setFieldValue("avatar", profile);
-  }, [profile, submitprofile, dispatch,CityName,ZipCode,currentaddress,currentLocation]);
+  }, [
+    profile,
+    submitprofile,
+    dispatch,
+    CityName,
+    ZipCode,
+    currentaddress,
+    currentLocation,
+  ]);
 
   const getmycurrentLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-         
           setCurrentLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -138,17 +160,16 @@ const Profile = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
- 
+
   const fetchAddressFromCoordinates = async ({ lat, lng }) => {
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU`
       );
       const data = await response.json();
-     
+
       if (data.results.length > 0) {
         const formattedAddress = data.results[0].formatted_address;
-        
 
         setcurrentaddress(formattedAddress);
       }
@@ -170,7 +191,7 @@ const Profile = () => {
     // Perform reverse geocoding to get the address
     fetchAddressFromCoordinates(newLatLng);
   };
- 
+  console.log(values);
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh]">
       <div className="w-full md:flex ">
@@ -289,7 +310,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="rounded-lg flex  flex-col mt-3 gap-3 w-full ">
                 <Label
                   htmlFor="city"
@@ -311,15 +332,13 @@ const Profile = () => {
                   <option value="Please Select Job" className="arimo" disabled>
                     Please Select Job
                   </option>
-                  <option value="Carpenter" className="arimo">
-                    Carpenter
-                  </option>
-                  <option value="Electrician" className="arimo">
-                    Electrician
-                  </option>
-                  <option value="Plumber" className="arimo">
-                    Plumber
-                  </option>
+                  {allcategories?.map((category) => {
+                    return (
+                      <option value={category?._id} className="arimo">
+                        {category?.category}
+                      </option>
+                    );
+                  })}
                 </select>
                 {/* error */}
                 <div className="flex gap-2 items-center">
@@ -407,7 +426,7 @@ const Profile = () => {
                     setCurrentLocation={setCurrentLocation}
                     setopenmap={setopenmap}
                     setcurrentCityname={setcurrentCityname} // Pass setcurrentCityname as prop
-                      setCurrentZipcode={setCurrentZipcode} // Pass setCurrentZipcode as prop
+                    setCurrentZipcode={setCurrentZipcode} // Pass setCurrentZipcode as prop
                     height={"200px"}
                     width={"100%"}
                   />
@@ -424,7 +443,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
-              
+
               {/* city */}
               <div className="rounded-lg flex  flex-col mt-3 gap-3 w-full ">
                 <Label
@@ -434,7 +453,6 @@ const Profile = () => {
                   City
                 </Label>
 
-              
                 <Input
                   id="city"
                   name="city"
@@ -446,7 +464,6 @@ const Profile = () => {
                       : ""
                   }  `}
                   placeholder="Enter City Name"
-                  
                 />
                 {/* error */}
                 <div className="flex gap-2 items-center">

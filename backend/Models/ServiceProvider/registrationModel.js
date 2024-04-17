@@ -3,10 +3,10 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
-    
-    activeStatus:{
+
+    activeStatus: {
         type: String,
-        default:"Offline"
+        default: "Offline"
     },
     lastActive: {
         type: Date,
@@ -31,20 +31,20 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    experience:{
+    experience: {
         type: String,
-        
+
     },
-    city:{
+    city: {
         type: String,
     },
-    job:{
-        type: String,
-        
+    job: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Category"
     },
-    zipcode:{
+    zipcode: {
         type: String,
-        
+
     },
     accountStatus: {
         type: String,
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["user", "admin","serviceprovider"],
+        enum: ["user", "admin", "serviceprovider"],
         default: "serviceprovider",
     },
     phoneNumber: {
@@ -84,8 +84,8 @@ const userSchema = new mongoose.Schema({
             type: Number,
         },
     },
-    verifyEmailToken:String,
-    verifyEmailExpires:Date
+    verifyEmailToken: String,
+    verifyEmailExpires: Date
 });
 userSchema.index({ currentlocation: "2dsphere" });
 //creating password reset token

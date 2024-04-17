@@ -256,7 +256,7 @@ export function ComplexNavbar({ setid }) {
     dispatch(loadUserData());
     getallcategories();
   }, []);
-  console.log(allcategories);
+ 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);

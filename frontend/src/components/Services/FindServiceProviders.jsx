@@ -7,6 +7,7 @@ import { Typography } from "@material-tailwind/react";
 import axiosInstance from "@/ulities/axios";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
+import { ImagePlacehoderSkeleton } from "./ImagePlaceHolderSkeleton";
 
 const FindServiceProviders = () => {
   const [cityCoordinates, setCityCoordinates] = useState();
@@ -43,6 +44,7 @@ const FindServiceProviders = () => {
   const [ZipCode, setZipCode] = useState("");
   const [currentservice, setcurrentservice] = useState(null);
   const [currentServiceProviders, setcurrentServiceProviders] = useState([]);
+  const [loadingserviceproviders, setloadingserviceproviders] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -82,12 +84,12 @@ const FindServiceProviders = () => {
 
     // send service id and currentlocation
     getCurrentService();
-    if (currentLocation && CityName && currentservice?.category?.category) {
+    if (currentLocation && CityName && currentservice) {
       getallserviceProvidersnearMe();
     }
-  }, [currentLocation, CityName, currentservice?.category?.category]);
+  }, [currentLocation, CityName, currentservice?.category?._id]);
   //   get address using co ordinates
-
+  // console.log(currentservice?.category);
   const fetchAddressFromCoordinates = async ({ lat, lng }) => {
     try {
       const response = await fetch(
@@ -128,7 +130,7 @@ const FindServiceProviders = () => {
   const getCurrentService = async () => {
     try {
       const { data } = await axiosInstance.get(`/api/v1/single-service/${id}`);
-      setcurrentservice(data.service);
+      setcurrentservice(data?.service);
       localStorage.setItem("currentService", JSON.stringify(data.service));
     } catch (error) {
       console.log(error);
@@ -138,12 +140,13 @@ const FindServiceProviders = () => {
   //   get all service provider based on location
   const getallserviceProvidersnearMe = async () => {
     try {
+      setloadingserviceproviders(true);
       const { data } = await axiosInstance.post(
         "/api/v1/find-serviceproviders/nearme",
         {
           city: CityName,
           currentLocation,
-          job: currentservice?.category?.category,
+          job: currentservice?.category?._id,
         },
         {
           headers: {
@@ -151,15 +154,23 @@ const FindServiceProviders = () => {
           },
         }
       );
-
-      setcurrentServiceProviders(data.serviceProviders);
+      if (data?.success) {
+        setloadingserviceproviders(false);
+        setcurrentServiceProviders(data.serviceProviders);
+      }
+      if (!data?.success) {
+        setloadingserviceproviders(false);
+        setcurrentServiceProviders(data.serviceProviders);
+      }
     } catch (error) {
       console.log(error);
+      setloadingserviceproviders(false);
     }
   };
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
+  console.log(loadingserviceproviders);
   const formatLastActive = (lastActive) => {
     const currentTime = new Date();
     const lastActiveTime = new Date(lastActive);
@@ -182,12 +193,17 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-
+  
   return (
     <div className="grid grid-cols-8 ">
-      <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 px-4 ">
-        <h3 className="pt-4 arimo text-[18px] font-bold">Carpainter</h3>
-
+      <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 px-4 scroll-auto">
+        <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
+          {currentservice?.category?.category}
+        </h3>
+        <h3 className="arimo text-[18px] font-bold underline">Title:</h3>
+        <h3 className=" arimo text-[16px] font-bold text-gray-500">
+          {currentservice?.title}
+        </h3>
         {CityName ? (
           <>
             <h3 className=" arimo text-[16px] ">Location: {CityName}</h3>
@@ -203,61 +219,78 @@ const FindServiceProviders = () => {
             </div>
           </>
         )}
-        {currentServiceProviders?.map((serviceprovider) => {
-          return (
-            <div className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
-              <div className="flex gap-3 items-center justify-center">
-                <Badge
-                  overlap="circular"
-                  color={`${
-                    serviceprovider?.activeStatus === "Offline"
-                      ? "red"
-                      : "green"
-                  }`}
-                  className={``}
-                >
-                  <Avatar
-                    src={serviceprovider?.avatar?.url}
-                    alt="Photo by Drew Beamer"
-                    className={`object-cover rounded-full w-14 h-14 border-2 border-${
-                      serviceprovider?.activeStatus === "Online"
-                        ? "online"
-                        : "offline"
+        {!loadingserviceproviders &&
+          currentServiceProviders?.map((serviceprovider) => {
+            return (
+              <div className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
+                <div className="flex gap-3 items-center justify-center">
+                  <Badge
+                    overlap="circular"
+                    color={`${
+                      serviceprovider?.activeStatus === "Offline"
+                        ? "red"
+                        : "green"
                     }`}
-                  />
-                </Badge>
-                <div>
-                  <p className="arimo ">
-                    {serviceprovider?.firstname +
-                      " " +
-                      serviceprovider?.lastname}
-                  </p>
-                  <p className="arimo text-[12px]">
-                     active{" "}
-                    {serviceprovider?.activeStatus === "Offline" &&
-                      formatLastActive(serviceprovider?.lastActive)}
-                  </p>{" "}
-                  <div className="flex justify-between items-center ">
-                    <ReactStars
-                      count={5}
-                      onChange={ratingChanged}
-                      size={20}
-                      activeColor="#ffd700"
-                      edit={false}
-                      value={3.3}
-                      half={true}
+                    className={``}
+                  >
+                    <Avatar
+                      src={serviceprovider?.avatar?.url}
+                      alt="Photo by Drew Beamer"
+                      className={`object-cover rounded-full w-14 h-14 border-2 ${
+                        serviceprovider?.activeStatus === "Online"
+                          ? "border-online"
+                          : "border-offline"
+                      }`}
                     />
-                    <p className="arimo text-[13px]">3.4</p>
+                  </Badge>
+                  <div>
+                    <p className="arimo ">
+                      {serviceprovider?.firstname +
+                        " " +
+                        serviceprovider?.lastname}
+                    </p>
+                    <p className="arimo text-[12px]">
+                      active{" "}
+                      {serviceprovider?.activeStatus === "Offline" &&
+                        formatLastActive(serviceprovider?.lastActive)}
+                    </p>{" "}
+                    <div className="flex justify-between items-center ">
+                      <ReactStars
+                        count={5}
+                        onChange={ratingChanged}
+                        size={20}
+                        activeColor="#ffd700"
+                        edit={false}
+                        value={3.3}
+                        half={true}
+                      />
+                      <p className="arimo text-[13px]">3.4</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <BadgeOutline  status={serviceprovider?.activeStatus==="Online"?"Online":"Offline"} color={`${serviceprovider?.activeStatus==="Offline"?"bg-offline":"bg-online"}`} />
+                <div>
+                  <BadgeOutline
+                    status={
+                      serviceprovider?.activeStatus === "Online"
+                        ? "Online"
+                        : "Offline"
+                    }
+                    color={`${
+                      serviceprovider?.activeStatus === "Offline"
+                        ? "bg-offline"
+                        : "bg-online"
+                    }`}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        {/*if not service provider found then display not found  */}
+        {currentServiceProviders?.length <= 0 && (
+          <p className="text-red-500">No service providers found</p>
+        )}
+        {loadingserviceproviders && <ImagePlacehoderSkeleton />}
       </div>
       <div className="col-span-6 relative">
         <Find
