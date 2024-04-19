@@ -36,7 +36,7 @@ module.exports = withMT({
         primarycolor:"#FFFFFF",
         primarycolorhover:"#042c6e",
         secondarycolor:"#7CACF8",
-        buttoncolor:"#B9FF66",
+        buttoncolor:"#9EDB30",
         thirdcolor:"#F3F3F3",
         inputbg_color:"#171F32",
         hovercolor:"#F3F7FD",

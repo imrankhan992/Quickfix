@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { Avatar, Badge } from "@material-tailwind/react";
+
 import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
-import { Typography } from "@material-tailwind/react";
+
 import axiosInstance from "@/ulities/axios";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import { ImagePlacehoderSkeleton } from "./ImagePlaceHolderSkeleton";
-
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Typography,
+  Avatar,
+  Badge,
+  ButtonGroup,
+  Button,
+} from "@material-tailwind/react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import ChangePriceDialog from "./ChangePriceDialog";
+import PickTotalServie from "./PickTotalServie";
 const FindServiceProviders = () => {
   const [cityCoordinates, setCityCoordinates] = useState();
   async function getCityBoundaryCoordinates(location) {
@@ -45,6 +58,7 @@ const FindServiceProviders = () => {
   const [currentservice, setcurrentservice] = useState(null);
   const [currentServiceProviders, setcurrentServiceProviders] = useState([]);
   const [loadingserviceproviders, setloadingserviceproviders] = useState(false);
+  const [sucess, setsucess] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -157,10 +171,16 @@ const FindServiceProviders = () => {
       if (data?.success) {
         setloadingserviceproviders(false);
         setcurrentServiceProviders(data.serviceProviders);
+        setsucess(data?.length===0 &&("show"));
+        if (data?.serviceProviders?.length>=1) {
+          setsucess("hide skeleton");
+        }
+        console.log(data?.length);
       }
       if (!data?.success) {
         setloadingserviceproviders(false);
         setcurrentServiceProviders(data.serviceProviders);
+        setsucess("not show");
       }
     } catch (error) {
       console.log(error);
@@ -193,17 +213,125 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-  
+  console.log(sucess);
   return (
     <div className="grid grid-cols-8 ">
-      <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 px-4 scroll-auto">
+      <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 p-4 scroll-auto">
         <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
           {currentservice?.category?.category}
         </h3>
         <h3 className="arimo text-[18px] font-bold underline">Title:</h3>
-        <h3 className=" arimo text-[16px] font-bold text-gray-500">
+        {/* <h3 className=" arimo text-[16px] font-bold text-gray-500">
           {currentservice?.title}
-        </h3>
+        </h3> */}
+        <Card
+          shadow={false}
+          className="relative grid h-[6rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
+        >
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
+            style={{
+              backgroundImage: `url(${currentservice?.picture?.url}), url('/path/to/fallback-image.jpg')`,
+            }}
+          >
+            <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
+          </CardHeader>
+          <CardBody className="relative  px-6 md:px-12">
+            <Typography
+              variant="h5"
+              color="white"
+              className="mb-6 font-medium arimo leading-[1.5]"
+            >
+              {currentservice?.title}
+            </Typography>
+          </CardBody>
+        </Card>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col ">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex gap-3 items-center ">
+                <h3 className="text-2xl">PKR</h3>
+                <h3 className="text-3xl font-bold">{currentservice?.price}</h3>
+              </div>
+              <ChangePriceDialog currentservice={currentservice} />
+            </div>
+            <Label
+              htmlFor="hellopassword"
+              className="font-normal text-[14px] arimo text-hoverblack"
+            >
+              You can change the recommended Price
+            </Label>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
+              {" "}
+              <h3 className="text-[1rem]">
+                Total number of {currentservice?.title}
+              </h3>
+              <h3 className="text-3xl font-bold">1</h3>
+            </div>
+            <PickTotalServie currentservice={currentservice} />
+          </div>
+          {/* location */}
+          <div className="flex flex-col gap-2">
+            <Label
+              htmlFor="address"
+              className="arimo text-[18px] font-bold underline text-hoverblack"
+            >
+              Your Address:
+            </Label>
+            <div className="flex justify-end">
+              <p className="text-sm cursor-pointer">Pick my current location</p>
+            </div>
+            <div>
+              <Input
+                // autoComplete="off"
+
+                className={` arimo text-[16px]  bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl`}
+                type="text"
+                id="address"
+                name=""
+                placeholder="Type your address"
+              />
+            </div>
+          </div>
+          {/* date and time */}
+          <div className="flex flex-col gap-2">
+            <Label
+              htmlFor="dateandtime"
+              className="arimo text-[18px] font-bold underline text-hoverblack"
+            >
+              Select Date and Time:
+            </Label>
+            <div className="w-full">
+              <input
+                type="datetime-local"
+                id="dateandtime"
+                name="datetime"
+                className="arimo bg-primarycolor text-[16px] w-full focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl"
+              />
+            </div>
+          </div>
+          {/* find */}
+          <div>
+            <Button className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl">
+              Find {currentservice?.category?.category}
+            </Button>
+          </div>
+        </div>
+        {/*  */}
+      </div>
+      <div className="col-span-4 relative">
+        <Find
+          currentLocation={currentLocation}
+          currentServiceProviders={currentServiceProviders}
+          cityCoordinates={cityCoordinates}
+        />
+      </div>
+      <div className="col-span-2 gap-4 px-3 bg-cardbg min-h-screen flex flex-col py-4">
         {CityName ? (
           <>
             <h3 className=" arimo text-[16px] ">Location: {CityName}</h3>
@@ -287,17 +415,12 @@ const FindServiceProviders = () => {
             );
           })}
         {/*if not service provider found then display not found  */}
-        {currentServiceProviders?.length <= 0 && (
-          <p className="text-red-500">No service providers found</p>
-        )}
-        {loadingserviceproviders && <ImagePlacehoderSkeleton />}
-      </div>
-      <div className="col-span-6 relative">
-        <Find
-          currentLocation={currentLocation}
-          currentServiceProviders={currentServiceProviders}
-          cityCoordinates={cityCoordinates}
-        />
+        { sucess==="show" && (
+            <p className="text-red-500">No service providers found</p>
+          )}
+        {(currentServiceProviders?.length<=0) && (<div className={sucess==="show"?"hidden":""}>
+          <ImagePlacehoderSkeleton  />
+        </div>)}
       </div>
     </div>
   );

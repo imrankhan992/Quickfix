@@ -523,7 +523,7 @@ exports.findserviceProviders = async (req, res) => {
             job
         });
         if (serviceProviders?.length === 0) {
-            return res.json({ success: false, serviceProviders });
+            return res.json({ success: true, serviceProviders, length: 0 });
         }
 
         res.json({ success: true, serviceProviders });
