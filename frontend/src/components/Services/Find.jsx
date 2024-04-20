@@ -57,10 +57,7 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
     setduration(result.routes[0].legs[0].duration.text);
   };
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU",
-  });
+  
 
   const [map, setMap] = useState(null);
 
@@ -85,7 +82,7 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
     setMap(null);
   }, []);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  return isLoaded ? (
+  return  (
     <>
     
       <div className=" relative ">
@@ -244,9 +241,8 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
         </>
       </GoogleMap>
     </>
-  ) : (
-    <></>
-  );
+  ) 
+
 }
 
 export default Find;

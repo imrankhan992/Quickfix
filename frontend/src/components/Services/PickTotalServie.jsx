@@ -16,7 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const PickTotalServie = ({ currentservice }) => {
+const PickTotalServie = ({
+  currentservice,
+  totalnumber,
+  price,
+  setprice,
+  settotalnumber,
+  setnewprice
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -39,8 +46,12 @@ const PickTotalServie = ({ currentservice }) => {
             </p>
             <Input
               id="name"
-              defaultValue={1}
+              value={totalnumber <= 0 ? settotalnumber(1) : totalnumber}
+              type="number"
               className=" border-none text-5xl"
+              onChange={(e) => {
+                settotalnumber(e.target.value);
+              }}
             />
           </div>
         </div>

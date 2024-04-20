@@ -3,7 +3,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 
 import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
-
+import "./FindServiceProvider.css";
 import axiosInstance from "@/ulities/axios";
 import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
@@ -17,11 +17,19 @@ import {
   Badge,
   ButtonGroup,
   Button,
+  Switch,
 } from "@material-tailwind/react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import ChangePriceDialog from "./ChangePriceDialog";
 import PickTotalServie from "./PickTotalServie";
+import GoogleMapAddress from "./GoogleMap";
+import GoogleMapsLoader from "./GoogleLoader";
+import { setDate } from "date-fns";
+import { useFormik } from "formik";
+import { FindServiceProvidersSchema } from "@/Schemas";
+import { MdOutlineErrorOutline } from "react-icons/md";
+
 const FindServiceProviders = () => {
   const [cityCoordinates, setCityCoordinates] = useState();
   async function getCityBoundaryCoordinates(location) {
@@ -59,8 +67,34 @@ const FindServiceProviders = () => {
   const [currentServiceProviders, setcurrentServiceProviders] = useState([]);
   const [loadingserviceproviders, setloadingserviceproviders] = useState(false);
   const [sucess, setsucess] = useState("");
+  // ordering states
+  const [price, setprice] = useState(0);
+  const [totalnumber, settotalnumber] = useState(1);
+  const [newprice, setnewprice] = useState(0);
+  const [recommendedprice, setrecommendedprice] = useState(1);
+  const [dateandtime, setdateandtime] = useState("");
+  const [address, setaddress] = useState("");
   const { id } = useParams();
 
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleClick,
+    handleSubmit,
+    errors,
+    touched,
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      price: "",
+      dateandtime: "",
+      address: "",
+      quantity: "",
+    },
+    validationSchema: FindServiceProvidersSchema,
+    onSubmit: async (values, { setSubmitting }) => {},
+  });
   useEffect(() => {
     if (currentLocation === null) {
       if (navigator.geolocation) {
@@ -97,11 +131,37 @@ const FindServiceProviders = () => {
     }
 
     // send service id and currentlocation
-    getCurrentService();
+
     if (currentLocation && CityName && currentservice) {
       getallserviceProvidersnearMe();
     }
-  }, [currentLocation, CityName, currentservice?.category?._id]);
+    if (totalnumber) {
+      setnewprice(totalnumber * price);
+    }
+    if (totalnumber <= 0) {
+      settotalnumber(1);
+    }
+
+    if (address || dateandtime || newprice || totalnumber) {
+      setFieldValue("price", newprice);
+      setFieldValue("dateandtime", dateandtime);
+      setFieldValue("address", address);
+      setFieldValue("quantity", totalnumber);
+    }
+  }, [
+    currentLocation,
+    CityName,
+    currentservice?.category?._id,
+    totalnumber,
+    recommendedprice,
+    address,
+    dateandtime,
+    newprice,
+  ]);
+  useEffect(() => {
+    getCurrentService();
+  }, []);
+
   //   get address using co ordinates
   // console.log(currentservice?.category);
   const fetchAddressFromCoordinates = async ({ lat, lng }) => {
@@ -138,13 +198,15 @@ const FindServiceProviders = () => {
       console.error("Error fetching address:", error);
     }
   };
-
+  console.log(price);
   //   get current service from backend by using id
 
   const getCurrentService = async () => {
     try {
       const { data } = await axiosInstance.get(`/api/v1/single-service/${id}`);
       setcurrentservice(data?.service);
+      setprice(data?.service?.price);
+      setnewprice(data?.service?.price);
       localStorage.setItem("currentService", JSON.stringify(data.service));
     } catch (error) {
       console.log(error);
@@ -171,11 +233,10 @@ const FindServiceProviders = () => {
       if (data?.success) {
         setloadingserviceproviders(false);
         setcurrentServiceProviders(data.serviceProviders);
-        setsucess(data?.length===0 &&("show"));
-        if (data?.serviceProviders?.length>=1) {
+        setsucess(data?.length === 0 && "show");
+        if (data?.serviceProviders?.length >= 1) {
           setsucess("hide skeleton");
         }
-        console.log(data?.length);
       }
       if (!data?.success) {
         setloadingserviceproviders(false);
@@ -190,7 +251,13 @@ const FindServiceProviders = () => {
   const ratingChanged = (newRating) => {
     console.log(newRating);
   };
-  console.log(loadingserviceproviders);
+  let recommendedPrice = [];
+  if (currentservice) {
+    for (let i = 1; i <= 5; i++) {
+      recommendedPrice.push(currentservice?.price + i * 20);
+    }
+  }
+
   const formatLastActive = (lastActive) => {
     const currentTime = new Date();
     const lastActiveTime = new Date(lastActive);
@@ -213,10 +280,14 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-  console.log(sucess);
+  console.log(values);
+  console.log(errors);
   return (
     <div className="grid grid-cols-8 ">
-      <div className="bg-cardbg min-h-screen flex flex-col col-span-2 gap-3 p-4 scroll-auto">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
+      >
         <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
           {currentservice?.category?.category}
         </h3>
@@ -224,39 +295,78 @@ const FindServiceProviders = () => {
         {/* <h3 className=" arimo text-[16px] font-bold text-gray-500">
           {currentservice?.title}
         </h3> */}
-        <Card
-          shadow={false}
-          className="relative grid h-[6rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
-        >
-          <CardHeader
-            floated={false}
+
+        <div>
+          <Card
             shadow={false}
-            color="transparent"
-            className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
-            style={{
-              backgroundImage: `url(${currentservice?.picture?.url}), url('/path/to/fallback-image.jpg')`,
-            }}
+            className="relative grid h-[6rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
           >
-            <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
-          </CardHeader>
-          <CardBody className="relative  px-6 md:px-12">
-            <Typography
-              variant="h5"
-              color="white"
-              className="mb-6 font-medium arimo leading-[1.5]"
+            <CardHeader
+              floated={false}
+              shadow={false}
+              color="transparent"
+              className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
+              style={{
+                backgroundImage: `url(${currentservice?.picture?.url}), url('/path/to/fallback-image.jpg')`,
+              }}
             >
-              {currentservice?.title}
-            </Typography>
-          </CardBody>
-        </Card>
+              <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
+            </CardHeader>
+            <CardBody className="relative  px-6 md:px-12">
+              <Typography
+                variant="h5"
+                color="white"
+                className="mb-6 font-medium arimo leading-[1.5]"
+              >
+                {currentservice?.title}
+              </Typography>
+            </CardBody>
+          </Card>
+        </div>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col ">
             <div className="flex items-center justify-between gap-4">
               <div className="flex gap-3 items-center ">
                 <h3 className="text-2xl">PKR</h3>
-                <h3 className="text-3xl font-bold">{currentservice?.price}</h3>
+                <h3 className="text-3xl font-bold">{newprice}</h3>
               </div>
-              <ChangePriceDialog currentservice={currentservice} />
+              <ChangePriceDialog
+                newprice={newprice}
+                currentservice={currentservice}
+                price={price}
+                setprice={setprice}
+                totalnumber={totalnumber}
+                setnewprice={setnewprice}
+              />
+            </div>
+
+            <div className="flex gap-2 justify-between">
+              {recommendedPrice?.length > 0 &&
+                recommendedPrice?.map((element) => {
+                  return (
+                    <>
+                      <p
+                        className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
+                        onClick={() => {
+                          setnewprice(element * totalnumber);
+                          setprice(element);
+                        }}
+                      >
+                        {element}
+                      </p>
+                    </>
+                  );
+                })}
+
+              {recommendedPrice?.length === 0 && (
+                <div className="max-w-full animate-pulse">
+                  <Typography
+                    as="div"
+                    variant="h1"
+                    className="mb-4 h-3 w-56 rounded-full bg-gray-300"
+                  ></Typography>
+                </div>
+              )}
             </div>
             <Label
               htmlFor="hellopassword"
@@ -271,9 +381,16 @@ const FindServiceProviders = () => {
               <h3 className="text-[1rem]">
                 Total number of {currentservice?.title}
               </h3>
-              <h3 className="text-3xl font-bold">1</h3>
+              <h3 className="text-3xl font-bold">{totalnumber}</h3>
             </div>
-            <PickTotalServie currentservice={currentservice} />
+            <PickTotalServie
+              price={price}
+              setprice={setprice}
+              totalnumber={totalnumber}
+              settotalnumber={settotalnumber}
+              currentservice={currentservice}
+              setnewprice={setnewprice}
+            />
           </div>
           {/* location */}
           <div className="flex flex-col gap-2">
@@ -287,15 +404,25 @@ const FindServiceProviders = () => {
               <p className="text-sm cursor-pointer">Pick my current location</p>
             </div>
             <div>
-              <Input
-                // autoComplete="off"
-
-                className={` arimo text-[16px]  bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl`}
-                type="text"
-                id="address"
-                name=""
-                placeholder="Type your address"
-              />
+              <GoogleMapsLoader>
+                <GoogleMapAddress
+                  handleChange={handleChange}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  setaddress={setaddress}
+                />
+              </GoogleMapsLoader>
+              <div className="flex gap-2 items-center ">
+                {errors?.address && touched?.address ? (
+                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
+                    <MdOutlineErrorOutline className="text-xl" />
+                    {errors?.address}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
           {/* date and time */}
@@ -307,31 +434,64 @@ const FindServiceProviders = () => {
               Select Date and Time:
             </Label>
             <div className="w-full">
-              <input
+              <Input
                 type="datetime-local"
                 id="dateandtime"
-                name="datetime"
-                className="arimo bg-primarycolor text-[16px] w-full focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl"
+                name="dateandtime"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
+                  errors?.dateandtime && touched?.dateandtime ? "border-errorcolor" : ""
+                }`}
               />
+              <div className="flex gap-2 items-center ">
+                {errors?.dateandtime && touched?.dateandtime ? (
+                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
+                    <MdOutlineErrorOutline className="text-xl" />
+                    {errors?.dateandtime}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
           {/* find */}
+          <Switch
+            label={
+              <div className="ml-4">
+                <Typography color="blue-gray" className="arimo font-semibold">
+                  Automatically accept the nearest{" "}
+                  {currentservice?.category?.category} for PKR {newprice}
+                </Typography>
+              </div>
+            }
+            containerProps={{
+              className: "-mt-5 ",
+            }}
+          />
+
           <div>
-            <Button className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl">
+            <Button
+              type="submit"
+              className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl"
+            >
               Find {currentservice?.category?.category}
             </Button>
           </div>
         </div>
         {/*  */}
-      </div>
-      <div className="col-span-4 relative">
-        <Find
-          currentLocation={currentLocation}
-          currentServiceProviders={currentServiceProviders}
-          cityCoordinates={cityCoordinates}
-        />
-      </div>
-      <div className="col-span-2 gap-4 px-3 bg-cardbg min-h-screen flex flex-col py-4">
+      </form>
+      <main className="w-full col-span-4 relative">
+        <GoogleMapsLoader>
+          <Find
+            currentLocation={currentLocation}
+            currentServiceProviders={currentServiceProviders}
+            cityCoordinates={cityCoordinates}
+          />
+        </GoogleMapsLoader>
+      </main>
+      <aside className="overflow-auto h-screen  col-span-2 gap-4 px-3 bg-cardbg sticky top-0 flex flex-col py-4">
         {CityName ? (
           <>
             <h3 className=" arimo text-[16px] ">Location: {CityName}</h3>
@@ -415,13 +575,15 @@ const FindServiceProviders = () => {
             );
           })}
         {/*if not service provider found then display not found  */}
-        { sucess==="show" && (
-            <p className="text-red-500">No service providers found</p>
-          )}
-        {(currentServiceProviders?.length<=0) && (<div className={sucess==="show"?"hidden":""}>
-          <ImagePlacehoderSkeleton  />
-        </div>)}
-      </div>
+        {sucess === "show" && (
+          <p className="text-red-500">No service providers found</p>
+        )}
+        {currentServiceProviders?.length <= 0 && (
+          <div className={sucess === "show" ? "hidden" : ""}>
+            <ImagePlacehoderSkeleton />
+          </div>
+        )}
+      </aside>
     </div>
   );
 };
