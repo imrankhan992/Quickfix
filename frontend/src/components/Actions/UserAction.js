@@ -9,6 +9,6 @@ export const userRegisterAction = (userData) => async (dispatch) => {
 
         dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: USER_REGISTER_FAIL, payload: error.response.data.message })
+        dispatch({ type: USER_REGISTER_FAIL, payload: error?.response?.data?.message })
     }
 }

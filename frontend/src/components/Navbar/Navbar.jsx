@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { loadUserData } from "../Actions/Registration";
 import axiosInstance from "@/ulities/axios";
+import { errorToast } from "@/Toast/Toast";
 
 // profile menu component
 const profileMenuItems = [
@@ -248,7 +249,8 @@ export function ComplexNavbar({ setid }) {
         setallcategories(data?.categories);
       }
     } catch (error) {
-      errorToast(error.response.data.message);
+      errorToast(error?.response?.data?.message);
+      console.log(error);
     }
   };
   const dispatch = useDispatch();

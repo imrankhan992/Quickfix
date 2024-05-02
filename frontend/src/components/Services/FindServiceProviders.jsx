@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AspectRatio } from "../ui/aspect-ratio";
+
 
 import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
@@ -29,8 +29,18 @@ import { setDate } from "date-fns";
 import { useFormik } from "formik";
 import { FindServiceProvidersSchema } from "@/Schemas";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import { useSocketContext } from "@/context/SocketContext";
+import { useSelector } from "react-redux";
+import useSendOrder from "@/Hooks/useSendOrder";
+
 
 const FindServiceProviders = () => {
+  const { socket } = useSocketContext()
+  const  { onlineUsers} = useSocketContext()
+  const {sendOrder,loading} = useSendOrder()
+  const { user } = useSelector((state) => state.user);
+   onlineUsers.includes(user?._id);
+  
   const [cityCoordinates, setCityCoordinates] = useState();
   async function getCityBoundaryCoordinates(location) {
     try {
@@ -93,7 +103,10 @@ const FindServiceProviders = () => {
       quantity: "",
     },
     validationSchema: FindServiceProvidersSchema,
-    onSubmit: async (values, { setSubmitting }) => {},
+    onSubmit: async (values, { setSubmitting }) => {
+      // sendOrder(values)
+      socket?.emit('send', "hello imran khan")
+    },
   });
   useEffect(() => {
     if (currentLocation === null) {
@@ -198,7 +211,7 @@ const FindServiceProviders = () => {
       console.error("Error fetching address:", error);
     }
   };
-  console.log(price);
+ 
   //   get current service from backend by using id
 
   const getCurrentService = async () => {
@@ -280,8 +293,11 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-  console.log(values);
-  console.log(errors);
+  
+  const sendMessage = (message) => {
+    socket.emit("message",message)
+    
+};
   return (
     <div className="grid grid-cols-8 ">
       <form
@@ -401,7 +417,7 @@ const FindServiceProviders = () => {
               Your Address:
             </Label>
             <div className="flex justify-end">
-              <p className="text-sm cursor-pointer">Pick my current location</p>
+              <p className="text-sm cursor-pointer"  onClick={()=>{ sendMessage("hello imran")}}>Pick my current location</p>
             </div>
             <div>
               <GoogleMapsLoader>
@@ -473,7 +489,8 @@ const FindServiceProviders = () => {
 
           <div>
             <Button
-              type="submit"
+           
+              // type="submit"
               className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl"
             >
               Find {currentservice?.category?.category}
@@ -515,7 +532,7 @@ const FindServiceProviders = () => {
                   <Badge
                     overlap="circular"
                     color={`${
-                      serviceprovider?.activeStatus === "Offline"
+                      !onlineUsers.includes(serviceprovider?._id)
                         ? "red"
                         : "green"
                     }`}
@@ -525,7 +542,7 @@ const FindServiceProviders = () => {
                       src={serviceprovider?.avatar?.url}
                       alt="Photo by Drew Beamer"
                       className={`object-cover rounded-full w-14 h-14 border-2 ${
-                        serviceprovider?.activeStatus === "Online"
+                        onlineUsers.includes(serviceprovider?._id)
                           ? "border-online"
                           : "border-offline"
                       }`}
@@ -539,7 +556,7 @@ const FindServiceProviders = () => {
                     </p>
                     <p className="arimo text-[12px]">
                       active{" "}
-                      {serviceprovider?.activeStatus === "Offline" &&
+                      {!onlineUsers.includes(serviceprovider?._id) &&
                         formatLastActive(serviceprovider?.lastActive)}
                     </p>{" "}
                     <div className="flex justify-between items-center ">
@@ -560,12 +577,12 @@ const FindServiceProviders = () => {
                 <div>
                   <BadgeOutline
                     status={
-                      serviceprovider?.activeStatus === "Online"
+                      onlineUsers.includes(serviceprovider?._id)
                         ? "Online"
                         : "Offline"
                     }
                     color={`${
-                      serviceprovider?.activeStatus === "Offline"
+                      !onlineUsers.includes(serviceprovider?._id)
                         ? "bg-offline"
                         : "bg-online"
                     }`}

@@ -9,7 +9,7 @@ export const Registration = (userData) => async (dispatch) => {
 
         dispatch({ type: REGISTERATION_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: REGISTERATION_FAIL, payload: error.response.data.message })
+        dispatch({ type: REGISTERATION_FAIL, payload: error?.response?.data?.message })
     }
 }
 
@@ -21,7 +21,7 @@ export const submitProfileAction = (userData) => async (dispatch) => {
 
         dispatch({ type: SUBMIT_PROFILE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: SUBMIT_PROFILE_FAIL, payload: error.response.data.message })
+        dispatch({ type: SUBMIT_PROFILE_FAIL, payload: error?.response?.data?.message })
     }
 }
 
@@ -35,7 +35,7 @@ export const loadUserData = () => async (dispatch) => {
 
         dispatch({ type: LOAD_USER_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.message })
+        dispatch({ type: LOAD_USER_FAIL, payload: error?.response?.data?.message })
     }
 }
 
@@ -47,7 +47,7 @@ export const loginAction = (userData) => async (dispatch) => {
 
         dispatch({ type: LOGIN_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: LOGIN_FAIL, payload: error.response.data.message })
+        dispatch({ type: LOGIN_FAIL, payload: error?.response?.data?.message})
     }
 }
 

@@ -191,7 +191,7 @@ const Profile = () => {
     // Perform reverse geocoding to get the address
     fetchAddressFromCoordinates(newLatLng);
   };
-  console.log(values);
+ 
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh]">
       <div className="w-full md:flex ">
