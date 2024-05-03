@@ -2,6 +2,7 @@ const express = require("express");
 const serviceProviderRegistration = require("./Routes/ServiceProvider/Registration/Registration");
 const AdminRoute = require("./Routes/Admin/AdminRoute");
 const userroute = require("./Routes/User/userRoute");
+const orderRouter = require("./Routes/Orders/order.route")
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -42,6 +43,7 @@ app.use(
 app.use("/api/v1/", serviceProviderRegistration);
 app.use("/api/v1/", AdminRoute);
 app.use("/api/v1/", userroute);
+app.use("/api/v1/order",orderRouter)
 
 // export const getReceiverSocketId = (receiverId) => {
 //     return userSocketMap[receiverId]
@@ -52,9 +54,9 @@ const userSocketMap = {}; // {userId: socketId}
 io.on("connection", (socket) => {
 
     console.log("a user connected", socket.id);
-    socket.on('message', (data) => {
-        
-        socket.broadcast.emit('message', data);
+    socket.on('order', (data) => {
+
+        socket.broadcast.emit('order', data);
     });
 
 
@@ -76,4 +78,4 @@ io.on("connection", (socket) => {
     });
 });
 // console.log(userSocketMap);
-module.exports = { app, server };
+module.exports = { app, server,io };

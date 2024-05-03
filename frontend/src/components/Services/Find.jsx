@@ -20,7 +20,8 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import pin from "../../assets/pin.gif";
-import ReactStars  from 'react-rating-stars-component';
+import ReactStars from "react-rating-stars-component";
+import useMapZooming from "@/Hooks/useMapZooming";
 
 const containerStyle = {
   width: "100%",
@@ -32,7 +33,12 @@ const center = {
   lng: 69.3451,
 };
 
-function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
+function Find({
+  currentLocation,
+  currentServiceProviders,
+  cityCoordinates,
+  mapTracking,
+}) {
   const [openPopover, setOpenPopover] = useState(false);
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
@@ -57,8 +63,6 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
     setduration(result.routes[0].legs[0].duration.text);
   };
 
-  
-
   const [map, setMap] = useState(null);
 
   const onLoad = React.useCallback(function callback(map) {
@@ -82,9 +86,10 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
     setMap(null);
   }, []);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  return  (
+  const {zoom}=useMapZooming()
+  console.log(zoom,"this is zoom");
+  return (
     <>
-    
       <div className=" relative ">
         <Popover open={isPopoverOpen} handler={setIsPopoverOpen}>
           <PopoverHandler>
@@ -98,21 +103,25 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
               className="absolute cursor-pointer right-4  text-xl top-2 border-hoverblack rounded-full border mb-2 text-hoverblack "
             />
             <div className="mb-2 flex items-center justify-between gap-4 mt-2">
-            <Badge overlap="circular" color={`${
-                    singleserviceprovider?.activeStatus === "Offline"
-                      ? "red"
-                      : "green"
-                  }`} className="">
-                  <Avatar
-                    src={singleserviceprovider?.avatar?.url}
-                    alt="Photo by Drew Beamer"
-                    className={`object-cover rounded-full w-14 h-14 border-2 border-${
-                        singleserviceprovider?.activeStatus === "Online"
-                          ? "online"
-                          : "offline"
-                      }`}
-                  />
-                </Badge>
+              <Badge
+                overlap="circular"
+                color={`${
+                  singleserviceprovider?.activeStatus === "Offline"
+                    ? "red"
+                    : "green"
+                }`}
+                className=""
+              >
+                <Avatar
+                  src={singleserviceprovider?.avatar?.url}
+                  alt="Photo by Drew Beamer"
+                  className={`object-cover rounded-full w-14 h-14 border-2 border-${
+                    singleserviceprovider?.activeStatus === "Online"
+                      ? "online"
+                      : "offline"
+                  }`}
+                />
+              </Badge>
               <Button
                 variant="gradient"
                 size="sm"
@@ -128,8 +137,16 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
                   singleserviceprovider?.lastname}
               </Typography>
               <Chip
-                value={singleserviceprovider?.activeStatus==="Online"?"Online":"Offline"}
-                className={`rounded-full px-2 py-1 font-medium capitalize tracking-wide ${singleserviceprovider?.activeStatus==="Online"?"bg-online":"bg-offline"}`}
+                value={
+                  singleserviceprovider?.activeStatus === "Online"
+                    ? "Online"
+                    : "Offline"
+                }
+                className={`rounded-full px-2 py-1 font-medium capitalize tracking-wide ${
+                  singleserviceprovider?.activeStatus === "Online"
+                    ? "bg-online"
+                    : "bg-offline"
+                }`}
               />
             </div>
             <Typography
@@ -151,15 +168,15 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
                 </Typography>
               </div>
               <div className="flex items-center gap-1">
-              <ReactStars
-                      count={5}
-                      onChange={ratingChanged}
-                      size={20}
-                      activeColor="#ffd700"
-                      edit={false}
-                      value={3.3}
-                      half={true}
-                    />
+                <ReactStars
+                  count={5}
+                  onChange={ratingChanged}
+                  size={20}
+                  activeColor="#ffd700"
+                  edit={false}
+                  value={3.3}
+                  half={true}
+                />
                 <Typography
                   color="gray"
                   className="text-xs font-medium text-blue-gray-500"
@@ -195,7 +212,8 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={currentLocation ? currentLocation : center}
-        zoom={currentLocation || currentServiceProviders.length > 0 ? 12 : 5}
+        zoom={mapTracking?zoom: 12}
+        // zoom={zoom}
         options={options}
       >
         <>
@@ -241,8 +259,7 @@ function Find({ currentLocation, currentServiceProviders, cityCoordinates }) {
         </>
       </GoogleMap>
     </>
-  ) 
-
+  );
 }
 
 export default Find;

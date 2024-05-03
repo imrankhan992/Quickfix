@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-
 import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
 import "./FindServiceProvider.css";
@@ -32,15 +31,15 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 import { useSocketContext } from "@/context/SocketContext";
 import { useSelector } from "react-redux";
 import useSendOrder from "@/Hooks/useSendOrder";
-
+import { FindingServiceProviders } from "../Drawer/FindingServiceProviders.";
 
 const FindServiceProviders = () => {
-  const { socket } = useSocketContext()
-  const  { onlineUsers} = useSocketContext()
-  const {sendOrder,loading} = useSendOrder()
+  const { socket, newOrder, onlineUsers } = useSocketContext();
+
+  const { sendOrder, loading, mapTracking, setMapTracking } = useSendOrder();
   const { user } = useSelector((state) => state.user);
-   onlineUsers.includes(user?._id);
-  
+  onlineUsers.includes(user?._id);
+
   const [cityCoordinates, setCityCoordinates] = useState();
   async function getCityBoundaryCoordinates(location) {
     try {
@@ -101,11 +100,13 @@ const FindServiceProviders = () => {
       dateandtime: "",
       address: "",
       quantity: "",
+      clientId: "",
+      serviceId: "",
+      CityName: "",
     },
     validationSchema: FindServiceProvidersSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      // sendOrder(values)
-      socket?.emit('send', "hello imran khan")
+      await sendOrder(values);
     },
   });
   useEffect(() => {
@@ -148,32 +149,46 @@ const FindServiceProviders = () => {
     if (currentLocation && CityName && currentservice) {
       getallserviceProvidersnearMe();
     }
+    if (CityName) {
+      setFieldValue("CityName", CityName);
+    }
+  }, [currentLocation, CityName, currentservice?.category?._id]);
+  useEffect(() => {
+    getCurrentService();
+    if (address) {
+      setFieldValue("address", address);
+    }
+    if (dateandtime) {
+      setFieldValue("dateandtime", dateandtime);
+    }
+    if (newprice) {
+      setFieldValue("price", newprice);
+    }
+    if (totalnumber) {
+      setFieldValue("quantity", totalnumber);
+    }
     if (totalnumber) {
       setnewprice(totalnumber * price);
     }
-    if (totalnumber <= 0) {
+    if (totalnumber === 0) {
       settotalnumber(1);
     }
-
-    if (address || dateandtime || newprice || totalnumber) {
-      setFieldValue("price", newprice);
-      setFieldValue("dateandtime", dateandtime);
-      setFieldValue("address", address);
-      setFieldValue("quantity", totalnumber);
+    if (user?._id) {
+      setFieldValue("clientId", user?._id);
+    }
+    if (currentservice?._id) {
+      setFieldValue("serviceId", currentservice?._id);
     }
   }, [
-    currentLocation,
-    CityName,
-    currentservice?.category?._id,
+    user?._id,
+    currentservice?.id,
+
     totalnumber,
     recommendedprice,
     address,
     dateandtime,
     newprice,
   ]);
-  useEffect(() => {
-    getCurrentService();
-  }, []);
 
   //   get address using co ordinates
   // console.log(currentservice?.category);
@@ -211,7 +226,7 @@ const FindServiceProviders = () => {
       console.error("Error fetching address:", error);
     }
   };
- 
+
   //   get current service from backend by using id
 
   const getCurrentService = async () => {
@@ -293,218 +308,269 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-  
-  const sendMessage = (message) => {
-    socket.emit("message",message)
-    
-};
+  console.log(newOrder, "new order");
   return (
     <div className="grid grid-cols-8 ">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
-      >
-        <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
-          {currentservice?.category?.category}
-        </h3>
-        <h3 className="arimo text-[18px] font-bold underline">Title:</h3>
-        {/* <h3 className=" arimo text-[16px] font-bold text-gray-500">
+      {!mapTracking && (
+        <form
+          onSubmit={handleSubmit}
+          className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
+        >
+          <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
+            {currentservice?.category?.category}
+          </h3>
+          <h3 className="arimo text-[18px] font-bold underline">Title:</h3>
+          {/* <h3 className=" arimo text-[16px] font-bold text-gray-500">
           {currentservice?.title}
         </h3> */}
 
-        <div>
-          <Card
-            shadow={false}
-            className="relative grid h-[6rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
-          >
-            <CardHeader
-              floated={false}
+          <div>
+            <Card
               shadow={false}
-              color="transparent"
-              className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
-              style={{
-                backgroundImage: `url(${currentservice?.picture?.url}), url('/path/to/fallback-image.jpg')`,
-              }}
+              className="relative grid h-[6rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
             >
-              <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
-            </CardHeader>
-            <CardBody className="relative  px-6 md:px-12">
-              <Typography
-                variant="h5"
-                color="white"
-                className="mb-6 font-medium arimo leading-[1.5]"
+              <CardHeader
+                floated={false}
+                shadow={false}
+                color="transparent"
+                className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
+                style={{
+                  backgroundImage: `url(${currentservice?.picture?.url}), url('/path/to/fallback-image.jpg')`,
+                }}
               >
-                {currentservice?.title}
-              </Typography>
-            </CardBody>
-          </Card>
-        </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col ">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex gap-3 items-center ">
-                <h3 className="text-2xl">PKR</h3>
-                <h3 className="text-3xl font-bold">{newprice}</h3>
+                <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
+              </CardHeader>
+              <CardBody className="relative  px-6 md:px-12">
+                <Typography
+                  variant="h5"
+                  color="white"
+                  className="mb-6 font-medium arimo leading-[1.5]"
+                >
+                  {currentservice?.title}
+                </Typography>
+              </CardBody>
+            </Card>
+          </div>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col ">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex gap-3 items-center ">
+                  <h3 className="text-2xl">PKR</h3>
+                  <h3 className="text-3xl font-bold">{newprice}</h3>
+                </div>
+                <ChangePriceDialog
+                  newprice={newprice}
+                  currentservice={currentservice}
+                  price={price}
+                  setprice={setprice}
+                  totalnumber={totalnumber}
+                  setnewprice={setnewprice}
+                />
               </div>
-              <ChangePriceDialog
-                newprice={newprice}
-                currentservice={currentservice}
+
+              <div className="flex gap-2 justify-between">
+                {recommendedPrice?.length > 0 &&
+                  recommendedPrice?.map((element) => {
+                    return (
+                      <>
+                        <p
+                          className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
+                          onClick={() => {
+                            setnewprice(element * totalnumber);
+                            setprice(element);
+                          }}
+                        >
+                          {element}
+                        </p>
+                      </>
+                    );
+                  })}
+
+                {recommendedPrice?.length === 0 && (
+                  <div className="max-w-full animate-pulse">
+                    <Typography
+                      as="div"
+                      variant="h1"
+                      className="mb-4 h-3 w-56 rounded-full bg-gray-300"
+                    ></Typography>
+                  </div>
+                )}
+              </div>
+              <Label
+                htmlFor="hellopassword"
+                className="font-normal text-[14px] arimo text-hoverblack"
+              >
+                You can change the recommended Price
+              </Label>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
+                {" "}
+                <h3 className="text-[1rem]">
+                  Total number of {currentservice?.title}
+                </h3>
+                <h3 className="text-3xl font-bold">{totalnumber}</h3>
+              </div>
+              <PickTotalServie
                 price={price}
                 setprice={setprice}
                 totalnumber={totalnumber}
+                settotalnumber={settotalnumber}
+                currentservice={currentservice}
                 setnewprice={setnewprice}
               />
             </div>
-
-            <div className="flex gap-2 justify-between">
-              {recommendedPrice?.length > 0 &&
-                recommendedPrice?.map((element) => {
-                  return (
-                    <>
-                      <p
-                        className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
-                        onClick={() => {
-                          setnewprice(element * totalnumber);
-                          setprice(element);
-                        }}
-                      >
-                        {element}
-                      </p>
-                    </>
-                  );
-                })}
-
-              {recommendedPrice?.length === 0 && (
-                <div className="max-w-full animate-pulse">
-                  <Typography
-                    as="div"
-                    variant="h1"
-                    className="mb-4 h-3 w-56 rounded-full bg-gray-300"
-                  ></Typography>
+            {/* location */}
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="address"
+                className="arimo text-[18px] font-bold underline text-hoverblack"
+              >
+                Your Address:
+              </Label>
+              <div className="flex justify-end">
+                <p className="text-sm cursor-pointer">
+                  Pick my current location
+                </p>
+              </div>
+              <div>
+                <GoogleMapsLoader>
+                  <GoogleMapAddress
+                    handleChange={handleChange}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    errors={errors}
+                    setaddress={setaddress}
+                  />
+                </GoogleMapsLoader>
+                <div className="flex gap-2 items-center ">
+                  {errors?.address && touched?.address ? (
+                    <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
+                      <MdOutlineErrorOutline className="text-xl" />
+                      {errors?.address}
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              )}
+              </div>
             </div>
-            <Label
-              htmlFor="hellopassword"
-              className="font-normal text-[14px] arimo text-hoverblack"
-            >
-              You can change the recommended Price
-            </Label>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center justify-between">
-              {" "}
-              <h3 className="text-[1rem]">
-                Total number of {currentservice?.title}
-              </h3>
-              <h3 className="text-3xl font-bold">{totalnumber}</h3>
-            </div>
-            <PickTotalServie
-              price={price}
-              setprice={setprice}
-              totalnumber={totalnumber}
-              settotalnumber={settotalnumber}
-              currentservice={currentservice}
-              setnewprice={setnewprice}
-            />
-          </div>
-          {/* location */}
-          <div className="flex flex-col gap-2">
-            <Label
-              htmlFor="address"
-              className="arimo text-[18px] font-bold underline text-hoverblack"
-            >
-              Your Address:
-            </Label>
-            <div className="flex justify-end">
-              <p className="text-sm cursor-pointer"  onClick={()=>{ sendMessage("hello imran")}}>Pick my current location</p>
-            </div>
-            <div>
-              <GoogleMapsLoader>
-                <GoogleMapAddress
-                  handleChange={handleChange}
-                  touched={touched}
-                  handleBlur={handleBlur}
-                  errors={errors}
-                  setaddress={setaddress}
+            {/* date and time */}
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="dateandtime"
+                className="arimo text-[18px] font-bold underline text-hoverblack"
+              >
+                Select Date and Time:
+              </Label>
+              <div className="w-full">
+                <Input
+                  type="datetime-local"
+                  id="dateandtime"
+                  name="dateandtime"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
+                    errors?.dateandtime && touched?.dateandtime
+                      ? "border-errorcolor"
+                      : ""
+                  }`}
                 />
-              </GoogleMapsLoader>
-              <div className="flex gap-2 items-center ">
-                {errors?.address && touched?.address ? (
-                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
-                    <MdOutlineErrorOutline className="text-xl" />
-                    {errors?.address}
-                  </span>
-                ) : (
-                  ""
-                )}
+                <div className="flex gap-2 items-center ">
+                  {errors?.dateandtime && touched?.dateandtime ? (
+                    <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
+                      <MdOutlineErrorOutline className="text-xl" />
+                      {errors?.dateandtime}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
+            {/* find */}
+            <Switch
+              label={
+                <div className="ml-4">
+                  <Typography color="blue-gray" className="arimo font-semibold">
+                    Automatically accept the nearest{" "}
+                    {currentservice?.category?.category} for PKR {newprice}
+                  </Typography>
+                </div>
+              }
+              containerProps={{
+                className: "-mt-5 ",
+              }}
+            />
+
+            <div>
+              <Button
+                type="submit"
+                className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl"
+              >
+                Find {currentservice?.category?.category}
+              </Button>
+              {/* <FindingServiceProviders
+              currentservice={currentservice}
+              loading={loading}
+              errors={errors}
+            /> */}
+            </div>
           </div>
-          {/* date and time */}
+          {/*  */}
+        </form>
+      )}
+
+      {mapTracking && (
+        <Card className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
           <div className="flex flex-col gap-2">
-            <Label
-              htmlFor="dateandtime"
+            
+            <div className="w-full flex flex-col gap-3 items-center justify-center">
+              <Button
+                type="submit"
+                className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
+              >
+                Cancel request
+              </Button>
+              <form className="flex items-center w-full justify-center gap-3 flex-col">
+                <h1>If you haven't received the best price or a response yet, don't worry! We'll save your order for you.</h1>
+                <Label
+              htmlFor="expireTime"
               className="arimo text-[18px] font-bold underline text-hoverblack"
             >
-              Select Date and Time:
+              Expire Time
             </Label>
-            <div className="w-full">
-              <Input
-                type="datetime-local"
-                id="dateandtime"
-                name="dateandtime"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
-                  errors?.dateandtime && touched?.dateandtime ? "border-errorcolor" : ""
-                }`}
-              />
-              <div className="flex gap-2 items-center ">
-                {errors?.dateandtime && touched?.dateandtime ? (
-                  <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
-                    <MdOutlineErrorOutline className="text-xl" />
-                    {errors?.dateandtime}
-                  </span>
-                ) : (
-                  ""
-                )}
-              </div>
+                <Input
+                id="expireTime"
+                  type="datetime-local"
+                  className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl `}
+                />
+                <Button
+                  type="submit"
+                  className="w-full bg-buttoncolor text-hoverblack  arimo text-[16px] capitalize rounded-xl"
+                >
+                  Save
+                </Button>
+              </form>
             </div>
           </div>
-          {/* find */}
-          <Switch
-            label={
-              <div className="ml-4">
-                <Typography color="blue-gray" className="arimo font-semibold">
-                  Automatically accept the nearest{" "}
-                  {currentservice?.category?.category} for PKR {newprice}
-                </Typography>
-              </div>
-            }
-            containerProps={{
-              className: "-mt-5 ",
-            }}
-          />
+        </Card>
+      )}
 
-          <div>
-            <Button
-           
-              // type="submit"
-              className="w-full bg-buttoncolor text-hoverblack arimo text-[16px] capitalize rounded-xl"
-            >
-              Find {currentservice?.category?.category}
-            </Button>
-          </div>
-        </div>
-        {/*  */}
-      </form>
       <main className="w-full col-span-4 relative">
+        {mapTracking && (
+          <iframe
+            src="https://lottie.host/embed/ff505e7b-30a8-4e17-afde-3744e3d2e0a3/5PMjASzAQ4.json"
+            className="w-full h-full absolute z-40"
+          ></iframe>
+        )}
+
         <GoogleMapsLoader>
           <Find
             currentLocation={currentLocation}
             currentServiceProviders={currentServiceProviders}
             cityCoordinates={cityCoordinates}
+            mapTracking={mapTracking}
           />
         </GoogleMapsLoader>
       </main>

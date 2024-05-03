@@ -50,7 +50,7 @@ const ChangePriceDialog = ({
               onChange={(e) => {
                 setnewprice(e.target.value * totalnumber);
                 setprice(e.target.value);
-                if (e.target.value<=0) {
+                if (price<=0) {
                     setnewprice(currentservice?.price);
                     setprice(currentservice?.price);
                 }

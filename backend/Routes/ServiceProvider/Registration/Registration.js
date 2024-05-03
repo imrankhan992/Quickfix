@@ -28,20 +28,6 @@ router.route("/protected-serviceprovider").get(isAuthenticated,authorizeRoles("s
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //  protected
 router.route("/profile-setup/protect").get(isAuthenticated, (req, res) => {
     res.status(200).json({

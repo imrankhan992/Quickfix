@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ChooseJob from "./components/Signup/chooseJob";
 import SPSignup from "./components/Signup/SPSignup";
 import Congratulation from "./components/Signup/Congratulation";
@@ -10,7 +10,6 @@ import SubmitProfile from "./components/Signup/SubmitProfile";
 import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
 import SetUprofilePrivate from "./components/PrivateRoutes/SetupProfile";
 import Login from "./components/Login/Login";
-import { Toaster } from "react-hot-toast";
 import AdminPrivate from "./components/PrivateRoutes/AdminPrivate";
 import Dashboard from "./components/Admin/Dashboard";
 import ServiceDashboard from "./components/User/ServiceProvider/Dashboard";
@@ -30,19 +29,20 @@ import ServiceproviderServices from "./components/User/ServiceProvider/Services"
 import Orders from "./components/User/serviceConsumer/Orders";
 import PreviousOrders from "./components/User/serviceConsumer/PreviousOrders";
 import store from "./Store";
-
 import { loadUserData } from "./components/Actions/Registration";
 import Settings from "./components/User/serviceConsumer/Settings";
 import ServiceProviderOrders from "./components/User/ServiceProvider/ServiceProviderOrders";
 import ServiceProviderPreviousOrders from "./components/User/ServiceProvider/ServiceProviderPreviousOrders";
 import ServiceProviderProfile from "./components/User/ServiceProvider/Profile";
 import SingleServices from "./components/SingleServices/SingleServices";
-import GoogleMapPage from "./components/Services/GoogleMap";
 import FindServiceProviders from "./components/Services/FindServiceProviders";
 import IdleTimerContainer from "./components/IdleTimerContainer";
 import { useSelector } from "react-redux";
 
+import LiveOrdreRecieve from "./Pages/LiveOrdreRecieve";
+import useListenOrder from "./Hooks/useListenOrder";
 function App() {
+  useListenOrder();
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUserData());
@@ -50,24 +50,27 @@ function App() {
 
   return (
     <>
-      <Toaster />
-
       <IdleTimerContainer>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={user?<ChooseJob />:<Home/>} />
+            <Route path="/signup" element={user ? <ChooseJob /> : <Home />} />
             <Route
               path="/serviceprovider/createaccount"
               element={<SPSignup />}
             />
+            <Route
+              path="/finding-serviceproviders"
+              element={<LiveOrdreRecieve />}
+            />
             <Route path="/client/createaccount" element={<UserSignup />} />
-           {
-             <Route
-             path="/service/find/serviceproviders/nearby/:id"
-             element={user?<FindServiceProviders />:<Login/>}
-           />
-           }
+            {
+              <Route
+                path="/service/find/serviceproviders/nearby/:id"
+                element={user ? <FindServiceProviders /> : <Login />}
+              />
+            }
+
             {/* single service page */}
             <Route
               path="/single/services/:services/:id"
@@ -97,7 +100,7 @@ function App() {
               <Route path="account/verify/:token" element={<CongratsUser />} />
             </Route>
             <Route path="/verifyemail" element={<CheckEmail />} />
-            <Route path="/login" element={<Login/>} />
+            <Route path="/login" element={<Login />} />
 
             <Route element={<SetUprofilePrivate />}>
               <Route path="/setup" element={<Profile />} />
