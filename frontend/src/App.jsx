@@ -54,7 +54,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={user ? <ChooseJob /> : <Home />} />
+            <Route path="/signup" element={!user ? <ChooseJob /> : <Home />} />
             <Route
               path="/serviceprovider/createaccount"
               element={<SPSignup />}

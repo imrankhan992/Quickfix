@@ -22,7 +22,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import ChangePriceDialog from "./ChangePriceDialog";
 import PickTotalServie from "./PickTotalServie";
-import GoogleMapAddress from "./GoogleMap";
+
 import GoogleMapsLoader from "./GoogleLoader";
 import { setDate } from "date-fns";
 import { useFormik } from "formik";
@@ -32,6 +32,7 @@ import { useSocketContext } from "@/context/SocketContext";
 import { useSelector } from "react-redux";
 import useSendOrder from "@/Hooks/useSendOrder";
 import { FindingServiceProviders } from "../Drawer/FindingServiceProviders.";
+import GetAddressMap from "./GetAddressMap";
 
 const FindServiceProviders = () => {
   const { socket, newOrder, onlineUsers } = useSocketContext();
@@ -103,6 +104,7 @@ const FindServiceProviders = () => {
       clientId: "",
       serviceId: "",
       CityName: "",
+      currentService:""
     },
     validationSchema: FindServiceProvidersSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -158,6 +160,9 @@ const FindServiceProviders = () => {
     if (address) {
       setFieldValue("address", address);
     }
+    if (currentservice?.category) {
+      setFieldValue("currentService", currentservice?.category?._id);
+    }
     if (dateandtime) {
       setFieldValue("dateandtime", dateandtime);
     }
@@ -188,10 +193,11 @@ const FindServiceProviders = () => {
     address,
     dateandtime,
     newprice,
+    currentservice?.category
   ]);
 
   //   get address using co ordinates
-  // console.log(currentservice?.category);
+  // console.log(currentservice?.category?.category);
   const fetchAddressFromCoordinates = async ({ lat, lng }) => {
     try {
       const response = await fetch(
@@ -268,7 +274,7 @@ const FindServiceProviders = () => {
       }
       if (!data?.success) {
         setloadingserviceproviders(false);
-        setcurrentServiceProviders(data.serviceProviders);
+        // setcurrentServiceProviders(data.serviceProviders);
         setsucess("not show");
       }
     } catch (error) {
@@ -434,15 +440,15 @@ const FindServiceProviders = () => {
                 </p>
               </div>
               <div>
-                <GoogleMapsLoader>
-                  <GoogleMapAddress
+                
+                  <GetAddressMap
                     handleChange={handleChange}
                     touched={touched}
                     handleBlur={handleBlur}
                     errors={errors}
                     setaddress={setaddress}
                   />
-                </GoogleMapsLoader>
+               
                 <div className="flex gap-2 items-center ">
                   {errors?.address && touched?.address ? (
                     <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">

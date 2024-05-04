@@ -1,8 +1,10 @@
+// app.js
+
 const express = require("express");
 const serviceProviderRegistration = require("./Routes/ServiceProvider/Registration/Registration");
 const AdminRoute = require("./Routes/Admin/AdminRoute");
 const userroute = require("./Routes/User/userRoute");
-const orderRouter = require("./Routes/Orders/order.route")
+const orderRouter = require("./Routes/Orders/order.route");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -43,39 +45,26 @@ app.use(
 app.use("/api/v1/", serviceProviderRegistration);
 app.use("/api/v1/", AdminRoute);
 app.use("/api/v1/", userroute);
-app.use("/api/v1/order",orderRouter)
+app.use("/api/v1/order", orderRouter);
 
-// export const getReceiverSocketId = (receiverId) => {
-//     return userSocketMap[receiverId]
-// }
-
-const userSocketMap = {}; // {userId: socketId}
+const userSocketMap = {};
 
 io.on("connection", (socket) => {
-
     console.log("a user connected", socket.id);
     socket.on('order', (data) => {
-
         socket.broadcast.emit('order', data);
     });
 
-
-
     const userId = socket.handshake.query.userId;
-
     if (userId != "undefined") userSocketMap[userId] = socket.id;
-
-    // io.emit() is used to send events to all the connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-
-
-    // socket.on() is used to listen to the events. can be used both on client and server side
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id);
         delete userSocketMap[userId];
         io.emit("getOnlineUsers", Object.keys(userSocketMap));
     });
 });
-// console.log(userSocketMap);
-module.exports = { app, server,io };
+
+// Export functions and objects
+module.exports = { app, server, io, getSocketId: (socketid) => userSocketMap[socketid] };
