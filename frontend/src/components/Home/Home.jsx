@@ -27,6 +27,7 @@ import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
+import ToastKarta from "../Signup/ToastKarta";
 
 const Home = () => {
   return (
@@ -34,7 +35,7 @@ const Home = () => {
       {/* header */}
 
       <ComplexNavbar />
-
+    {/* <ToastKarta/> */}
       <div className="h-full  flex items-center justify-center ">
         <div className="text-primarycolor flex flex-col  justify-start items-center mb-28">
           {/* <Caurosal /> */}

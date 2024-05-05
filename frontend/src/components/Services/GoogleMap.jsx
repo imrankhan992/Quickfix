@@ -35,7 +35,7 @@ function GoogleMapPage({
   const destinationRef = useRef();
   const [cityColor, setCityColor] = useState("#ff0000"); // Default color
 
-  const libraries = ["places", "maps"]; // Define libraries as a constant
+ 
   const [CityName, setCityName] = useState('')
   const [ZipCode, setZipCode] = useState("")
   

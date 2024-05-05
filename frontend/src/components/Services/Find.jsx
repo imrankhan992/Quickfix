@@ -36,7 +36,6 @@ const center = {
 function Find({
   currentLocation,
   currentServiceProviders,
-  cityCoordinates,
   mapTracking,
 }) {
   const [openPopover, setOpenPopover] = useState(false);
@@ -87,7 +86,7 @@ function Find({
   }, []);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const {zoom}=useMapZooming()
-  console.log(zoom,"this is zoom");
+ 
   return (
     <>
       <div className=" relative ">

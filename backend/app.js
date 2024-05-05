@@ -51,9 +51,7 @@ const userSocketMap = {};
 
 io.on("connection", (socket) => {
     console.log("a user connected", socket.id);
-    socket.on('order', (data) => {
-        socket.broadcast.emit('order', data);
-    });
+    
 
     const userId = socket.handshake.query.userId;
     if (userId != "undefined") userSocketMap[userId] = socket.id;
@@ -67,4 +65,4 @@ io.on("connection", (socket) => {
 });
 
 // Export functions and objects
-module.exports = { app, server, io, getSocketId: (socketid) => userSocketMap[socketid] };
+module.exports = { app, server, io,getallSocketIds: () => userSocketMap};

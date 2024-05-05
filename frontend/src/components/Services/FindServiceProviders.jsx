@@ -33,6 +33,8 @@ import { useSelector } from "react-redux";
 import useSendOrder from "@/Hooks/useSendOrder";
 import { FindingServiceProviders } from "../Drawer/FindingServiceProviders.";
 import GetAddressMap from "./GetAddressMap";
+import { CustomToast } from "@/Toast/CustomToast";
+import RIdeRequestToast from "@/Toast/RIdeRequestToast";
 
 const FindServiceProviders = () => {
   const { socket, newOrder, onlineUsers } = useSocketContext();
@@ -41,33 +43,8 @@ const FindServiceProviders = () => {
   const { user } = useSelector((state) => state.user);
   onlineUsers.includes(user?._id);
 
-  const [cityCoordinates, setCityCoordinates] = useState();
-  async function getCityBoundaryCoordinates(location) {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.lat},${location?.lng}&result_type=administrative_area_level_1&key=AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU`
-      );
-      const data = await response.json();
-
-      if (data.results.length > 0) {
-        const viewport = data.results[0].geometry.viewport;
-        const boundaryCoordinates = [
-          { lat: viewport.northeast.lat, lng: viewport.northeast.lng },
-          { lat: viewport.southwest.lat, lng: viewport.northeast.lng },
-          { lat: viewport.southwest.lat, lng: viewport.southwest.lng },
-          { lat: viewport.northeast.lat, lng: viewport.southwest.lng },
-          { lat: viewport.northeast.lat, lng: viewport.northeast.lng },
-        ];
-        return boundaryCoordinates;
-      } else {
-        console.error("No results found for reverse geocoding");
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching city boundary coordinates:", error);
-      return null;
-    }
-  }
+  
+ 
 
   const [currentLocation, setCurrentLocation] = useState(null);
   const [currentaddress, setcurrentaddress] = useState("");
@@ -135,16 +112,7 @@ const FindServiceProviders = () => {
       }
     }
 
-    if (currentLocation) {
-      // Fetch city boundary coordinates using reverse geocoding
-      getCityBoundaryCoordinates(currentLocation)
-        .then((coordinates) => {
-          setCityCoordinates(coordinates);
-        })
-        .catch((error) => {
-          console.error("Error fetching city coordinates:", error);
-        });
-    }
+    
 
     // send service id and currentlocation
 
@@ -154,7 +122,8 @@ const FindServiceProviders = () => {
     if (CityName) {
       setFieldValue("CityName", CityName);
     }
-  }, [currentLocation, CityName, currentservice?.category?._id]);
+  }, [currentLocation, CityName ]);
+  
   useEffect(() => {
     getCurrentService();
     if (address) {
@@ -314,10 +283,9 @@ const FindServiceProviders = () => {
       return "Just now";
     }
   };
-  console.log(newOrder, "new order");
   return (
     <div className="grid grid-cols-8 ">
-      {!mapTracking && (
+     {!mapTracking && (
         <form
           onSubmit={handleSubmit}
           className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
@@ -376,10 +344,11 @@ const FindServiceProviders = () => {
 
               <div className="flex gap-2 justify-between">
                 {recommendedPrice?.length > 0 &&
-                  recommendedPrice?.map((element) => {
+                  recommendedPrice?.map((element,index) => {
                     return (
                       <>
                         <p
+                        key={index}
                           className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
                           onClick={() => {
                             setnewprice(element * totalnumber);
@@ -533,7 +502,8 @@ const FindServiceProviders = () => {
             
             <div className="w-full flex flex-col gap-3 items-center justify-center">
               <Button
-                type="submit"
+              // onClick={()=>{RIdeRequestToast(newOrder)}}
+                // type="submit"
                 className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
               >
                 Cancel request
@@ -563,6 +533,7 @@ const FindServiceProviders = () => {
         </Card>
       )}
 
+     
       <main className="w-full col-span-4 relative">
         {mapTracking && (
           <iframe
@@ -575,7 +546,7 @@ const FindServiceProviders = () => {
           <Find
             currentLocation={currentLocation}
             currentServiceProviders={currentServiceProviders}
-            cityCoordinates={cityCoordinates}
+            
             mapTracking={mapTracking}
           />
         </GoogleMapsLoader>
@@ -597,9 +568,9 @@ const FindServiceProviders = () => {
           </>
         )}
         {!loadingserviceproviders &&
-          currentServiceProviders?.map((serviceprovider) => {
+          currentServiceProviders?.map((serviceprovider,index) => {
             return (
-              <div className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
+              <div key={index} className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
                 <div className="flex gap-3 items-center justify-center">
                   <Badge
                     overlap="circular"
@@ -673,6 +644,7 @@ const FindServiceProviders = () => {
           </div>
         )}
       </aside>
+      
     </div>
   );
 };

@@ -41,13 +41,23 @@ import { useSelector } from "react-redux";
 
 import LiveOrdreRecieve from "./Pages/LiveOrdreRecieve";
 import useListenOrder from "./Hooks/useListenOrder";
+
+import RIdeRequestToast from "./Toast/RIdeRequestToast";
+import { useSocketContext } from "./context/SocketContext";
+import notification from "./assets/sounds/notification.mp3";
 function App() {
+  const { newOrder, setNewOrder } = useSocketContext();
   useListenOrder();
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUserData());
   }, []);
-
+  // if (newOrder?.shouldNotify) {
+  //   const sound = new Audio(notification);
+  //   sound.play();
+  //   RIdeRequestToast(newOrder);
+  //   setNewOrder((prevOrder) => ({ ...prevOrder, shouldNotify: false }));
+  // }
   return (
     <>
       <IdleTimerContainer>
