@@ -24,7 +24,7 @@ const SingleServices = () => {
   };
   useEffect(() => {
     getsingleserviceByCategory();
-  }, []);
+  }, [services,id]);
 
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px]">
@@ -32,7 +32,7 @@ const SingleServices = () => {
     
         <ComplexNavbar />
      
-      <div className="px-8 py-10 w-full h-full">
+      <div className="px-8 py-10 w-full h-full mt-16  ">
         <div className="w-full bg-buttoncolor h-[35%] rounded-xl grid grid-cols-2 py-8  px-8">
           {" "}
           <h3 className="text-hoverblack text-4xl col-span-2 arimo">{services}</h3>
@@ -41,7 +41,7 @@ const SingleServices = () => {
               "Dismantling your Electrical worries - Complete Electrical Solutions  for Residentials & Commercials"}
                 {services === "Plumber Services" &&
               "From Plumbing Installs, Repairs, and Upgrades – We Fix it All"}
-                {services === "Carpanter" &&
+                {services === "Carpenter" &&
               "Wood Fixtures, Construct, Build, Install and More..."}
           </p>
         </div>

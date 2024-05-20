@@ -12,6 +12,7 @@ exports.postNewOrder = async (req, res) => {
       serviceId,
       CityName,
       currentService,
+      category
     } = req.body;
 
     if (
@@ -36,6 +37,7 @@ exports.postNewOrder = async (req, res) => {
       quantity,
       clientId,
       serviceId,
+      category,
       CityName,
     });
     const savedOrder = await newOrder.save();
@@ -45,7 +47,7 @@ exports.postNewOrder = async (req, res) => {
         job: currentService,
         city: CityName,
       });
-      console.log(serviceProviders);
+
 
       await savedOrder.populate("serviceId"); // Populate serviceId field
       const { io, getallSocketIds } = require("../../app");
@@ -76,3 +78,14 @@ exports.postNewOrder = async (req, res) => {
     });
   }
 };
+
+exports.getAllOrder = async (req, res) => {
+  try {
+    const { _id, job } = req?.user;
+    
+    const orders = await OrderModel.find({ category:job }).populate("serviceId").populate("clientId");
+    res.status(200).json({ success: true, orders })
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Server Error" })
+  }
+}

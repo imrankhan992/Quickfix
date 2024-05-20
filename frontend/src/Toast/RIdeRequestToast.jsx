@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Rating, Typography } from "@material-tailwind/react";
 import { toast } from "react-hot-toast";
 const RIdeRequestToast = (newOrder) => {
-  console.log(newOrder, "custom toast order");
+ 
   return toast.custom((t) => (
     <div
       className={`${

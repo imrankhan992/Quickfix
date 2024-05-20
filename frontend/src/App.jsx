@@ -40,24 +40,21 @@ import IdleTimerContainer from "./components/IdleTimerContainer";
 import { useSelector } from "react-redux";
 
 import LiveOrdreRecieve from "./Pages/LiveOrdreRecieve";
-import useListenOrder from "./Hooks/useListenOrder";
+
 
 import RIdeRequestToast from "./Toast/RIdeRequestToast";
 import { useSocketContext } from "./context/SocketContext";
 import notification from "./assets/sounds/notification.mp3";
+import useListenOrder from "./Hooks/useListenOrder";
+import RequestOrder from "./components/User/ServiceProvider/RequestOrder";
 function App() {
-  const { newOrder, setNewOrder } = useSocketContext();
+const {newOrder} = useSocketContext()
   useListenOrder();
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUserData());
   }, []);
-  // if (newOrder?.shouldNotify) {
-  //   const sound = new Audio(notification);
-  //   sound.play();
-  //   RIdeRequestToast(newOrder);
-  //   setNewOrder((prevOrder) => ({ ...prevOrder, shouldNotify: false }));
-  // }
+ console.log(newOrder);
   return (
     <>
       <IdleTimerContainer>
@@ -144,6 +141,7 @@ function App() {
               <Route path="My Profile" element={<ServiceDashboard />} />
               <Route path="services" element={<ServiceproviderServices />} />
               <Route path="orders" element={<ServiceProviderOrders />} />
+              <Route path="request/order" element={<RequestOrder />} />
               <Route
                 path="previous-orders"
                 element={<ServiceProviderPreviousOrders />}

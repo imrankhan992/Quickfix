@@ -43,9 +43,6 @@ const FindServiceProviders = () => {
   const { user } = useSelector((state) => state.user);
   onlineUsers.includes(user?._id);
 
-  
- 
-
   const [currentLocation, setCurrentLocation] = useState(null);
   const [currentaddress, setcurrentaddress] = useState("");
   const [CityName, setCityName] = useState("");
@@ -81,7 +78,8 @@ const FindServiceProviders = () => {
       clientId: "",
       serviceId: "",
       CityName: "",
-      currentService:""
+      currentService: "",
+      category: "",
     },
     validationSchema: FindServiceProvidersSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -112,8 +110,6 @@ const FindServiceProviders = () => {
       }
     }
 
-    
-
     // send service id and currentlocation
 
     if (currentLocation && CityName && currentservice) {
@@ -122,8 +118,8 @@ const FindServiceProviders = () => {
     if (CityName) {
       setFieldValue("CityName", CityName);
     }
-  }, [currentLocation, CityName ]);
-  
+  }, [currentLocation, CityName]);
+
   useEffect(() => {
     getCurrentService();
     if (address) {
@@ -153,6 +149,9 @@ const FindServiceProviders = () => {
     if (currentservice?._id) {
       setFieldValue("serviceId", currentservice?._id);
     }
+    if (currentservice?.category?._id) {
+      setFieldValue("category", currentservice?.category?._id);
+    }
   }, [
     user?._id,
     currentservice?.id,
@@ -162,7 +161,7 @@ const FindServiceProviders = () => {
     address,
     dateandtime,
     newprice,
-    currentservice?.category
+    currentservice?.category,
   ]);
 
   //   get address using co ordinates
@@ -215,7 +214,7 @@ const FindServiceProviders = () => {
       console.log(error);
     }
   };
-
+  console.log(currentservice, "this is parnent service");
   //   get all service provider based on location
   const getallserviceProvidersnearMe = async () => {
     try {
@@ -285,7 +284,7 @@ const FindServiceProviders = () => {
   };
   return (
     <div className="grid grid-cols-8 ">
-     {!mapTracking && (
+      {!mapTracking && (
         <form
           onSubmit={handleSubmit}
           className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
@@ -344,11 +343,11 @@ const FindServiceProviders = () => {
 
               <div className="flex gap-2 justify-between">
                 {recommendedPrice?.length > 0 &&
-                  recommendedPrice?.map((element,index) => {
+                  recommendedPrice?.map((element, index) => {
                     return (
                       <>
                         <p
-                        key={index}
+                          key={index}
                           className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
                           onClick={() => {
                             setnewprice(element * totalnumber);
@@ -409,15 +408,14 @@ const FindServiceProviders = () => {
                 </p>
               </div>
               <div>
-                
-                  <GetAddressMap
-                    handleChange={handleChange}
-                    touched={touched}
-                    handleBlur={handleBlur}
-                    errors={errors}
-                    setaddress={setaddress}
-                  />
-               
+                <GetAddressMap
+                  handleChange={handleChange}
+                  touched={touched}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  setaddress={setaddress}
+                />
+
                 <div className="flex gap-2 items-center ">
                   {errors?.address && touched?.address ? (
                     <span className=" text-errorcolor flex gap-2 items-center mt-2 text-[1rem] arimo">
@@ -499,25 +497,27 @@ const FindServiceProviders = () => {
       {mapTracking && (
         <Card className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
           <div className="flex flex-col gap-2">
-            
             <div className="w-full flex flex-col gap-3 items-center justify-center">
               <Button
-              // onClick={()=>{RIdeRequestToast(newOrder)}}
+                // onClick={()=>{RIdeRequestToast(newOrder)}}
                 // type="submit"
                 className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
               >
                 Cancel request
               </Button>
               <form className="flex items-center w-full justify-center gap-3 flex-col">
-                <h1>If you haven't received the best price or a response yet, don't worry! We'll save your order for you.</h1>
+                <h1>
+                  If you haven't received the best price or a response yet,
+                  don't worry! We'll save your order for you.
+                </h1>
                 <Label
-              htmlFor="expireTime"
-              className="arimo text-[18px] font-bold underline text-hoverblack"
-            >
-              Expire Time
-            </Label>
+                  htmlFor="expireTime"
+                  className="arimo text-[18px] font-bold underline text-hoverblack"
+                >
+                  Expire Time
+                </Label>
                 <Input
-                id="expireTime"
+                  id="expireTime"
                   type="datetime-local"
                   className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl `}
                 />
@@ -533,7 +533,6 @@ const FindServiceProviders = () => {
         </Card>
       )}
 
-     
       <main className="w-full col-span-4 relative">
         {mapTracking && (
           <iframe
@@ -546,7 +545,6 @@ const FindServiceProviders = () => {
           <Find
             currentLocation={currentLocation}
             currentServiceProviders={currentServiceProviders}
-            
             mapTracking={mapTracking}
           />
         </GoogleMapsLoader>
@@ -568,9 +566,12 @@ const FindServiceProviders = () => {
           </>
         )}
         {!loadingserviceproviders &&
-          currentServiceProviders?.map((serviceprovider,index) => {
+          currentServiceProviders?.map((serviceprovider, index) => {
             return (
-              <div key={index} className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md">
+              <div
+                key={index}
+                className="flex items-center gap-2 justify-between bg-primarycolor px-3 py-1 rounded-[6px] shadow-md"
+              >
                 <div className="flex gap-3 items-center justify-center">
                   <Badge
                     overlap="circular"
@@ -644,7 +645,6 @@ const FindServiceProviders = () => {
           </div>
         )}
       </aside>
-      
     </div>
   );
 };

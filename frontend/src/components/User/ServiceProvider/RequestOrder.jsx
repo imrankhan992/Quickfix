@@ -9,22 +9,18 @@ import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
 import { Button } from "@material-tailwind/react";
+import { MdCalendarToday } from "react-icons/md";
+import { useSocketContext } from "@/context/SocketContext";
+import { OrdersTable } from "./OrdersTable";
 
-const ServiceProviderOrders = () => {
+const RequestOrder = () => {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-
-  //     dispatch(loadUserData());
-
-  //   }, []);
-
+ const {newOrder} =useSocketContext()
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
       <div className="flex relative">
         <BurgerMenu />
-        <Aside open={3} />
+        <Aside open={6} />
         <main className="bg-cardbg w-full">
           <Header user={user} />
 
@@ -43,6 +39,19 @@ const ServiceProviderOrders = () => {
                 </div>
               </div>
             </div>
+            {/* request orders */}
+            <div className="flex py-5 ">
+              <div className="p-6 rounded-l-2xl shadow-lg border-e-2 bg-primarycolor flex gap-2 justify-center items-center"> 
+              <MdCalendarToday/>
+                <p className="text-xl font-bold">Today</p>
+              </div>
+              <div className="flex flex-col rounded-r-2xl shadow-lg bg-primarycolor p-6">
+                <div className="text-mutedcolor">Total Orders</div>
+                <div><p className="font-bold">{newOrder?.length}</p></div>
+              </div>
+            </div>
+            {/* orders table */}
+            <OrdersTable/>
           </div>
         </main>
       </div>
@@ -50,4 +59,4 @@ const ServiceProviderOrders = () => {
   );
 };
 
-export default ServiceProviderOrders;
+export default RequestOrder;

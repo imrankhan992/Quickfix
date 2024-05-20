@@ -57,7 +57,7 @@ function ProfileMenu({ user }) {
             variant="circular"
             size="sm"
             alt="profile"
-            className="border border-hoverblack bg-thirdcolor p-0.5"
+            className="  bg-thirdcolor p-0.5"
             src={`${user?.avatar?.url}`}
           />
           <MdArrowDropDown
@@ -127,13 +127,13 @@ function NavListMenu({ allcategories, setid }) {
     <Link
       to={"/single/services/" + category + "/" + _id}
       key={_id}
-      onClick={() => getsingleserviceByCategory}
+      // onClick={() => getsingleserviceByCategory}
     >
       <MenuItem
         onClick={() => {
           setid(_id);
         }}
-        className=" text-hoverblack bg-bodycolor"
+        className=" text-hoverblack bg-cardbg"
       >
         <Typography variant="h6" className="mb-1 text-hoverblack">
           {category}
@@ -151,7 +151,7 @@ function NavListMenu({ allcategories, setid }) {
         <MenuHandler className="">
           <Link to="#" className="text-[16px] text-hoverblack ">
             <MenuItem className="hidden items-center gap-2 font-medium bg-bodycolor lg:flex lg:rounded-full   hover:bg-texthovercolor">
-              <p className="text-hoverblack text-[16px] font-semibold">
+              <p className="text-hoverblack text-[16px] font-semibold ">
                 {" "}
                 Services
               </p>{" "}
@@ -164,17 +164,16 @@ function NavListMenu({ allcategories, setid }) {
             </MenuItem>
           </Link>
         </MenuHandler>
-        <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid bg-thirdcolor">
+        <MenuList className=" hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid bg-thirdcolor">
           <Card
             color="blue"
             shadow={false}
-            variant="gradient"
             className="col-span-3 grid h-full w-full place-items-center rounded-md"
           >
             {/* <MdArrowDropDown strokeWidth={1} className="h-28 w-28" /> */}
             <img src={tools} alt="" />
           </Card>
-          <ul className="col-span-4 flex w-full flex-col gap-1">
+          <ul className=" col-span-4 flex w-full flex-col gap-1">
             {renderItems}
           </ul>
         </MenuList>
@@ -258,7 +257,7 @@ export function ComplexNavbar({ setid }) {
     dispatch(loadUserData());
     getallcategories();
   }, []);
- 
+
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -271,7 +270,7 @@ export function ComplexNavbar({ setid }) {
   }, []);
 
   return (
-    <Navbar className="border-none  p-4 shadow-none    rounded-none text-hoverblack ">
+    <Navbar className="border-none  fixed top-0 z-50 w-full shadow-none    rounded-none text-hoverblack   ">
       <div className="relative mx-auto flex items-center justify-between text-hoverblack">
         <Link
           to="/"
@@ -301,7 +300,7 @@ export function ComplexNavbar({ setid }) {
               <Button
                 size="sm"
                 variant="text"
-                className="text-hoverblack hover:text-texthovercolor  border-hoverblack rounded-xl"
+                className="text-hoverblack hover:text-texthovercolor   rounded-xl"
               >
                 <span className="font-semibold text-[16px] ">Log In</span>
               </Button>
@@ -310,7 +309,7 @@ export function ComplexNavbar({ setid }) {
               <Button
                 size="sm"
                 variant="text"
-                className="text-hoverblack hover:text-texthovercolor  border border-hoverblack rounded-xl "
+                className="text-hoverblack hover:text-texthovercolor    rounded-xl "
               >
                 <span className="font-semibold text-[16px]">Sign up</span>
               </Button>

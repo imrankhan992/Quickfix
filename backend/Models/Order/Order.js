@@ -9,6 +9,11 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    category:{
+        type: mongoose.Schema.ObjectId,
+        ref: "Category",
+        required: true
+    },
     serviceId: {
         type: mongoose.Schema.ObjectId,
         ref: "Product",

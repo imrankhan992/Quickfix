@@ -73,6 +73,21 @@ export function ApproveSidebar({ open }) {
             My orders
           </ListItem>
         </Link>
+        {/* request order */}
+        <Link to={"/serviceprovider/dashboard/request/order"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 6
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <GiClick className="h-5 w-5" />
+            </ListItemPrefix>
+            Request Order
+          </ListItem>
+        </Link>
         {/* previous order */}
         <Link to={"/serviceprovider/dashboard/previous-orders"}>
           <ListItem

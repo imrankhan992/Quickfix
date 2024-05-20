@@ -31,12 +31,12 @@ import ToastKarta from "../Signup/ToastKarta";
 
 const Home = () => {
   return (
-    <div className=" w-full px-10 h-[100vh] mx-auto max-w-[1750px] ">
+    <div className=" w-full  h-[100vh] mx-auto max-w-[1750px] ">
       {/* header */}
-
       <ComplexNavbar />
+      
     {/* <ToastKarta/> */}
-      <div className="h-full  flex items-center justify-center ">
+      <div className="h-full  flex items-center justify-center mt-16">
         <div className="text-primarycolor flex flex-col  justify-start items-center mb-28">
           {/* <Caurosal /> */}
           {/* <div className=' mt-10'>
