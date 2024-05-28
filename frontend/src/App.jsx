@@ -47,9 +47,16 @@ import { useSocketContext } from "./context/SocketContext";
 import notification from "./assets/sounds/notification.mp3";
 import useListenOrder from "./Hooks/useListenOrder";
 import RequestOrder from "./components/User/ServiceProvider/RequestOrder";
+import SingleOrder from './components/User/ServiceProvider/SingleOrder';
+import useListenOffer from "./Hooks/useListenOffer";
+import useListenOfferAccept from "./Hooks/useListenAcceptOffer";
+import AcceptedOffers from "./components/User/serviceConsumer/AcceptedOffers";
+import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAcceptedOrder";
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
+  useListenOffer( )
+  useListenOfferAccept()
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUserData());
@@ -119,6 +126,8 @@ const {newOrder} = useSocketContext()
               <Route path="my profile" element={<UserDashboard />} />
               <Route path="services" element={<Services />} />
               <Route path="orders" element={<Orders />} />
+              <Route path="accepted-orders" element={<AcceptedOffers />} />
+              <Route path="accepted-orders/:id" element={<SingleAcceptedOrder />} />
               <Route path="previous-orders" element={<PreviousOrders />} />
               <Route path="settings" element={<Settings />} />
             </Route>
@@ -142,6 +151,7 @@ const {newOrder} = useSocketContext()
               <Route path="services" element={<ServiceproviderServices />} />
               <Route path="orders" element={<ServiceProviderOrders />} />
               <Route path="request/order" element={<RequestOrder />} />
+              <Route path="single/order" element={<SingleOrder />} />
               <Route
                 path="previous-orders"
                 element={<ServiceProviderPreviousOrders />}

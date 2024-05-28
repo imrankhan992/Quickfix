@@ -20,7 +20,7 @@ const dispatch = useDispatch()
     //   }, []);
   
   return (
-    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
+    <div className=" w-full h-screen mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={4} />

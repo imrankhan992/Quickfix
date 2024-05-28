@@ -49,20 +49,20 @@ export function Menu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="">
-        <Button className="p-0 bg-bodycolor hover:bg-bodycolor rounded-full flex    gap-2">
+        <Button className="p-0 bg-cardbg hover:bg-cardbg rounded-full flex    gap-2">
           <AvatarPicture user={user} />
           <div className="flex justify-start flex-col p-2">
-            <p>{user?.firstname + " " + user?.lastname}</p>
+            <p className="text-hoverblack arimo font-bold">{user?.firstname + " " + user?.lastname}</p>
             <p className="text-sm text-mutedcolor">{user?.role}</p>
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 bg-cardbg cursor-pointer">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        <DropdownMenuGroup >
           <Link to={"/user/dashboard/my profile"}>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
@@ -74,7 +74,7 @@ export function Menu() {
         <DropdownMenuSeparator />
 
         <Link to="/user/dashboard/services">
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <LifeBuoy className="mr-2 h-4 w-4" />
             <span>Services</span>
           </DropdownMenuItem>
@@ -82,6 +82,7 @@ export function Menu() {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem
+        className="cursor-pointer"
           onClick={() => {
             logout();
           }}

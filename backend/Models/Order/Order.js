@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    category:{
+    category: {
         type: mongoose.Schema.ObjectId,
         ref: "Category",
         required: true
@@ -30,8 +30,45 @@ const orderSchema = new mongoose.Schema({
     dateandtime: {
         type: Date,
         required: true,
-    }
-});
+    },
+    CityName: {
+        type: String,
+        required: true,
+    },
+    orderExpireAt: {
+        type: Date,
+        required: true,
+       
+    },
+    totalOffers: [
+        {
+            serviceProvider: {
+                type: mongoose.Schema.ObjectId,
+                ref: "ServiceProviderRegistration",
+                required: true
+            },
+            price: {
+                type: Number,
+                required: true,
+            },
+            distance: {
+                type: String,
+                required: true
+            },
+            time: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                enum: ["pending", "completed", "rejected", "accepted"],
+                default: "pending"
+            },
+
+        }
+
+    ]
+}, { timestamps: true });
 
 
 module.exports = mongoose.model("Order", orderSchema);

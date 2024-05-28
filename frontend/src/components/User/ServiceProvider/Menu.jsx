@@ -55,7 +55,7 @@ export function Menu() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to={"/user/dashboard/my profile"}>
+          <Link to={`/${user?.role}/dashboard/my profile`}>
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
@@ -67,7 +67,7 @@ export function Menu() {
 
         <DropdownMenuSeparator />
 
-        <Link to="/user/dashboard/services">
+        <Link to={`/${user?.role}/dashboard/services`}>
           <DropdownMenuItem>
             <LifeBuoy className="mr-2 h-4 w-4" />
             <span>Services</span>

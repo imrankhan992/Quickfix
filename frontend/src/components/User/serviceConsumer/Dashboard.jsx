@@ -5,6 +5,7 @@ import Main from './Main'
 import { loadUserData } from '@/components/Actions/Registration'
 import { useDispatch, useSelector } from 'react-redux'
 import axiosInstance from '@/ulities/axios'
+import { errorToast } from '@/Toast/Toast'
 
 const Dashboard = () => {
   const [products, setproducts] = useState([]);
@@ -36,7 +37,7 @@ const Dashboard = () => {
   //   dispatch(loadUserData())
   //  }, []);
   return (
-    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
+    <div className=" w-full max-h-screen mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={1} />

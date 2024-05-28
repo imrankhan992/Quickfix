@@ -80,6 +80,8 @@ const FindServiceProviders = () => {
       CityName: "",
       currentService: "",
       category: "",
+      // 5 time to expire the order
+      orderExpiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     },
     validationSchema: FindServiceProvidersSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -115,9 +117,6 @@ const FindServiceProviders = () => {
     if (currentLocation && CityName && currentservice) {
       getallserviceProvidersnearMe();
     }
-    if (CityName) {
-      setFieldValue("CityName", CityName);
-    }
   }, [currentLocation, CityName]);
 
   useEffect(() => {
@@ -152,17 +151,10 @@ const FindServiceProviders = () => {
     if (currentservice?.category?._id) {
       setFieldValue("category", currentservice?.category?._id);
     }
-  }, [
-    user?._id,
-    currentservice?.id,
-
-    totalnumber,
-    recommendedprice,
-    address,
-    dateandtime,
-    newprice,
-    currentservice?.category,
-  ]);
+    if (CityName) {
+      setFieldValue("CityName", CityName);
+    }
+  }, [totalnumber, recommendedprice, address, CityName, newprice]);
 
   //   get address using co ordinates
   // console.log(currentservice?.category?.category);

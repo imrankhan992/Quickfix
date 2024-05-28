@@ -8,9 +8,8 @@ import JoinUsCard from "./JoinUsCard";
 
 import { Footer } from "./Footer";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import heropagebg from "../../assets/heropage.png";
-import heropagebg2 from "../../assets/heropage2.jpg";
+import { Autoplay, Pagination } from "swiper/modules";
+
 import homepagestars from "../../assets/homepage-stars.svg";
 import carpenterpng from "../../assets/carpenter.png";
 import voltmeterpng from "../../assets/voltmeter.png";
@@ -28,6 +27,8 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import ToastKarta from "../Signup/ToastKarta";
+import OfferNotification from "@/Toast/OfferNotification";
+import { OrderCollapse } from "../User/serviceConsumer/OrderCollapse";
 
 const Home = () => {
   return (
@@ -36,6 +37,7 @@ const Home = () => {
       <ComplexNavbar />
       
     {/* <ToastKarta/> */}
+  
       <div className="h-full  flex items-center justify-center mt-16">
         <div className="text-primarycolor flex flex-col  justify-start items-center mb-28">
           {/* <Caurosal /> */}
@@ -60,6 +62,7 @@ const Home = () => {
                 </button>
               </div>
             </div>
+            
             <div className=" flex items-center justify-center">
               <Swiper
                 spaceBetween={30}
@@ -100,9 +103,11 @@ const Home = () => {
       <div className=" px-10">
         <div className="h-[15rem] bg-cardbg rounded-3xl  flex  items-center justify-around text-hoverblack p-10">
           <div className="flex  flex-col gap-3 max-w-xl">
+          
             <h1 className="text-4xl text-hoverblack  inline font-bold arimo">
               Quicfix company!
             </h1>
+           
             <p className="text-lg text-hoverblack mt-2 arimo text-justify">
               QuickFix is your go-to and on-demand expert for all your Home &
               Personal Care Services. We are serving you 24/7 since 2024. The

@@ -18,13 +18,13 @@ export function Filter({ allcategories, setcategory }) {
   return (
     <DropdownMenu s>
       <DropdownMenuTrigger asChild className="p-0 border ">
-        <Button className="bg-bodycolor px-2 flex items-center gap-1 outline-1 outline-bordercolor">
+        <Button className="bg-cardbg px-2 flex items-center gap-1 outline-1 outline-bordercolor">
           <IoFilter />
           Add Filter
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-thirdcolor border border-bordercolor">
-        <DropdownMenuLabel className="text-primarycolor">
+        <DropdownMenuLabel className="text-hoverblack">
           Add filters
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="border border-bordercolor" />
@@ -34,7 +34,7 @@ export function Filter({ allcategories, setcategory }) {
             setPosition(e);
             setcategory(e);
           }}
-          className="text-primarycolor"
+          className="text-hoverblack"
         >
           <DropdownMenuRadioItem value={"All"} className="cursor-pointer">
             All

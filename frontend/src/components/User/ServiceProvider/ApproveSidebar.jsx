@@ -6,7 +6,7 @@ import {
   ListItem,
   ListItemPrefix,
 } from "@material-tailwind/react";
-
+import { MdOutlineRequestQuote } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { TbCategoryPlus } from "react-icons/tb";
@@ -16,7 +16,7 @@ import { MdCleaningServices } from "react-icons/md";
 import { GiClick } from "react-icons/gi";
 import { BsClockHistory } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
-import { RiProfileLine } from "react-icons/ri";
+import { RiProfileLine,RiStackFill  } from "react-icons/ri";
 
 export function ApproveSidebar({ open }) {
   return (
@@ -68,7 +68,7 @@ export function ApproveSidebar({ open }) {
             }`}
           >
             <ListItemPrefix>
-              <GiClick className="h-5 w-5" />
+              <RiStackFill  className="h-5 w-5" />
             </ListItemPrefix>
             My orders
           </ListItem>
@@ -83,7 +83,7 @@ export function ApproveSidebar({ open }) {
             }`}
           >
             <ListItemPrefix>
-              <GiClick className="h-5 w-5" />
+              <MdOutlineRequestQuote className="h-5 w-5" />
             </ListItemPrefix>
             Request Order
           </ListItem>
@@ -103,7 +103,7 @@ export function ApproveSidebar({ open }) {
             Previous Orders
           </ListItem>
         </Link>
-
+            
         {/* get all product */}
         <Link to={"/serviceprovider/dashboard/yours/profile"}>
           <ListItem

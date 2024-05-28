@@ -23,7 +23,7 @@ export function Sidebar({open}) {
   
 
   return (
-    <Card className="h-full   rounded-none bg-thirdcolor ">
+    <Card className="h-full   rounded-none bg-sidebarbg ">
       <div className="mb-2 p-4 flex items-center justify-center">
         <Typography variant="h5" className="text-primarycolor">
           QuickFix
@@ -33,9 +33,9 @@ export function Sidebar({open}) {
         {/* dashboard */}
         <Link  to={"/user/dashboard/my profile"}>
           <ListItem
-            className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 1
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}
           >
@@ -48,9 +48,9 @@ export function Sidebar({open}) {
 
         {/* services */}
         <Link  to={"/user/dashboard/services"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        <ListItem className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 2
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}>
           <ListItemPrefix>
@@ -60,11 +60,11 @@ export function Sidebar({open}) {
         Services
         </ListItem>
         </Link>
-        {/* users */}
+        {/* orders */}
         <Link to={"/user/dashboard/orders"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        <ListItem  className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 3
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}>
           <ListItemPrefix>
@@ -74,11 +74,25 @@ export function Sidebar({open}) {
           My orders
         </ListItem>
         </Link>
+        {/* accepted orders */}
+        <Link to={"/user/dashboard/accepted-orders"}>
+        <ListItem  className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 6
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+
+            <GiClick className="h-5 w-5" />
+          </ListItemPrefix>
+          Accepted Offers
+        </ListItem>
+        </Link>
           {/* previous order */}
           <Link to={"/user/dashboard/previous-orders"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        <ListItem  className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 4
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}>
           <ListItemPrefix>
@@ -90,9 +104,9 @@ export function Sidebar({open}) {
 
         {/* get all product */}
         <Link to={"/user/dashboard/settings"}>
-        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+        <ListItem className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
               open === 5
-                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}>
           <ListItemPrefix>

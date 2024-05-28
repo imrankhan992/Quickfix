@@ -48,10 +48,9 @@ app.use("/api/v1/", userroute);
 app.use("/api/v1/order", orderRouter);
 
 const userSocketMap = {};
-
 io.on("connection", (socket) => {
     console.log("a user connected", socket.id);
-    
+
 
     const userId = socket.handshake.query.userId;
     if (userId != "undefined") userSocketMap[userId] = socket.id;
@@ -65,4 +64,4 @@ io.on("connection", (socket) => {
 });
 
 // Export functions and objects
-module.exports = { app, server, io,getallSocketIds: () => userSocketMap};
+module.exports = { app, server, io, getallSocketIds: () => userSocketMap };

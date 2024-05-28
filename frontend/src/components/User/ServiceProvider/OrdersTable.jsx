@@ -1,185 +1,146 @@
-// import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { MdCalendarToday } from "react-icons/md";
-
-// import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
-import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Avatar,
-  IconButton,
-  Tooltip,
-} from "@material-tailwind/react";
 import { useSocketContext } from "@/context/SocketContext";
-import { Link } from "react-router-dom";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
- 
-const TABLE_HEAD = ["Project Title", "Address", "Quantity", "Price", "Full Details"];
- 
+import { Button } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import SendOffer from "./SendOffer";
+import { useSelector } from "react-redux";
 
- 
-export function OrdersTable() {
-    const { newOrder} = useSocketContext()
-  return (
-    <Card className="h-full w-full bg-cardbg shadow-none">
-      <CardHeader floated={false} shadow={false} className="rounded-none bg-cardbg">
-        <div className="flex items-center justify-between gap-8 ">
-          <div>
-            <Typography variant="h5" className="arimo text-hoverblack font-bold">
-             All Orders
-            </Typography>
-            <Typography className="mt-1 font-normal text-hoverblack">
-             Request for your fav Project 
-            </Typography>
+export function OrdersTable({ activeTab }) {
+  const { user } = useSelector((state) => state.user);
+  const { newOrder } = useSocketContext();
+
+  const formateDate = (date) => {
+    //  I WANT TO GET live counter that how many time remaining in order expire
+    const newDate = new Date(date);
+    return newDate.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  };
+
+  // filter by active and expired orders and completed orders
+  const filterOrders = (orders) => {
+    if (activeTab === "All Orders") {
+      return orders;
+    }
+    if (activeTab === "Active Orders") {
+      return orders.filter(
+        (order) => order?.orderExpireAt > new Date().toISOString()
+      );
+    }
+    if (activeTab === "Expired Orders") {
+      return orders.filter(
+        (order) => order?.orderExpireAt < new Date().toISOString()
+      );
+    }
+    if (activeTab === "Completed Orders") {
+      // return orders.filter((order) => order?.totalOffers?.find(
+      //   (offer) => offer?.serviceProvider === user?._id
+      // ));
+    }
+  };
+  // how i use this function
+  const filteredOrders = filterOrders(newOrder);
+  useEffect(() => {
+    // if chang in active tab then filter the orders
+    filterOrders(newOrder);
+  }, [activeTab, newOrder]);
+
+  return filteredOrders?.map((order) => {
+    return (
+      <>
+        <div className="border-x-2  shadow-md w-full select-none  flex-col bg-primarycolor   mb-4">
+          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2">
+            <div>
+              <p className="font-bold">Order placed</p>
+              <span className="text-mutedcolor">2/4/2024</span>
+            </div>
+            <div>
+              <p className="font-bold">Order Expiry Date</p>
+              <span className="text-mutedcolor">24/5/2024</span>
+            </div>
+            <div>
+              <p className="font-bold">Address</p>
+              <span className="text-mutedcolor">{order?.address}</span>
+            </div>
+            <div className="font-bold flex flex-col justify-center items-center">
+              <p className="font-bold ">Expire At</p>
+              {/* convert this       orderExpireAt         in readable date and time */}
+
+              <span className="text-mutedcolor">
+                {formateDate(order?.orderExpireAt)}
+              </span>
+            </div>
           </div>
-          
-        </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
-            </TabsHeader>
-          </Tabs>
-          <div className="w-full md:w-72">
-            <Input
-              label="Search Order..."
-              icon={<MdCalendarToday className="h-5 w-5" />}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardBody className="overflow-scroll px-0 bg-primarycolor  rounded-t-3xl mt-4 shadow-lg">
-        <table className=" w-[95%] mx-auto  table-auto text-left">
-          <thead className="bg-cardbg ">
-            <tr className="rounded-xl">
-              {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className=" p-4"
+          {/* second part */}
+          <div className="flex  items-center w-full   justify-self-auto gap-28 py-5 px-6">
+            <div>
+              <img
+                src={order?.clientId?.avatar?.url}
+                className="w-20 h-20"
+                alt=""
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-10">
+                <p>{order?.serviceId?.title}</p>
+                <span
+                  className={`${
+                    order?.orderExpireAt < new Date().toISOString()
+                      ? "bg-errorcolor"
+                      : "bg-greencolor"
+                  } py-2 px-5 text-primarycolor rounded-full arimo`}
                 >
-                  <Typography
-                   
-                    
-                    className="arimo text-hoverblack font-bold"
+                  {order?.orderExpireAt > new Date().toISOString()
+                    ? "Active"
+                    : "Expired"}
+                </span>
+              </div>
+              {/*description  */}
+              <div>
+                <p>{order?.serviceId?.description}</p>
+              </div>
+            </div>
+            {/* third part */}
+            <div className="flex gap-10">
+              <div className="flex items-center justify-center flex-col">
+                <p className="font-bold text-xl arimo">Quantity</p>
+                <p className="font-bold text-xl arimo">{order?.quantity}</p>
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <p>
+                  <b className="arimo text-[22px]">RS{order?.price}</b>
+                </p>
+                {/* check if already send offer then disable button */}
+                {order?.totalOffers?.find(
+                  (offer) => offer?.serviceProvider === user?._id
+                ) ? (
+                  <Button
+                    className="bg-buttoncolor arimo text-[16px] arimo text-hoverblack"
+                    disabled
                   >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {newOrder?.map(
-              (order, index) => {
-                const isLast = index === newOrder.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b-2  border-blue-gray-50";
- 
-                return (
-                  <tr key={index } className="hover:bg-[#ECF8FE] hover:cursor-pointer">
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar src={order?.clientId?.avatar?.url} alt={order?.serviceId.title} size="sm" />
-                        <div className="flex flex-col">
-                          <Typography
-                           
-                            className="font-normal arimo text-hoverblack "
-                          >
-                            {order?.serviceId?.title}
-                          </Typography>
-                          <Typography
-                           
-                            className="text-sm opacity-70 arimo "
-                          >
-                             {order?.serviceId?.description}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          className="font-normal arimo text-hoverblack text-sm"
-                        >
-                        {order?.address}
-                        </Typography>
-                       
-                      </div>
-                    </td>
-                   
-                    <td className={classes}>
-                      <Typography
-                        
-                        className="font-normal arimo text-sm text-hoverblack"
-                      >
-                        {order?.quantity}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                        className="text-xl font-bold arimo"
-                          variant="ghost"
-                          size="sm"
-                          value={"Rs"+ order?.price }
-                          color={"green" }
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Order Details">
-                       
-                       <Link to={"/"} ><p className="text-sm arimo text-[#1e0fbd]">View Order Details</p></Link>
-                       
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
-      </CardBody>
-      <CardFooter className="flex items-center justify-between rounded-b-3xl shadow-lg p-4 bg-primarycolor">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" className="arimo capitalize  text-[15px]" >
-            Previous
-          </Button>
-          <Button variant="outlined"  className="arimo capitalize bg-buttoncolor text-[15px]">
-            Next
-          </Button>
+                    Offer Sent
+                  </Button>
+                ) : (
+                  <SendOffer order={order} />
+                )}
+
+                {/* <SendOffer order={order} /> */}
+              </div>
+            </div>
+          </div>
+          {/* footer */}
+          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2">
+            <div className="flex gap-4">
+              <p className="font-bold">Appointment Date:</p>
+              <span className="text-mutedcolor">2/4/2024</span>
+            </div>
+          </div>
         </div>
-      </CardFooter>
-    </Card>
-  );
+      </>
+    );
+  });
 }

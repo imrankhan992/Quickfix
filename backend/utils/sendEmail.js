@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
+  console.log(options);
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
@@ -16,12 +17,7 @@ const sendEmail = async (options) => {
         from: process.env.SMPT_MAIL,
         to: options.email,
         subject: options.subject,
-        html: `<div class="border flex flex-col items-center justify-center w-full bg-white">
-       
-        <p style="color: #047857; font-size: 1.25rem; text-align: center; font-weight: 700;">
-          Hi ${options.name}! <br /> ${options.message}
-        </p>
-      </div>`
+        html: options.html
     };
 
     await transporter.sendMail(mailOptions);

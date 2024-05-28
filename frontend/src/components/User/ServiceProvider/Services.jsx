@@ -10,24 +10,21 @@ import { errorToast } from "@/Toast/Toast";
 import Aside from "./Aside";
 
 const Services = () => {
-  
   const [category, setcategory] = useState("All");
   const [products, setproducts] = useState([]);
   const [newfilterproducts, setnewfilterproducts] = useState([]);
   // Function to filter products based on the selected category
   const filterProductsByCategory = () => {
+   
     if (category === "All") {
-      // If category is "All", return all products
       return products;
     } else {
-      // If category is not "All", filter products based on category
-      return products.filter(
-        (product) => product?.category?.category === category?.category
-      );
+
+      return products.filter((product) => {  return product.category.category === category});
     }
   };
   const filteredProducts = filterProductsByCategory();
-  console.log(filteredProducts?.length === 0);
+// console.log(filteredProducts);
 
   const [loading, setloading] = useState(false);
   //   get all products
@@ -66,40 +63,40 @@ const Services = () => {
   useEffect(() => {
     getallProducts();
     // dispatch(loadUserData());
-   
+
     getallcategories();
   }, []);
   //   console.log(newfilterproducts);
   //   console.log(products);
   return (
-    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
+    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside user={user} open={2} />
-        <main className="text-primarycolor w-full">
+        <main className="text-hoverblack w-full">
           <div>
             <Header user={user} />
           </div>
           {/* all services */}
-          {/* <div className="px-8 py-6">
+          <div className="px-8 py-6">
             <div className="flex items-center justify-start">
               <Filter allcategories={allcategories} setcategory={setcategory} />
             </div>
-          </div> */}
-          <div className="px-8 pt-6">
+          </div>
+          <div className="px-8 pb-4">
             <div className="flex items-center justify-start text-3xl">
               All Services
             </div>
           </div>
-          <div className=" grid grid-cols-3 gap-3  w-full px-8 py-16">
+          <div className=" grid grid-cols-3 gap-3  w-full px-8 pb-16">
             {filteredProducts &&
               filteredProducts?.map((product, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex gap-2 border p-4 rounded-lg bg-thirdcolor"
+                    className="flex gap-2 border-2 shadow-md p-4  rounded-lg bg-thirdcolor"
                   >
-                    <div className="text-primarycolor">
+                    <div className="text-hoverblack">
                       <img
                         src={product?.picture?.url}
                         className="w-32 h-32 rounded-lg object-contain"
@@ -107,12 +104,12 @@ const Services = () => {
                       />
                     </div>
                     <div className="flex flex-col gap-1">
-                      <h1 className="text-primarycolor">{product?.title}</h1>
+                      <h1 className="text-hoverblack">{product?.title}</h1>
                       <p className=" text-mutedcolor">{product?.description}</p>
-                      <p className="text-primarycolor">Rs:{product?.price}</p>
+                      <p className="text-hoverblack">Rs:{product?.price}</p>
                       <div className="flex justify-between gap-3">
                         <div className="flex items-center justify-center">
-                          <p className="text-primarycolor">
+                          <p className="text-hoverblack">
                             <ReactStars
                               count={5}
                               size={20}
@@ -131,7 +128,7 @@ const Services = () => {
             {/* if product not found */}
             {filteredProducts?.length === 0 && (
               <div className="flex items-center justify-center col-span-3">
-                <p className="text-primarycolor">Oops: Products not found</p>
+                <p className="text-hoverblack">Oops: Products not found</p>
               </div>
             )}
           </div>

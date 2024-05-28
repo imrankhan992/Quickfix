@@ -13,28 +13,28 @@ import {
 import { IoFilter } from "react-icons/io5";
 
 export function Filter({ allcategories, setcategory }) {
-  const [position, setPosition] = React.useState("bottom");
-
+  const [position, setPosition] = React.useState("bottom")
   return (
-    <DropdownMenu s>
-      <DropdownMenuTrigger asChild className="p-0 border ">
-        <Button className="bg-bodycolor px-2 flex items-center gap-1 outline-1 outline-bordercolor">
+    <DropdownMenu >
+      <DropdownMenuTrigger asChild className="p-0  ">
+        <Button className="bg-cardbg px-2 flex items-center gap-1 outline-1 ">
           <IoFilter />
           Add Filter
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-thirdcolor border border-bordercolor">
-        <DropdownMenuLabel className="text-primarycolor">
+      <DropdownMenuContent className="w-56 bg-cardbg ">
+        <DropdownMenuLabel className="text-hoverblack">
           Add filters
         </DropdownMenuLabel>
-        <DropdownMenuSeparator className="border border-bordercolor" />
+        <DropdownMenuSeparator className="" />
         <DropdownMenuRadioGroup
           value={position}
           onValueChange={(e) => {
             setPosition(e);
             setcategory(e);
+           
           }}
-          className="text-primarycolor"
+          className="text-hoverblack"
         >
           <DropdownMenuRadioItem value={"All"} className="cursor-pointer">
             All
