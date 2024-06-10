@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
-
-import { Button } from "../ui/button";
-import { TextInput } from "@tremor/react";
-import { useNavigate } from "react-router-dom";
+import logo from "../../assets/quicfixlogo.png"
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { userRegisterAction } from './../Actions/UserAction';
 import { AlertDestructive } from "../Alerts/ErrorAlert";
+import { Input } from "../ui/input";
+import { Button } from "@material-tailwind/react";
 const UserSignup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,15 +55,15 @@ const UserSignup = () => {
       {/* header */}
       <div className="w-full h-full ">
         <div className="max-w-[1750px] mx-auto">
-          <div className="flex py-4 px-8  justify-between items-center  text-white">
-            <div>logo here</div>
+          <div className="flex py-2 px-8  justify-between items-center  text-hoverblack">
+          <Link to={"/"}>  <img src={logo} alt="quickFixLogo" /></Link>
             <div className="md:hidden">Login</div>
             <div className="ms-auto md:flex justify-end gap-4 items-center hidden">
               <div>
-                <p>Here to hire talent?</p>
+                <Link to={"/signup"}  className="font-bold">Here to hire talent?</Link>
               </div>
               <div>
-                <a>Join as a Client</a>
+                <Link to={"/signup"} className="font-bold">Join as a Client</Link>
               </div>
             </div>
           </div>
@@ -76,9 +76,8 @@ const UserSignup = () => {
       
       {
         error ? (AlertDestructive(error)):""
-       
       }
-          <h1 className=" text-primarycolor text-3xl font-semibold px-2 py-5 text-center">
+          <h1 className=" text-hoverblack text-3xl font-semibold px-2 py-5 text-center">
             Sign up to hire talent
           </h1>
           <form
@@ -89,17 +88,17 @@ const UserSignup = () => {
             <div>
               <Label
                 htmlFor="name"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 First name
               </Label>
-              <TextInput
+              <Input
                 onChange={handleChange}
                 onBlur={handleBlur}
                 name="firstname"
                 value={values?.firstname}
                 id="name"
-                className={` rounded-lg border border-bordercolor ${
+                className={` arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.firstname && touched?.firstname
                     ? "border-errorcolor border-2"
                     : ""
@@ -123,12 +122,12 @@ const UserSignup = () => {
             <div>
               <Label
                 htmlFor="lastname"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 Last name
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={` arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.lastname && touched?.lastname
                     ? "border-errorcolor border-2"
                     : ""
@@ -157,12 +156,12 @@ const UserSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="email"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 Email
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={`arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.email && touched?.email
                     ? "border-errorcolor border-2"
                     : ""
@@ -191,12 +190,12 @@ const UserSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="hellopassword"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 Password
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={` arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.password && touched?.password
                     ? "border-errorcolor border-2"
                     : ""
@@ -225,12 +224,12 @@ const UserSignup = () => {
             <div className="col-span-2">
               <Label
                 htmlFor="confirmPassword"
-                className="font-normal text-primarycolor text-lg"
+                className="font-normal text-hoverblack arimo text-lg"
               >
                 Confirm Password
               </Label>
-              <TextInput
-                className={` rounded-lg border border-bordercolor ${
+              <Input
+                className={` arimo bg-primarycolor text-[16px]  focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl${
                   errors?.confirmPassword && touched?.confirmPassword
                     ? "border-errorcolor border-2"
                     : ""
@@ -270,7 +269,7 @@ const UserSignup = () => {
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="terms1"
-                  className="text-sm font-medium text-primarycolor leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="font-normal text-hoverblack arimo text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Accept terms and conditions
                 </label>
@@ -290,19 +289,18 @@ const UserSignup = () => {
                 </div>
               </div>
             </div>
-            <div className="py-5 items-center flex justify-center col-span-2">
+            <div className="py-5 items-center flex justify-center col-span-2 w-full ">
               {!loading && (
                 <Button
-                  className="bg-buttoncolor outline outline-buttonborder"
+                  className="bg-buttoncolor arimo w-full text-hoverblack capitalize text-[16px] rounded-xl border-b-2 hover:border-t-2 hover:border-b-0 border-hoverblack "
                   type="submit"
                 >
                   Create my account
                 </Button>
               )}
               {loading && (
-                <Button disabled>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
+                <Button disabled className="bg-buttoncolor arimo w-full text-hoverblack capitalize text-[16px] rounded-xl border-b-2 hover:border-t-2 hover:border-b-0 border-hoverblack">
+                  Please wait...
                 </Button>
               )}
             </div>

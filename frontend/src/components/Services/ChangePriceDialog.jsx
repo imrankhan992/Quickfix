@@ -19,10 +19,7 @@ import { Button } from "@/components/ui/button";
 const ChangePriceDialog = ({
   currentservice,
   price,
-  setprice,
-  totalnumber,
-  setnewprice,
-  newprice,
+  setPrice,
 }) => {
   return (
     <Dialog className="">
@@ -45,15 +42,10 @@ const ChangePriceDialog = ({
             <Input
               id="name"
               type="number"
-              value={newprice}
+              value={price}
               className=" border-none text-5xl"
               onChange={(e) => {
-                setnewprice(e.target.value * totalnumber);
-                setprice(e.target.value);
-                if (price<=0) {
-                    setnewprice(currentservice?.price);
-                    setprice(currentservice?.price);
-                }
+               setPrice(e.target.value);
               }}
             />
           </div>

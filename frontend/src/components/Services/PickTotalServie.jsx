@@ -18,11 +18,10 @@ import { Button } from "@/components/ui/button";
 
 const PickTotalServie = ({
   currentservice,
-  totalnumber,
+ quantity,
+  setQuantity,
   price,
-  setprice,
-  settotalnumber,
-  setnewprice
+  setPrice,
 }) => {
   return (
     <Dialog>
@@ -46,11 +45,11 @@ const PickTotalServie = ({
             </p>
             <Input
               id="name"
-              value={totalnumber <= 0 ? settotalnumber(1) : totalnumber}
+              value={quantity}
               type="number"
               className=" border-none text-5xl"
               onChange={(e) => {
-                settotalnumber(e.target.value);
+               setQuantity(e.target.value);
               }}
             />
           </div>

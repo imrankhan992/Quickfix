@@ -5,6 +5,7 @@ const serviceProviderRegistration = require("./Routes/ServiceProvider/Registrati
 const AdminRoute = require("./Routes/Admin/AdminRoute");
 const userroute = require("./Routes/User/userRoute");
 const orderRouter = require("./Routes/Orders/order.route");
+const messagesRoute = require("./Routes/Messages/messages");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -46,6 +47,7 @@ app.use("/api/v1/", serviceProviderRegistration);
 app.use("/api/v1/", AdminRoute);
 app.use("/api/v1/", userroute);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/messages", messagesRoute);
 
 const userSocketMap = {};
 io.on("connection", (socket) => {

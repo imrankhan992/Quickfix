@@ -33,10 +33,11 @@ import { useSelector } from "react-redux";
 import useSendOrder from "@/Hooks/useSendOrder";
 import { FindingServiceProviders } from "../Drawer/FindingServiceProviders.";
 import GetAddressMap from "./GetAddressMap";
-import { CustomToast } from "@/Toast/CustomToast";
-import RIdeRequestToast from "@/Toast/RIdeRequestToast";
+import useTrackPrice from "@/Hooks/useTrackPrice";
+import useDeleteOrder from "@/Hooks/useDeleteOrder";
 
 const FindServiceProviders = () => {
+ const {deleteOrder,sendOrderLoading } = useDeleteOrder()
   const { socket, newOrder, onlineUsers } = useSocketContext();
 
   const { sendOrder, loading, mapTracking, setMapTracking } = useSendOrder();
@@ -52,13 +53,14 @@ const FindServiceProviders = () => {
   const [loadingserviceproviders, setloadingserviceproviders] = useState(false);
   const [sucess, setsucess] = useState("");
   // ordering states
-  const [price, setprice] = useState(0);
-  const [totalnumber, settotalnumber] = useState(1);
-  const [newprice, setnewprice] = useState(0);
-  const [recommendedprice, setrecommendedprice] = useState(1);
+
   const [dateandtime, setdateandtime] = useState("");
   const [address, setaddress] = useState("");
+
+  const [price, setPrice] = useState()
+  const [quantity, setQuantity] = useState(1)
   const { id } = useParams();
+  const total=useTrackPrice(quantity,price);
 
   const {
     values,
@@ -88,6 +90,8 @@ const FindServiceProviders = () => {
       await sendOrder(values);
     },
   });
+  
+ 
   useEffect(() => {
     if (currentLocation === null) {
       if (navigator.geolocation) {
@@ -120,41 +124,45 @@ const FindServiceProviders = () => {
   }, [currentLocation, CityName]);
 
   useEffect(() => {
-    getCurrentService();
+   
     if (address) {
       setFieldValue("address", address);
     }
-    if (currentservice?.category) {
-      setFieldValue("currentService", currentservice?.category?._id);
-    }
+   
     if (dateandtime) {
       setFieldValue("dateandtime", dateandtime);
     }
-    if (newprice) {
-      setFieldValue("price", newprice);
-    }
-    if (totalnumber) {
-      setFieldValue("quantity", totalnumber);
-    }
-    if (totalnumber) {
-      setnewprice(totalnumber * price);
-    }
-    if (totalnumber === 0) {
-      settotalnumber(1);
-    }
+
     if (user?._id) {
       setFieldValue("clientId", user?._id);
+    }
+    
+   
+    if (CityName) {
+      setFieldValue("CityName", CityName);
+    }
+  }, [address, CityName]);
+
+  useEffect(() => {
+    getCurrentService();
+    if (currentservice?.category?._id) {
+      setFieldValue("category", currentservice?.category?._id);
     }
     if (currentservice?._id) {
       setFieldValue("serviceId", currentservice?._id);
     }
-    if (currentservice?.category?._id) {
-      setFieldValue("category", currentservice?.category?._id);
+    if (currentservice?.category) {
+      setFieldValue("currentService", currentservice?.category?._id);
     }
-    if (CityName) {
-      setFieldValue("CityName", CityName);
-    }
-  }, [totalnumber, recommendedprice, address, CityName, newprice]);
+  }, [])
+  
+
+  // set price use effect
+  useEffect(() => {
+    setFieldValue("price", total);
+    setFieldValue("quantity", quantity);
+  }, [total,quantity,price])
+  
 
   //   get address using co ordinates
   // console.log(currentservice?.category?.category);
@@ -199,14 +207,17 @@ const FindServiceProviders = () => {
     try {
       const { data } = await axiosInstance.get(`/api/v1/single-service/${id}`);
       setcurrentservice(data?.service);
-      setprice(data?.service?.price);
-      setnewprice(data?.service?.price);
+      setPrice(data?.service?.price);
+      setFieldValue("category", data?.service?.category?._id);
+      setFieldValue("serviceId", data?.service?._id);
+      setFieldValue("currentService", data?.service?.category?._id);
+      // setnewprice(data?.service?.price);
       localStorage.setItem("currentService", JSON.stringify(data.service));
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(currentservice, "this is parnent service");
+ 
   //   get all service provider based on location
   const getallserviceProvidersnearMe = async () => {
     try {
@@ -321,16 +332,9 @@ const FindServiceProviders = () => {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex gap-3 items-center ">
                   <h3 className="text-2xl">PKR</h3>
-                  <h3 className="text-3xl font-bold">{newprice}</h3>
+                  <h3 className="text-3xl font-bold">{total}</h3>
                 </div>
-                <ChangePriceDialog
-                  newprice={newprice}
-                  currentservice={currentservice}
-                  price={price}
-                  setprice={setprice}
-                  totalnumber={totalnumber}
-                  setnewprice={setnewprice}
-                />
+                <ChangePriceDialog currentservice={currentservice} price={price} setPrice={setPrice} />
               </div>
 
               <div className="flex gap-2 justify-between">
@@ -342,8 +346,7 @@ const FindServiceProviders = () => {
                           key={index}
                           className="bg-buttoncolor p-2 rounded-[4px] cursor-pointer"
                           onClick={() => {
-                            setnewprice(element * totalnumber);
-                            setprice(element);
+                            setPrice(element);
                           }}
                         >
                           {element}
@@ -375,16 +378,9 @@ const FindServiceProviders = () => {
                 <h3 className="text-[1rem]">
                   Total number of {currentservice?.title}
                 </h3>
-                <h3 className="text-3xl font-bold">{totalnumber}</h3>
+                <h3 className="text-3xl font-bold">{quantity}</h3>
               </div>
-              <PickTotalServie
-                price={price}
-                setprice={setprice}
-                totalnumber={totalnumber}
-                settotalnumber={settotalnumber}
-                currentservice={currentservice}
-                setnewprice={setnewprice}
-              />
+              <PickTotalServie currentservice={currentservice} quantity={quantity} setQuantity={setQuantity} setPrice={setPrice} price={price} />
             </div>
             {/* location */}
             <div className="flex flex-col gap-2">
@@ -459,7 +455,7 @@ const FindServiceProviders = () => {
                 <div className="ml-4">
                   <Typography color="blue-gray" className="arimo font-semibold">
                     Automatically accept the nearest{" "}
-                    {currentservice?.category?.category} for PKR {newprice}
+                    {currentservice?.category?.category} for PKR {"300"}
                   </Typography>
                 </div>
               }
@@ -490,13 +486,24 @@ const FindServiceProviders = () => {
         <Card className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
           <div className="flex flex-col gap-2">
             <div className="w-full flex flex-col gap-3 items-center justify-center">
-              <Button
-                // onClick={()=>{RIdeRequestToast(newOrder)}}
-                // type="submit"
+             {
+                !sendOrderLoading &&  <Button
+                onClick={()=>{deleteOrder()}}
+                type="submit"
                 className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
               >
                 Cancel request
               </Button>
+             }
+              {sendOrderLoading && ( 
+                <Button
+               
+                disabled
+                className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
+              >
+                Cancel request
+              </Button>
+               )}
               <form className="flex items-center w-full justify-center gap-3 flex-col">
                 <h1>
                   If you haven't received the best price or a response yet,

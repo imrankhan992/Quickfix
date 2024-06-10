@@ -51,7 +51,11 @@ import SingleOrder from './components/User/ServiceProvider/SingleOrder';
 import useListenOffer from "./Hooks/useListenOffer";
 import useListenOfferAccept from "./Hooks/useListenAcceptOffer";
 import AcceptedOffers from "./components/User/serviceConsumer/AcceptedOffers";
+import AcceptedOffersServiceProvider from "./components/User/ServiceProvider/AcceptedOffers";
+import Chatting from "./components/User/serviceConsumer/Chatting";
+import ChattingServiceProvider from "./components/User/ServiceProvider/Chatting";
 import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAcceptedOrder";
+import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvider/SingleAcceptedOrder";
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
@@ -128,6 +132,7 @@ const {newOrder} = useSocketContext()
               <Route path="orders" element={<Orders />} />
               <Route path="accepted-orders" element={<AcceptedOffers />} />
               <Route path="accepted-orders/:id" element={<SingleAcceptedOrder />} />
+              <Route path="chatting/:id" element={<Chatting />} />
               <Route path="previous-orders" element={<PreviousOrders />} />
               <Route path="settings" element={<Settings />} />
             </Route>
@@ -149,7 +154,9 @@ const {newOrder} = useSocketContext()
             >
               <Route path="My Profile" element={<ServiceDashboard />} />
               <Route path="services" element={<ServiceproviderServices />} />
-              <Route path="orders" element={<ServiceProviderOrders />} />
+              <Route path="orders" element={<AcceptedOffersServiceProvider />} />
+              <Route path="accepted-orders/:id" element={<SingleAcceptedOrderServiceProvider />} />
+              <Route path="chatting/:id" element={<ChattingServiceProvider />} />
               <Route path="request/order" element={<RequestOrder />} />
               <Route path="single/order" element={<SingleOrder />} />
               <Route

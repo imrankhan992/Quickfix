@@ -58,6 +58,7 @@ function GoogleMapPage({
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.lat},${currentLocation.lng}&key=AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU`
       );
       const data = await response.json();
+      console.log(data)
       if (data.status === "OK") {
         const result = data.results[0];
         const addressComponents = result.address_components;

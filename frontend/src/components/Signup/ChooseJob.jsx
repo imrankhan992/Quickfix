@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import logo from "../../assets/quicfixlogo.png"
 import { FaRegCircle, FaDotCircle, FaUserTie } from "react-icons/fa";
 import { GrUserWorker } from "react-icons/gr";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ const ChooseJob = () => {
 
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh] ">
-      <div className="px-8">Header</div>
+      <div className="px-8"><img src={logo} alt="quickFixLogo" className="" /></div>
       <div className="flex flex-col md:justify-center md:items-center w-full h-full ">
         <div className="py-5 mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center bg-cardbg rounded-3xl border border-hoverblack shadow-3xl">
           <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 text-hoverblack arimo">
@@ -76,7 +76,7 @@ const ChooseJob = () => {
           <div>
             {selectedOption && selectedOption !== "notselected" && (
               <Link to={`/${data}/createaccount`}>
-                <Button className="bg-hoverblack arimo text-[16px] text-primarycolor">
+                <Button className="bg-buttoncolor w-full text-hoverblack capitalize text-[16px] rounded-xl border-b-2 hover:border-t-2 hover:border-b-0 border-hoverblack">
                   Join as a{" "}
                   {selectedOption
                     ? selectedOption.charAt(0).toUpperCase() +
@@ -88,7 +88,7 @@ const ChooseJob = () => {
             {selectedOption === "notselected" && (
               <Button
                 disabled
-                className="cursor-not-allowed bg-hoverblack text-primarycolor"
+                className="cursor-not-allowed bg-buttoncolor w-full text-hoverblack capitalize text-[16px] rounded-xl border-b-2 hover:border-t-2 hover:border-b-0 border-hoverblack"
               >
                 Create Account
               </Button>

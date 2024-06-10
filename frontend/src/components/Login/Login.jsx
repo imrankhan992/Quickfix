@@ -3,7 +3,7 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-
+import logo from "../../assets/quicfixlogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { loginSchema, registration } from "@/Schemas";
@@ -68,7 +68,7 @@ const Login = () => {
       <div className="grid grid-cols-3 bg-cardbg rounded-3xl ">
       <div className="w-full p-14">
         <div className="w-full  flex flex-col justify-center    ">
-          <h2 className="arimo text-4xl font-bold text-start pb-8">QuickFix</h2>
+         <Link to="/"> <img src={logo} alt="quickFixLogo" className=" w-48" /></Link>
           <h1 className="  text-hoverblack arimo text-2xl font-semibold px-2 py-5 text-center">
           Log in to your account
           </h1>

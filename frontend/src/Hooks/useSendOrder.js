@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const useSendOrder = () => {
     const [loading, setLoading] = useState(false);
     const [mapTracking, setMapTracking] = useState(false)
-    const { socket } = useSocketContext();
+    const { socket, setRequestOrderId } = useSocketContext();
     const sendOrder = async (values) => {
         setLoading(true)
         try {
@@ -16,6 +16,7 @@ const useSendOrder = () => {
                 { headers: { "Content-Type": "application/json" } }
             );
             if (data?.success) {
+                setRequestOrderId(data?.newOrder?._id);
                 setMapTracking(true)
                 setLoading(false)
                 showtoast("please wait for the response");

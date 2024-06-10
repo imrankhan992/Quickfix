@@ -105,8 +105,8 @@ const Approve = ({ products }) => {
               </div>
             </div>
           </div>
-          {/* second dev */}
-          <div className="w-60 bg-red-500">heelo</div>
+         
+      
         </div>
       </main>
     </>

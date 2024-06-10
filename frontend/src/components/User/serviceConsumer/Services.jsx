@@ -70,7 +70,7 @@ const Services = () => {
   //   console.log(newfilterproducts);
   //   console.log(products);
   return (
-    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] bg-cardbg">
+    <div className=" w-full h-full mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={2} />

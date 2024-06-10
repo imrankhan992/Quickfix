@@ -112,7 +112,8 @@ exports.sendOffer = async (req, res) => {
       serviceProvider: _id,
       price,
       distance,
-      time
+      time,
+      orderId:orderId
     };
     // check if the order is expired
     if (order.orderExpireAt < new Date()) {
@@ -252,14 +253,15 @@ exports.getAcceptedOffersClient = async (req, res) => {
 exports.getSingleAcceptedOffer = async (req, res) => {
   try {
     const { id } = req.params;
-  
+
     const order = await AcceptOrder.findById(id).populate("serviceProvider")
       .populate({
         path: "order",
-        populate: {
-          path: "serviceId",
-        },
-      });;
+        populate: [
+          { path: "clientId" },
+          { path: "serviceId" },
+        ],
+      })
     if (!order) {
       throw new Error("Order not found");
     }
@@ -276,3 +278,66 @@ exports.getSingleAcceptedOffer = async (req, res) => {
 
 }
 
+
+// get accepted order by service provider
+exports.getAcceptedOffersServiceProvider = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const orders = await AcceptOrder.find({ serviceProvider: _id })
+      .populate("clientId")
+      .populate({
+        path: "order",
+        populate: {
+          path: "serviceId",
+        },
+
+      });
+
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// get single offer by service provider using id
+exports.getSingleServiceProviderOffer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await AcceptOrder.findById(id).populate({
+      path: "order",
+      populate: [
+        { path: "clientId" },
+        { path: "serviceId" },
+      ],
+    });
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    res.status(200).json({ success: true, order });
+  }
+  catch (error) {
+    console.log(error);
+    // object cast error
+    if (error.name === "CastError") {
+      return res.status(400).json({ success: false, message: "Order not found" })
+    }
+    res.status(500).json({ success: false, message: error.message });
+  }
+
+}
+
+// delete order by client
+exports.deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findByIdAndDelete(id);
+    if (!order) {
+    throw new Error("Order not found");
+    }
+    res.status(200).json({ success: true, message: "Order cancel successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}

@@ -49,6 +49,7 @@ export function OrdersTable({ activeTab }) {
   }, [activeTab, newOrder]);
 
   return filteredOrders?.map((order) => {
+    console.log(order,"this is order data");
     return (
       <>
         <div className="border-x-2  shadow-md w-full select-none  flex-col bg-primarycolor   mb-4">
@@ -78,7 +79,7 @@ export function OrdersTable({ activeTab }) {
           <div className="flex  items-center w-full   justify-self-auto gap-28 py-5 px-6">
             <div>
               <img
-                src={order?.clientId?.avatar?.url}
+                src={order?.serviceId?.picture?.url}
                 className="w-20 h-20"
                 alt=""
               />

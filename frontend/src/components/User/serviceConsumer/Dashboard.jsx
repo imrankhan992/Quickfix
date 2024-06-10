@@ -37,7 +37,7 @@ const Dashboard = () => {
   //   dispatch(loadUserData())
   //  }, []);
   return (
-    <div className=" w-full max-h-screen mx-auto max-w-[1750px] bg-cardbg">
+    <div className=" w-full h-full mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={1} />

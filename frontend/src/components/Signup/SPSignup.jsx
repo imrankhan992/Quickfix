@@ -3,7 +3,7 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-
+import logo from "../../assets/quicfixlogo.png"
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { registration } from "@/Schemas";
@@ -59,15 +59,15 @@ const SPSignup = () => {
       {/* header */}
       <div className="w-full h-full ">
         <div className="max-w-[1750px] mx-auto">
-          <div className="flex py-4 px-8  justify-between items-center  text-white">
-            <div className="text-hoverblack">logo here</div>
+          <div className="flex py-2 px-8  justify-between items-center  text-white">
+           <img src={logo} alt="quickFixLogo" className=""/>
             <div className="md:hidden text-hoverblack">Login</div>
             <div className="ms-auto md:flex justify-end gap-4 items-center hidden">
               <div>
-                <p className="text-hoverblack">Here to hire talent?</p>
+                <p className="text-hoverblack font-bold">Here to hire talent?</p>
               </div>
               <div>
-                <Link to={"/signup"} className="text-hoverblack">Join as a Client</Link>
+                <Link to={"/signup"} className="text-hoverblack font-bold">Join as a Client</Link>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ const SPSignup = () => {
                 Last name
               </Label>
               <Input
-                className={` arimo bg-hoverlatext-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
+                className={` arimo bg-hoverla text-hoverblack focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                   errors?.lastname && touched?.lastname
                     ? "border-errorcolor border-2"
                     : ""

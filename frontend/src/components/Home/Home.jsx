@@ -29,12 +29,22 @@ import { Textarea } from "../ui/textarea";
 import ToastKarta from "../Signup/ToastKarta";
 import OfferNotification from "@/Toast/OfferNotification";
 import { OrderCollapse } from "../User/serviceConsumer/OrderCollapse";
+import { toast } from "react-toastify";
 
 const Home = () => {
+  const notify = () => {
+   toast(<div className="bg-red-500 border-2 "><Button>Accept</Button></div>, {
+        position: "bottom-right",
+        className: 'foo-bar'
+      });
+  };
   return (
     <div className=" w-full  h-[100vh] mx-auto max-w-[1750px] ">
+    
       {/* header */}
-      <ComplexNavbar />
+    <div className="w-full ">
+    <ComplexNavbar />
+    </div>
       
     {/* <ToastKarta/> */}
   
@@ -57,7 +67,7 @@ const Home = () => {
               </p>
 
               <div>
-                <button className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
+                <button  className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
                   Get Start
                 </button>
               </div>

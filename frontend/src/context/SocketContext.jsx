@@ -1,9 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
-import { showtoast } from "@/Toast/Toast";
-import notification from "./../assets/sounds/notification.mp3";
-import RIdeRequestToast from "@/Toast/RIdeRequestToast";
+
 const SocketContext = createContext();
 export const useSocketContext = () => {
   return useContext(SocketContext);
@@ -14,6 +12,9 @@ export const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [newOrder, setNewOrder] = useState([]);
   const { user } = useSelector((state) => state.user);
+  const [messages, setMessages] = useState([]);
+  const [selectedConversation, setSelectedConversation] = useState(null)
+  const [requestOrderId, setRequestOrderId] = useState()
 
   const initlizeSocket = () => {
     if (user) {
@@ -45,7 +46,7 @@ export const SocketContextProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{ newOrder, setNewOrder, socket, onlineUsers, setOnlineUsers }}
+      value={{requestOrderId, setRequestOrderId, newOrder, setNewOrder, socket, onlineUsers, setOnlineUsers ,messages, setMessages,selectedConversation, setSelectedConversation}}
     >
       {children}
     </SocketContext.Provider>
