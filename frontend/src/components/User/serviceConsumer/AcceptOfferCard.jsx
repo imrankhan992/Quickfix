@@ -20,9 +20,9 @@ export function AcceptOfferCard({ order }) {
       minute: "numeric",
     });
   };
-  console.log(order);
+ 
   return (
-    <Card className="w-full max-w-[30rem] p-0  flex-row border-2 border-hoverblack select-none">
+    <Card className=" max-w-[25rem] max-h-[15rem] p-0  flex-row border border-hoverblack select-none overflow-hidden">
       <CardHeader
         shadow={false}
         floated={false}
@@ -39,26 +39,26 @@ export function AcceptOfferCard({ order }) {
       </CardHeader>
       <CardBody className="px-4 py-2 flex flex-col gap-2 ">
         <div>
-        <Typography variant="h5"  className="mb-2 arimo font-bold text-hoverblack">
+        <Typography variant="h6"  className="mb-2 arimo font-bold text-hoverblack">
           {order?.order?.serviceId?.title}
         </Typography>
-        <Typography color="gray" className="mb-2 font-normal">
+        <Typography color="gray" className="font-normal text-sm">
           {order?.order?.serviceId?.description}
         </Typography>
         </div>
         <hr className="border-1" />
-        <div className="flex justify-between ">
+        <div className="flex justify-between item-center gap-2">
           <Typography
             variant="h6"
             color="gray"
-            className="  arimo text-hoverblack"
+            className="text-sm  arimo text-hoverblack"
           >
             Service Provider:
           </Typography>
           <Typography
             variant="h6"
             color="gray"
-            className="  arimo "
+            className="  arimo text-sm"
           >
             {order?.serviceProvider?.firstname}{" "}
             {order?.serviceProvider?.lastname}
@@ -69,22 +69,22 @@ export function AcceptOfferCard({ order }) {
        <Typography
             variant="h6"
             color="gray"
-            className="  arimo text-hoverblack"
+            className="  arimo text-hoverblack text-sm"
           >
        Appointment Date:
           </Typography>
        <Typography
             variant="h6"
             color="gray"
-            className="  arimo "
+            className="  arimo text-sm"
           >
          {   formateDate(order?.order?.dateandtime)}
           </Typography>
        </div>
         <Link to={`/user/dashboard/accepted-orders/${order?._id}`} className="inline-block  ">
           <Button
-            variant="text"
-            className="flex items-center gap-2 arimo text-xl text-hoverblack bg-buttoncolor rounded-full "
+            
+            className="flex items-center gap-2 arimo text-sm text-hoverblack bg-buttoncolor rounded-full "
           >
             Check Details
             <svg

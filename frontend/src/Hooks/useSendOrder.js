@@ -4,9 +4,10 @@ import axiosInstance from "@/ulities/axios";
 import React, { useState } from "react";
 
 const useSendOrder = () => {
+
     const [loading, setLoading] = useState(false);
     const [mapTracking, setMapTracking] = useState(false)
-    const { socket, setRequestOrderId } = useSocketContext();
+    const { socket, setRequestOrderId,setOrderExpiresTime } = useSocketContext();
     const sendOrder = async (values) => {
         setLoading(true)
         try {
@@ -15,6 +16,8 @@ const useSendOrder = () => {
                 values,
                 { headers: { "Content-Type": "application/json" } }
             );
+            // console.log(data?.newOrder, "this is new order")
+            setOrderExpiresTime(data?.newOrder?.orderExpireAt)
             if (data?.success) {
                 setRequestOrderId(data?.newOrder?._id);
                 setMapTracking(true)
@@ -29,7 +32,7 @@ const useSendOrder = () => {
             setLoading(false);
         }
     };
-    return { sendOrder, loading,setMapTracking,mapTracking };
+    return { sendOrder, loading, setMapTracking, mapTracking };
 };
 
 export default useSendOrder;

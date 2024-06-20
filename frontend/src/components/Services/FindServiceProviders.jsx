@@ -4,7 +4,7 @@ import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
 import "./FindServiceProvider.css";
 import axiosInstance from "@/ulities/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import { ImagePlacehoderSkeleton } from "./ImagePlaceHolderSkeleton";
 import {
@@ -14,7 +14,6 @@ import {
   Typography,
   Avatar,
   Badge,
-  ButtonGroup,
   Button,
   Switch,
 } from "@material-tailwind/react";
@@ -37,8 +36,22 @@ import useTrackPrice from "@/Hooks/useTrackPrice";
 import useDeleteOrder from "@/Hooks/useDeleteOrder";
 
 const FindServiceProviders = () => {
- const {deleteOrder,sendOrderLoading } = useDeleteOrder()
-  const { socket, newOrder, onlineUsers } = useSocketContext();
+  const navigate = useNavigate()
+    // formate date
+    const formateDate = (date) => {
+      //  I WANT TO GET live counter that how many time remaining in order expire
+      const newDate = new Date(date);
+      return newDate.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+    };
+  const { deleteOrder, sendOrderLoading } = useDeleteOrder();
+  const { socket, newOrder, onlineUsers, orderExpiresTime ,setOrderExpiresTime} =
+    useSocketContext();
 
   const { sendOrder, loading, mapTracking, setMapTracking } = useSendOrder();
   const { user } = useSelector((state) => state.user);
@@ -57,10 +70,10 @@ const FindServiceProviders = () => {
   const [dateandtime, setdateandtime] = useState("");
   const [address, setaddress] = useState("");
 
-  const [price, setPrice] = useState()
-  const [quantity, setQuantity] = useState(1)
+  const [price, setPrice] = useState();
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
-  const total=useTrackPrice(quantity,price);
+  const total = useTrackPrice(quantity, price);
 
   const {
     values,
@@ -90,8 +103,7 @@ const FindServiceProviders = () => {
       await sendOrder(values);
     },
   });
-  
- 
+
   useEffect(() => {
     if (currentLocation === null) {
       if (navigator.geolocation) {
@@ -124,11 +136,10 @@ const FindServiceProviders = () => {
   }, [currentLocation, CityName]);
 
   useEffect(() => {
-   
     if (address) {
       setFieldValue("address", address);
     }
-   
+
     if (dateandtime) {
       setFieldValue("dateandtime", dateandtime);
     }
@@ -136,8 +147,7 @@ const FindServiceProviders = () => {
     if (user?._id) {
       setFieldValue("clientId", user?._id);
     }
-    
-   
+
     if (CityName) {
       setFieldValue("CityName", CityName);
     }
@@ -154,15 +164,13 @@ const FindServiceProviders = () => {
     if (currentservice?.category) {
       setFieldValue("currentService", currentservice?.category?._id);
     }
-  }, [])
-  
+  }, []);
 
   // set price use effect
   useEffect(() => {
     setFieldValue("price", total);
     setFieldValue("quantity", quantity);
-  }, [total,quantity,price])
-  
+  }, [total, quantity, price]);
 
   //   get address using co ordinates
   // console.log(currentservice?.category?.category);
@@ -217,7 +225,7 @@ const FindServiceProviders = () => {
       console.log(error);
     }
   };
- 
+
   //   get all service provider based on location
   const getallserviceProvidersnearMe = async () => {
     try {
@@ -334,7 +342,11 @@ const FindServiceProviders = () => {
                   <h3 className="text-2xl">PKR</h3>
                   <h3 className="text-3xl font-bold">{total}</h3>
                 </div>
-                <ChangePriceDialog currentservice={currentservice} price={price} setPrice={setPrice} />
+                <ChangePriceDialog
+                  currentservice={currentservice}
+                  price={price}
+                  setPrice={setPrice}
+                />
               </div>
 
               <div className="flex gap-2 justify-between">
@@ -380,7 +392,13 @@ const FindServiceProviders = () => {
                 </h3>
                 <h3 className="text-3xl font-bold">{quantity}</h3>
               </div>
-              <PickTotalServie currentservice={currentservice} quantity={quantity} setQuantity={setQuantity} setPrice={setPrice} price={price} />
+              <PickTotalServie
+                currentservice={currentservice}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                setPrice={setPrice}
+                price={price}
+              />
             </div>
             {/* location */}
             <div className="flex flex-col gap-2">
@@ -486,24 +504,33 @@ const FindServiceProviders = () => {
         <Card className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
           <div className="flex flex-col gap-2">
             <div className="w-full flex flex-col gap-3 items-center justify-center">
-             {
-                !sendOrderLoading &&  <Button
-                onClick={()=>{deleteOrder()}}
-                type="submit"
-                className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
-              >
-                Cancel request
-              </Button>
-             }
-              {sendOrderLoading && ( 
+              {!sendOrderLoading && (
                 <Button
-               
-                disabled
-                className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
-              >
-                Cancel request
-              </Button>
-               )}
+                  onClick={() => {
+                    deleteOrder();
+                  }}
+                  type="submit"
+                  className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
+                >
+                  Cancel request
+                </Button>
+              )}
+              {orderExpiresTime && (
+            <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
+              <h2>Order Expires At : </h2>
+               <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
+                {formateDate(orderExpiresTime) > new Date() ? formateDate(orderExpiresTime) : (<>{ navigate(-1) }</>)}
+                </h5>
+            </div>
+              )}
+              {sendOrderLoading && (
+                <Button
+                  disabled
+                  className="w-full bg-cardbg text-errorcolor  arimo text-[16px] capitalize rounded-xl"
+                >
+                  Cancel request
+                </Button>
+              )}
               <form className="flex items-center w-full justify-center gap-3 flex-col">
                 <h1>
                   If you haven't received the best price or a response yet,

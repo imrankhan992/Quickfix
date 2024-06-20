@@ -13,8 +13,9 @@ export const SocketContextProvider = ({ children }) => {
   const [newOrder, setNewOrder] = useState([]);
   const { user } = useSelector((state) => state.user);
   const [messages, setMessages] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useState(null)
-  const [requestOrderId, setRequestOrderId] = useState()
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [requestOrderId, setRequestOrderId] = useState();
+  const [orderExpiresTime, setOrderExpiresTime] = useState();
 
   const initlizeSocket = () => {
     if (user) {
@@ -27,8 +28,8 @@ export const SocketContextProvider = ({ children }) => {
       socket.on("getOnlineUsers", (online) => {
         setOnlineUsers(online);
       });
-      socket.on('connect', () => {
-        console.log('Connected to the server');
+      socket.on("connect", () => {
+        console.log("Connected to the server");
       });
 
       return () => {
@@ -46,7 +47,21 @@ export const SocketContextProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{requestOrderId, setRequestOrderId, newOrder, setNewOrder, socket, onlineUsers, setOnlineUsers ,messages, setMessages,selectedConversation, setSelectedConversation}}
+      value={{
+        requestOrderId,
+        setRequestOrderId,
+        newOrder,
+        setNewOrder,
+        socket,
+        onlineUsers,
+        setOnlineUsers,
+        messages,
+        setMessages,
+        selectedConversation,
+        setSelectedConversation,
+        orderExpiresTime,
+        setOrderExpiresTime,
+      }}
     >
       {children}
     </SocketContext.Provider>

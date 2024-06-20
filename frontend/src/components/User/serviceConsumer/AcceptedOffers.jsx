@@ -35,7 +35,7 @@ const AcceptedOffers = () => {
     , []);
     
 return (
-    <div className=" w-full h-screen mx-auto max-w-[1750px] bg-cardbg">
+    <div className=" w-full h-full mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={6} />
@@ -48,11 +48,13 @@ return (
             <div className="flex items-center justify-start text-3xl text-hoverblack font-bold mb-7">
               Your Accepted Offers
             </div>
-            {offers?.map((order) => (
-                <Badge content="Pending"  className="text-[15px] armo bg-buttoncolor text-hoverblack font-bold select-none">
+           <div className="flex flex-wrap gap-8">
+           {offers?.map((order) => (
+                <Badge content="Pending"  className="text-[12px] px-2 arimo bg-buttoncolor text-hoverblack font-bold select-none">
                 <AcceptOfferCard order={order}/>
                 </Badge>
               ))}
+           </div>
               
            
           </div>

@@ -113,7 +113,7 @@ exports.sendOffer = async (req, res) => {
       price,
       distance,
       time,
-      orderId:orderId
+      orderId: orderId
     };
     // check if the order is expired
     if (order.orderExpireAt < new Date()) {
@@ -123,6 +123,11 @@ exports.sendOffer = async (req, res) => {
     const checkOffer = order.totalOffers.find(offer => offer.serviceProvider.toString() === _id.toString());
     if (checkOffer) {
       return res.status(400).json({ success: false, message: "Offer already sent please wait for the response..." })
+    }
+    // check if the order is already accepted by the client in the array
+    const checkAccepted = order.totalOffers.find(offer => offer.status === "accepted");
+    if (checkAccepted) {
+      return res.status(400).json({ success: false, message: "Sorry! This project is taken by other service provider " })
     }
 
     order.totalOffers.push(newOffer);
@@ -186,11 +191,23 @@ exports.acceptOffer = async (req, res) => {
     if (!checkOffer) {
       return res.status(400).json({ success: false, message: "Offer not found" })
     }
+
+
+
     if (checkOffer.status === "accepted") {
       return res.status(400).json({ success: false, message: "Offer already accepted" })
     }
-    // update the status of the offer to accepted
-    checkOffer.status = "accepted";
+    // update the status of the offer to accepted and reject others
+    order.totalOffers.forEach(offer => {
+      if (offer.serviceProvider.toString() === serviceProviderId.toString()) {
+        offer.status = "accepted";
+      } else {
+        offer.status = "rejected";
+      }
+    }
+    );
+
+
 
     // save the order
     const check = await order.save();
@@ -333,7 +350,7 @@ exports.deleteOrder = async (req, res) => {
     const { id } = req.params;
     const order = await Order.findByIdAndDelete(id);
     if (!order) {
-    throw new Error("Order not found");
+      throw new Error("Order not found");
     }
     res.status(200).json({ success: true, message: "Order cancel successfully" });
   } catch (error) {
