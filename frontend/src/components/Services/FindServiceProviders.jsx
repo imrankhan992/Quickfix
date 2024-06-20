@@ -4,7 +4,7 @@ import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
 import "./FindServiceProvider.css";
 import axiosInstance from "@/ulities/axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import { ImagePlacehoderSkeleton } from "./ImagePlaceHolderSkeleton";
 import {
@@ -36,7 +36,6 @@ import useTrackPrice from "@/Hooks/useTrackPrice";
 import useDeleteOrder from "@/Hooks/useDeleteOrder";
 
 const FindServiceProviders = () => {
-  const navigate = useNavigate()
     // formate date
     const formateDate = (date) => {
       //  I WANT TO GET live counter that how many time remaining in order expire
@@ -50,7 +49,7 @@ const FindServiceProviders = () => {
       });
     };
   const { deleteOrder, sendOrderLoading } = useDeleteOrder();
-  const { socket, newOrder, onlineUsers, orderExpiresTime ,setOrderExpiresTime} =
+  const { socket, newOrder, onlineUsers, orderExpiresTime } =
     useSocketContext();
 
   const { sendOrder, loading, mapTracking, setMapTracking } = useSendOrder();
@@ -519,7 +518,7 @@ const FindServiceProviders = () => {
             <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
               <h2>Order Expires At : </h2>
                <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
-                {formateDate(orderExpiresTime) > new Date() ? formateDate(orderExpiresTime) : (<>{ navigate(-1) }</>)}
+                {formateDate(orderExpiresTime) > new Date() ? formateDate(orderExpiresTime) : "Order Expired"}
                 </h5>
             </div>
               )}
