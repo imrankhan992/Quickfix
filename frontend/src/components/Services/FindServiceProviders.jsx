@@ -229,6 +229,7 @@ const FindServiceProviders = () => {
   const getallserviceProvidersnearMe = async () => {
     try {
       setloadingserviceproviders(true);
+      console.log("near by services run start")
       const { data } = await axiosInstance.post(
         "/api/v1/find-serviceproviders/nearme",
         {
@@ -236,11 +237,7 @@ const FindServiceProviders = () => {
           currentLocation,
           job: currentservice?.category?._id,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        
       );
       if (data?.success) {
         setloadingserviceproviders(false);
