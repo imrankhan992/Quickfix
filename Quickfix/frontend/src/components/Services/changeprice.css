@@ -1,3 +1,0 @@
-.switch-input:checked + .switch-label::before {
-    background-color: green; /* Change the background color when switch is on */
-  }
