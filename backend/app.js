@@ -26,7 +26,7 @@ const io = new Server(server, {
 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = ["https://noahai.ai"];
+const allowedOrigins = ["https://quickfix-281be.web.app"];
 
 app.use(
     cors({
