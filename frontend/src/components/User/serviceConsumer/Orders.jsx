@@ -81,7 +81,7 @@ const filteredOrders = filterOrders();
   }, []);
 
   return (
-    <div className=" w-full h-[100vh] mx-auto max-w-[1750px] bg-cardbg">
+    <div className=" w-full h-full mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={3} />
@@ -108,7 +108,7 @@ const filteredOrders = filterOrders();
                       key={value}
                       value={value}
                       onClick={() => setActiveTab(value)}
-                      className={activeTab === value ? "text-gray-900" : ""}
+                      className={activeTab === value ? "text-buttoncolor transition-colors duration-1000" : "md:text-[17px] text-sm "}
                     >
                       {label}
                     </Tab>

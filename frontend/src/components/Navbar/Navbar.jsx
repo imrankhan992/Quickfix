@@ -271,8 +271,8 @@ export function ComplexNavbar({ setid }) {
   }, []);
 
   return (
-    <Navbar className="border-none  fixed top-0 z-50 w-full shadow-none   rounded-none text-hoverblack   ">
-      <div className="relative mx-auto flex items-center justify-between text-hoverblack">
+    <Navbar className="border-none  mx-auto fixed top-0 z-50  w-full shadow-none  rounded-none text-hoverblack   ">
+      <div className=" mx-auto w-full flex items-center justify-between text-hoverblack">
         <Link
           to="/"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-semibold text-2xl"
@@ -319,7 +319,7 @@ export function ComplexNavbar({ setid }) {
         )}
         {isAuthenticated && <ProfileMenu user={user} />}
       </div>
-      <MobileNav open={isNavOpen} className="overflow-scroll">
+      <MobileNav open={isNavOpen} className="overflow-scroll ">
         <NavList />
       </MobileNav>
     </Navbar>

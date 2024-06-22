@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
 import {
@@ -12,21 +12,17 @@ import {
   Badge,
 } from "@material-tailwind/react";
 import {
-  Circle,
+
   DirectionsRenderer,
   GoogleMap,
   Marker,
-  Polygon,
-  useJsApiLoader,
+ 
 } from "@react-google-maps/api";
 import pin from "../../assets/pin.gif";
 import ReactStars from "react-rating-stars-component";
 import useMapZooming from "@/Hooks/useMapZooming";
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-};
+
 
 const center = {
   lat: 30.3753,
@@ -38,11 +34,8 @@ function Find({
   currentServiceProviders,
   mapTracking,
 }) {
-  const [openPopover, setOpenPopover] = useState(false);
-  const triggers = {
-    onMouseEnter: () => setOpenPopover(true),
-    onMouseLeave: () => setOpenPopover(false),
-  };
+
+
   const [directionResponse, setDirectionResponse] = useState(null);
   const [distance, setdistance] = useState("");
   const [duration, setduration] = useState("");
@@ -209,7 +202,7 @@ function Find({
       </div>
 
       <GoogleMap
-        mapContainerStyle={containerStyle}
+        mapContainerClassName=" h-[400px] md:h-full md:w-full"
         center={currentLocation ? currentLocation : center}
         zoom={mapTracking?zoom: 12}
         // zoom={zoom}

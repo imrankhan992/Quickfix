@@ -89,7 +89,7 @@ const Services = () => {
               All Services
             </div>
           </div>
-          <div className=" grid grid-cols-3 gap-3  w-full px-8 pb-16 py-6">
+          <div className=" grid md:grid-cols-3 gap-3  w-full px-8 pb-16 py-6">
             {filteredProducts &&
               filteredProducts?.map((product, index) => {
                 return (

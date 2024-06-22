@@ -293,11 +293,11 @@ const FindServiceProviders = () => {
     }
   };
   return (
-    <div className="grid grid-cols-8 ">
+    <div className="grid md:grid-cols-8 ">
       {!mapTracking && (
         <form
           onSubmit={handleSubmit}
-          className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
+          className="bg-cardbg order-2 md:order-none h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto"
         >
           <h3 className="p-2 rounded-xl arimo text-[18px] font-bold mt-3 bg-buttoncolor">
             {currentservice?.category?.category}
@@ -500,7 +500,7 @@ const FindServiceProviders = () => {
       )}
 
       {mapTracking && (
-        <Card className="bg-cardbg h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
+        <Card className="bg-cardbg md:order-none order-2 h-screen flex sticky top-0 flex-col col-span-2 gap-3 p-4 overflow-auto">
           <div className="flex flex-col gap-2">
             <div className="w-full flex flex-col gap-3 items-center justify-center">
               {!sendOrderLoading && (
@@ -558,7 +558,7 @@ const FindServiceProviders = () => {
         </Card>
       )}
 
-      <main className="w-full col-span-4 relative">
+      <main className="w-full  col-span-4 relative">
         {mapTracking && (
           <iframe
             src="https://lottie.host/embed/ff505e7b-30a8-4e17-afde-3744e3d2e0a3/5PMjASzAQ4.json"
@@ -574,7 +574,7 @@ const FindServiceProviders = () => {
           />
         </GoogleMapsLoader>
       </main>
-      <aside className="overflow-auto h-screen  col-span-2 gap-4 px-3 bg-cardbg sticky top-0 flex flex-col py-4">
+      <aside className="overflow-auto h-screen hidden  col-span-2 gap-4 px-3 bg-cardbg sticky top-0 md:flex flex-col py-4">
         {CityName ? (
           <>
             <h3 className=" arimo text-[16px] ">Location: {CityName}</h3>

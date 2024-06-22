@@ -65,10 +65,10 @@ const Login = () => {
     <>
      
       {/* form */}
-      <div className="grid grid-cols-3 bg-cardbg rounded-3xl ">
-      <div className="w-full p-14">
-        <div className="w-full  flex flex-col justify-center    ">
-         <Link to="/"> <img src={logo} alt="quickFixLogo" className=" w-48" /></Link>
+      <div className="grid md:grid-cols-3 bg-cardbg md:rounded-3xl h-screen  ">
+      <div className="w-full md:p-14 p-4">
+        <div className="w-full  flex flex-col justify-center    items-center">
+         <Link to="/"> <img src={logo} alt="quickFixLogo" className="w-48" /></Link>
           <h1 className="  text-hoverblack arimo text-2xl font-semibold px-2 py-5 text-center">
           Log in to your account
           </h1>
@@ -78,7 +78,7 @@ const Login = () => {
 
           {/* <AlertDestructive/> */}
 
-          <form className="w-full   " onSubmit={handleSubmit}>
+          <form className="w-full " onSubmit={handleSubmit}>
             {/* email */}
             <div className=" ">
               <Label
@@ -188,7 +188,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-        <div className="col-span-2">
+        <div className="col-span-2 md:block hidden">
           <img src={loginpageimage} className="w-full h-[100vh]" alt="" />
         </div>
        

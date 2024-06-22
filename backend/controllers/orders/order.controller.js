@@ -186,16 +186,10 @@ exports.acceptOffer = async (req, res) => {
     if (!order) {
       return res.status(400).json({ success: false, message: "Order not found" })
     }
-    // update the order status to accepted in the totalOffers array and check if order already accepted
-    const checkOffer = order.totalOffers.find(offer => offer.serviceProvider.toString() === serviceProviderId.toString());
-    if (!checkOffer) {
-      return res.status(400).json({ success: false, message: "Offer not found" })
-    }
-
-
-
-    if (checkOffer.status === "accepted") {
-      return res.status(400).json({ success: false, message: "Offer already accepted" })
+    // check if the order already accepted by the client
+    const checkAccepted = order.totalOffers.find(offer => offer.status === "accepted");
+    if (checkAccepted) {
+      return res.status(400).json({ success: false, message: "Service provider already hired for this project. " })
     }
     // update the status of the offer to accepted and reject others
     order.totalOffers.forEach(offer => {

@@ -1,11 +1,6 @@
 import React from "react";
 import { ComplexNavbar } from "../Navbar/Navbar";
-
-import areawecovera from "../../assets/areawecovera.png";
-import "./home.css";
-
 import JoinUsCard from "./JoinUsCard";
-
 import { Footer } from "./Footer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -26,40 +21,34 @@ import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import ToastKarta from "../Signup/ToastKarta";
-import OfferNotification from "@/Toast/OfferNotification";
-import { OrderCollapse } from "../User/serviceConsumer/OrderCollapse";
 import { toast } from "react-toastify";
 
 const Home = () => {
   const notify = () => {
-   toast(<div className="bg-red-500 border-2 "><Button>Accept</Button></div>, {
+    toast(
+      <div className="bg-red-500 border-2 ">
+        <Button>Accept</Button>
+      </div>,
+      {
         position: "bottom-right",
-        className: 'foo-bar'
-      });
+        className: "foo-bar",
+      }
+    );
   };
   return (
     <div className=" w-full  h-[100vh] mx-auto max-w-[1750px] ">
-    
       {/* header */}
-    <div className="w-full ">
-    <ComplexNavbar />
-    </div>
-      
-    {/* <ToastKarta/> */}
-  
-      <div className="h-full  flex items-center justify-center mt-16">
-        <div className="text-primarycolor flex flex-col  justify-start items-center mb-28">
-          {/* <Caurosal /> */}
-          {/* <div className=' mt-10'>
 
-         </div> */}
-          <div className="grid grid-cols-2 px-10  gap-4 w-full  ">
-            <div className="flex flex-col justify-center">
-              <h2 className="text-5xl font-bold  text-hoverblack arimo">
+      <ComplexNavbar />
+
+      <div className="h-full  md:flex    items-center justify-center  mt-32">
+        <div className="text-primarycolor flex flex-col  justify-start items-center mb-10 md:mb-28">
+          <div className="grid md:grid-cols-2 md:px-10 px-3 md:gap-4 w-full  h-full ">
+            <div className="flex flex-col justify-center ">
+              <h2 className="md:text-5xl text-3xl font-bold  text-hoverblack arimo">
                 #Home improvements you can trust
               </h2>
-              <p className="py-6 text-hoverblack arimo text-justify">
+              <p className="py-6 text-hoverblack arimo text-justify ">
                 Quick Fix is a one stop shop for any small or large jobs around
                 your home or business. We work with local reputable tradespeople
                 to deliver a quality service, and what’s more our work is
@@ -67,18 +56,18 @@ const Home = () => {
               </p>
 
               <div>
-                <button  className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
+                <button className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
                   Get Start
                 </button>
               </div>
             </div>
-            
-            <div className=" flex items-center justify-center">
+
+            <div className=" hidden md:block">
               <Swiper
                 spaceBetween={30}
                 navigation={true}
                 modules={[Autoplay, Pagination]}
-                className="mySwiper h-full w-full shadow-xl rounded-3xl "
+                className="mySwiper w-40 md:h-full md:w-full shadow-xl rounded-3xl "
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
               >
                 <SwiperSlide className="text-black">
@@ -110,14 +99,13 @@ const Home = () => {
         </div>
       </div>
 
-      <div className=" px-10">
-        <div className="h-[15rem] bg-cardbg rounded-3xl  flex  items-center justify-around text-hoverblack p-10">
+      <div className="px-3 md:px-10">
+        <div className="md:h-[15rem] bg-cardbg rounded-3xl  md:flex   items-center justify-around text-hoverblack md:p-10 p-4">
           <div className="flex  flex-col gap-3 max-w-xl">
-          
-            <h1 className="text-4xl text-hoverblack  inline font-bold arimo">
+            <h1 className="md:text-4xl text-2xl text-hoverblack  inline font-bold arimo">
               Quicfix company!
             </h1>
-           
+
             <p className="text-lg text-hoverblack mt-2 arimo text-justify">
               QuickFix is your go-to and on-demand expert for all your Home &
               Personal Care Services. We are serving you 24/7 since 2024. The
@@ -130,9 +118,9 @@ const Home = () => {
           </div>
         </div>
         {/* services */}
-        <div className="pt-28 pb-10 px-12">
-          <div className=" grid grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold px-2 rounded-xl">
+        <div className="pt-12 md:pt-28 pb-10 md:px-12 px-3">
+          <div className=" grid md:grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline md:text-4xl text-2xl font-semibold px-2 rounded-xl">
               Our Services
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -142,7 +130,7 @@ const Home = () => {
           </div>
         </div>
         {/* services cards */}
-        <div className="grid grid-cols-3 gap-14 ">
+        <div className="grid md:grid-cols-3 md:gap-14 gap-8 ">
           <div className="bg-cardbg h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
             <p className="text-hoverblack arimo text-2xl mb-6 font-semibold">
               Carpenter Services
@@ -183,9 +171,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="pt-28  px-12 pb-10">
-          <div className=" grid grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+        <div className="md:pt-28 pt-10  md:px-12 px-3 pb-10">
+          <div className=" grid md:grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline md:text-4xl text-xl px-2 font-semibold  rounded-xl">
               Join QuickFix
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -195,15 +183,15 @@ const Home = () => {
           </div>
         </div>
         {/* cards */}
-        <div className="px-10 bg-hoverblack p-12 rounded-3xl">
+        <div className="md:px-10 bg-hoverblack md:p-12 p-4 rounded-3xl">
           <JoinUsCard />
         </div>
 
         {/* our team */}
 
-        <div className="pt-28 pb-10 px-12">
-          <div className=" grid grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+        <div className="md:pt-28 pt-10 pb-10 px-3 md:px-12">
+          <div className=" grid md:grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-xl px-2 md:text-4xl font-semibold  rounded-xl">
               Our Team
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -213,7 +201,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {/* imran khan */}
           <div className="h-[16rem] p-4 rounded-3xl border border-hoverblack border-b-[6px] border-b-hoverblack">
             <div className="flex gap-3 items-center justify-center">
@@ -298,9 +286,9 @@ const Home = () => {
 
         {/* about us */}
 
-        <div className="pt-28 pb-10 px-12">
-          <div className=" grid grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+        <div className="md:pt-28  pt-10 pb-10 md:px-12 px-3">
+          <div className=" grid md:grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline px-2 md:text-4xl text-xl font-semibold  rounded-xl">
               About us
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -309,15 +297,15 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="h-[30rem] rounded-3xl bg-hoverblack p-16 flex  flex-col gap-5">
-          <p className="text-primarycolor arimo text-justify ">
+        <div className="md:h-[30rem] rounded-3xl bg-hoverblack md:p-16 p-3 flex  flex-col gap-5">
+          <p className="text-primarycolor arimo  ">
             Unicus Creative Media is a leading digital media and marketing
             agency based in Ahmedabad, India. Our agency was founded by Darshan
             Prajapati, who has imense experience in the digital marketing
             industry, and co-founded by Bhavy Chaudhary and Ronak Chaudhary, who
             bring a wealth of experience in social media and content creation.
           </p>
-          <p className="text-primarycolor arimo text-justify ">
+          <p className="text-primarycolor arimo ">
             Our agency specializes in providing a wide range of services
             including social media management, digital marketing, brand collabs,
             content strategy, video editing, advertising campaigns, and social
@@ -325,7 +313,7 @@ const Home = () => {
             and implement unique and engaging social media campaigns that help
             increase brand awareness and drive conversions.
           </p>
-          <p className="text-primarycolor arimo text-justify ">
+          <p className="text-primarycolor arimo  ">
             At Unicus Creative Media, we pride ourselves on providing our
             clients with exceptional service and delivering high-quality
             results. We understand the importance of staying up-to-date with the
@@ -341,9 +329,9 @@ const Home = () => {
         {/* area we cover */}
         {/* Areas we cover  */}
 
-        <div className="pt-28 pb-10 px-12">
-          <div className=" grid grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline text-4xl font-semibold  rounded-xl">
+        <div className="md:pt-28  pt-10 pb-10 md:px-12 px-3">
+          <div className=" grid md:grid-cols-4 gap-6 ">
+            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline md:text-4xl text-xl px-2 font-semibold  rounded-xl">
               Contact us
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -353,36 +341,58 @@ const Home = () => {
           </div>
         </div>
         <div className="">
-          <div className="grid grid-cols-3  bg-cardbg rounded-3xl items-center justify-center">
-            <div className="col-span-2 p-20 flex flex-col gap-4">
+          <div className="grid md:grid-cols-3  bg-cardbg rounded-3xl items-center justify-center">
+            <div className="md:col-span-2 md:p-20 p-3 flex flex-col gap-4 w-full ">
               {/* name */}
-           <div className="flex flex-col gap-4">
-           <Label htmlFor="Name" className="arimo text-[16px] font-normal">Name</Label>
-            <Input type="text" id="Name" placeholder="Please enter your full name" className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl" />
-           </div>
-             {/* email */}
-             <div className="flex flex-col gap-4">
-           <Label htmlFor="Email" className="arimo text-[16px] font-normal">Email</Label>
-            <Input type="text" id="Email" placeholder="Please enter a valid email" className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl" />
-           </div>
-            {/* message */}
-            <div className="flex flex-col gap-4">
-           <Label htmlFor="message" className="arimo text-[16px] font-normal">Message</Label>
-            <Textarea  id="message" placeholder="Display your  message briefly"   className="h-20 arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 rounded-xl" />
-              <Button className="arimo text-[16px] hover:bg-buttoncolor hover:text-hoverblack">Send Message</Button>
-           </div>
+              <div className="flex flex-col gap-4 w-full ">
+                <Label htmlFor="Name" className="arimo text-[16px] font-normal">
+                  Name
+                </Label>
+                <Input
+                  type="text"
+                  id="Name"
+                  placeholder="Please enter your full name"
+                  className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl "
+                />
+              </div>
+              {/* email */}
+              <div className="flex flex-col gap-4">
+                <Label
+                  htmlFor="Email"
+                  className="arimo text-[16px] font-normal"
+                >
+                  Email
+                </Label>
+                <Input
+                  type="text"
+                  id="Email"
+                  placeholder="Please enter a valid email"
+                  className="arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl"
+                />
+              </div>
+              {/* message */}
+              <div className="flex flex-col gap-4">
+                <Label
+                  htmlFor="message"
+                  className="arimo text-[16px] font-normal"
+                >
+                  Message
+                </Label>
+                <Textarea
+                  id="message"
+                  placeholder="Display your  message briefly"
+                  className="h-20 arimo bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 rounded-xl"
+                />
+                <Button className="arimo text-[16px] hover:bg-buttoncolor hover:text-hoverblack">
+                  Send Message
+                </Button>
+              </div>
             </div>
-            <div>
+            <div className="p-10 md:p-4">
               <img src={homepagestars} alt="" />
             </div>
           </div>
-          
-
-          
-            
-          
         </div>
-      
       </div>
       <Footer />
     </div>

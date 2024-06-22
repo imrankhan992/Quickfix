@@ -7,7 +7,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 const JoinUsCard = () => {
   return (
     <>
-      <div className=" flex gap-6 justify-between">
+      <div className=" flex md:flex-row flex-col gap-6 flex-wrap overflow-hidden">
         <div className="card rounded-lg flex justify-between flex-col px-4 py-10 gap-4 hover:text-primarycolor">
           <div className="flex items-center justify-center ">
             {/* <RiAccountPinBoxLine className="text-primarycolor arimo text-2xl" /> */}

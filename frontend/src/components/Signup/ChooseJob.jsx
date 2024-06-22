@@ -23,10 +23,10 @@ const ChooseJob = () => {
 
   return (
     <div className="w-full md:max-w-[1750px] mx-auto h-[100vh] ">
-      <div className="px-8"><img src={logo} alt="quickFixLogo" className="" /></div>
+      <div className="px-8 hidden md:block"><img src={logo} alt="quickFixLogo" className="" /></div>
       <div className="flex flex-col md:justify-center md:items-center w-full h-full ">
-        <div className="py-5 mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center bg-cardbg rounded-3xl border border-hoverblack shadow-3xl">
-          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2 text-hoverblack arimo">
+        <div className="py-5 md:mt-10 flex flex-col gap-4 md:gap-8 md:w-[80%] lg:w-[50%] items-center h-full md:h-fit bg-cardbg rounded-3xl md:border border-hoverblack shadow-3xl">
+          <h1 className="md:text-3xl text-[1.3rem] font-bold px-2  text-center text-hoverblack arimo">
             Join as a client or Service Provider
           </h1>
 

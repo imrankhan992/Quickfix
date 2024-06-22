@@ -7,12 +7,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Rating, Typography } from "@material-tailwind/react";
+import { Chip, Rating, Typography } from "@material-tailwind/react";
 import useOffer from "@/Hooks/useOffer";
 import { useSocketContext } from "@/context/SocketContext";
 
 export function OrderCollapse({ order, user }) {
-  const {socket} = useSocketContext();
+  const { socket } = useSocketContext();
   const { updateOffer, loading } = useOffer();
   // formate date
   const formateDate = (date) => {
@@ -26,31 +26,31 @@ export function OrderCollapse({ order, user }) {
       minute: "numeric",
     });
   };
- 
+
   const [isOpen, setIsOpen] = React.useState(false);
- 
+
   return (
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
       className="w-full space-y-2 mb-4 mt-6"
     >
-      <div className="w-full  ">
+      <div className="w-full ">
         <div className="border-x-2 w-full  shadow-md  select-none  flex-col bg-primarycolor  ">
-          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
-            <div>
+          <div className="md:flex items-center justify-start w-full md:gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
+            <div className="">
               <p className="font-bold">Order placed</p>
               <span className="text-mutedcolor">2/4/2024</span>
             </div>
-            <div>
+            <div className="">
               <p className="font-bold">Order Expiry Date</p>
               <span className="text-mutedcolor">24/5/2024</span>
             </div>
-            <div>
+            <div className="">
               <p className="font-bold">Address</p>
               <span className="text-mutedcolor">{order?.address}</span>
             </div>
-            <div className="font-bold flex flex-col justify-center items-center">
+            <div className="">
               <p className="font-bold ">Expire At</p>
               {/* convert this       orderExpireAt         in readable date and time */}
 
@@ -60,7 +60,7 @@ export function OrderCollapse({ order, user }) {
             </div>
           </div>
           {/* second part */}
-          <div className="flex  items-center w-full   justify-self-auto gap-28 py-5 px-6">
+          <div className="flex md:flex-row flex-col  items-center w-full   justify-self-auto md:gap-28 py-5 px-6">
             <div>
               <img
                 src={order?.serviceId?.picture?.url}
@@ -69,19 +69,21 @@ export function OrderCollapse({ order, user }) {
               />
             </div>
             <div className="flex flex-col gap-3">
-              <div className="flex gap-8">
+              <div className="flex md:gap-8 justify-between">
                 <p className="text-hoverblack">{order?.serviceId?.title}</p>
-                <span
-                  className={`${
+                <Chip
+                  className="max-h-10 font-bold text-[14px] arimo"
+                  color={`${
                     order?.orderExpireAt < new Date().toISOString()
-                      ? "bg-errorcolor"
-                      : "bg-greencolor"
-                  } py-1 px-3 text-primarycolor rounded-full arimo flex items-center justify-center`}
-                >
-                  {order?.orderExpireAt > new Date().toISOString()
-                    ? "Active"
-                    : "Expired"}
-                </span>
+                      ? "red"
+                      : "green"
+                  }`}
+                  value={
+                    order?.orderExpireAt > new Date().toISOString()
+                      ? "Active"
+                      : "Expired"
+                  }
+                ></Chip>
               </div>
               {/*description  */}
               <div className="flex items-center">
@@ -91,18 +93,18 @@ export function OrderCollapse({ order, user }) {
               </div>
             </div>
             {/* third part */}
-            <div className="flex gap-10 items-center">
-              <div className="flex items-center justify-center flex-col text-hoverblack">
+            <div className="flex flex-col md:flex-row md:gap-10 gap-3 items-center w-full">
+              <div className="flex  justify-between w-full md:justify-center items-center md:flex-col text-hoverblack">
                 <p className="font-bold text-xl arimo">Quantity</p>
                 <p className="font-bold text-xl arimo">{order?.quantity}</p>
               </div>
 
-              <div className="flex flex-col gap-5">
+              <div className="flex md:flex-col flex-row justify-between md:gap-5 w-full  items-center">
                 <p className="text-hoverblack">
                   <b className="arimo text-[22px]">RS{order?.price}</b>
                 </p>
                 {/* check total offer */}
-                <p className="text-greencolor font-bold text-[16px] flex items-center">
+                <p className="text-greencolor font-bold text-[16px] flex items-centers justify-center">
                   Total Offers: {order?.totalOffers?.length}
                 </p>
 
@@ -116,13 +118,12 @@ export function OrderCollapse({ order, user }) {
                 >
                   Show Offers
                   <LuChevronsUpDown className="h-4 w-4 text-hoverblack" />
-                  <span className="sr-only">hello</span>
                 </Button>
               </CollapsibleTrigger>
             </div>
           </div>
           {/* footer */}
-          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
+          <div className="md:flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
             <div className="flex gap-4">
               <p className="font-bold">Appointment Date:</p>
               {formateDate(order?.dateandtime)}
@@ -132,15 +133,17 @@ export function OrderCollapse({ order, user }) {
       </div>
 
       <CollapsibleContent className="space-y-2 ">
-        <div className="rounded-md border px-4 py-3 font-mono text-sm bg-primarycolor">
-          {/* check if total length of offer is not zero */}
-          {order?.totalOffers?.length > 0 ? (
-            order?.totalOffers?.map((offer, t) => (
-              <div key={offer._id} className="flex gap-4">
+        <div className="rounded-md border md:px-4 py-3 font-mono text-sm bg-primarycolor">
+          <p className="text-2xl text-hoverblack font-bold underline pb-3">
+            Jobs Offers:
+          </p>
+          <div className="flex  w-full md:flex-row flex-col gap-4">
+            {/* check if total length of offer is not zero */}
+            {order?.totalOffers?.length > 0 ? (
+              order?.totalOffers?.map((offer, t) => (
                 <div
-                  className={`${
-                    t.visible ? "animate-enter" : "animate-leave"
-                  } max-w-md w-full bg-cardbg shadow-2xl rounded-xl pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                  key={offer._id}
+                  className={`md:max-w-md  w-full bg-cardbg shadow-2xl rounded-xl pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
                 >
                   <div className="flex-1 w-0 p-4">
                     <div className="flex items-center mb-2  gap-2 font-bold text-hoverblack">
@@ -175,7 +178,7 @@ export function OrderCollapse({ order, user }) {
                         <div className="flex items-end flex-col">
                           <Typography
                             color="blue-gray"
-                            className="font-bold text-3xl text-hoverblack"
+                            className="font-bold md:text-3xl text-xl text-hoverblack"
                           >
                             PKR{offer?.price}
                           </Typography>
@@ -223,13 +226,13 @@ export function OrderCollapse({ order, user }) {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-hoverblack arimo font-bold text-2xl text-center">
-              No Offers Found for this project
-            </p>
-          )}
+              ))
+            ) : (
+              <p className="text-hoverblack arimo font-bold text-2xl text-center">
+                No Offers Found for this project
+              </p>
+            )}
+          </div>
         </div>
       </CollapsibleContent>
     </Collapsible>

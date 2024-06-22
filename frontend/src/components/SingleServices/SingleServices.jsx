@@ -36,10 +36,10 @@ const SingleServices = () => {
         <ComplexNavbar />
      
       <div className="px-8 py-10 w-full h-full mt-16  ">
-        <div className="w-full bg-buttoncolor h-[35%] rounded-xl grid grid-cols-2 py-8  px-8">
+        <div className="w-full bg-buttoncolor md:h-[35%] rounded-xl grid md:grid-cols-2 py-8  px-8">
           {" "}
-          <h3 className="text-hoverblack text-4xl col-span-2 arimo">{services}</h3>
-          <p className="text-hoverblack text-xl pt-3 arimo">
+          <h3 className="text-hoverblack md:text-4xl text-2xl md:col-span-2 arimo font-bold">{services}</h3>
+          <p className="text-hoverblack md:text-xl text-sm pt-3 arimo ">
             {services === "Electrician Services" &&
               "Dismantling your Electrical worries - Complete Electrical Solutions  for Residentials & Commercials"}
                 {services === "Plumber Services" &&
@@ -51,7 +51,7 @@ const SingleServices = () => {
         {/* service */}
         <div className="py-10 ">
           <h3 className="text-hoverblack arimo text-[18px] font-bold  py-6">{services}</h3>
-          <div className="grid grid-cols-3 gap-3  ">
+          <div className="grid md:grid-cols-3 gap-3  ">
             {products?.map((product, index) => {
               return (
                 <div 
