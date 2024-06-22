@@ -26,7 +26,7 @@ const io = new Server(server, {
 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = ["http://localhost:5173","https://noahai.ai"];
+const allowedOrigins = ["https://noahai.ai"];
 
 app.use(
     cors({
