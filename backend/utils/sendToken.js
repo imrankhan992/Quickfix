@@ -8,7 +8,7 @@ exports.sendToken = async (user, StatusCode, res) => {
         // cookie not store i am usng both http and https
         secure: true,
         
-
+// 
         
        
     }
