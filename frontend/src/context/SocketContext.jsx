@@ -16,10 +16,10 @@ export const SocketContextProvider = ({ children }) => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [requestOrderId, setRequestOrderId] = useState();
   const [orderExpiresTime, setOrderExpiresTime] = useState();
-
+  // http://localhost:4000
   const initlizeSocket = () => {
     if (user) {
-      const socket = io("http://localhost:4000", {
+      const socket = io("https://quickfix-281be.web.app", {
         query: {
           userId: user?._id,
         },
