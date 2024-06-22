@@ -1,0 +1,5 @@
+.scrollbar-hide::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar width */
+    height: 0; /* Remove scrollbar height */
+  }
+  
