@@ -16,10 +16,10 @@ export const SocketContextProvider = ({ children }) => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [requestOrderId, setRequestOrderId] = useState();
   const [orderExpiresTime, setOrderExpiresTime] = useState();
-  // http://localhost:4000
+
   const initlizeSocket = () => {
     if (user) {
-      const socket = io("https://quickfix-281be.web.app", {
+      const socket = io("https://noahai.ai", {
         query: {
           userId: user?._id,
         },

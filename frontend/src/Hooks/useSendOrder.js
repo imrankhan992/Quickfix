@@ -12,7 +12,7 @@ const useSendOrder = () => {
         setLoading(true)
         try {
             const { data } = await axiosInstance.post(
-                "http://localhost:4000/api/v1/order/send",
+                "/api/v1/order/send",
                 values,
                 { headers: { "Content-Type": "application/json" } }
             );
