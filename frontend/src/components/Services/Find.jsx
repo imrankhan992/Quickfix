@@ -23,7 +23,6 @@ import ReactStars from "react-rating-stars-component";
 import useMapZooming from "@/Hooks/useMapZooming";
 
 
-
 const center = {
   lat: 30.3753,
   lng: 69.3451,
