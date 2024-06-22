@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { sendToken } = require("../../utils/sendToken");
 const cloudinary = require("../../Middleware/cloudinary");
 const UserModel = require("../../Models/User/UserModel");
-const { userToken } = require("../../utils/userToken");
+
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
@@ -171,6 +171,8 @@ exports.logout = async (req, res) => {
         res.cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
+            secure: 'production', // Match the original cookie setting
+            sameSite: 'none', // Match the original cookie setting
         });
         res.status(200).json({
             success: true,

@@ -428,17 +428,18 @@ exports.singleProductController = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-
         await registrationModel.findByIdAndUpdate(req?.params?.id, {
             activeStatus: "Offline",
             lastActive: new Date(Date.now())
         });
 
-
         res.cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
+            secure: 'production', // Match the original cookie setting
+            sameSite: 'none', // Match the original cookie setting
         });
+        
         return res.status(200).json({
             success: true,
             message: "Logout Successfully",
@@ -451,6 +452,7 @@ exports.logout = async (req, res) => {
         });
     }
 };
+
 
 
 // getallproductsByCategory

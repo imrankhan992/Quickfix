@@ -3,7 +3,8 @@ const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary")
 const UserModel = require("../../Models/User/UserModel");
-const { userToken } = require("../../utils/userToken");
+
+const { sendToken } = require("../../utils/sendToken");
 
 exports.userRegistrationController = async (req, res) => {
     try {
@@ -115,7 +116,7 @@ exports.verifyUserEmailController = async (req, res) => {
         user.emailVerify = true;
         await user.save();
         // res.status(200).json({ success: true });
-        userToken(user, 200, res)
+        sendToken(user, 200, res)
     } catch (error) {
 
         res.status(500).json({

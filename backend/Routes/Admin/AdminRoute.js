@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const { isAuthenticated, authorizeRoles, isIserAuthenticated } = require("../../Middleware/auhRegistration");
+const { isAuthenticated, authorizeRoles } = require("../../Middleware/auhRegistration");
 const { getallServiceprovider } = require("../../controllers/Service_Provider/ServiceProviderController");
 const { countingController, loadAdminData, updateAccountController, getsingleServiceProviderController, createCategoryController, getallcategoryiesController, deleteCategoryController, updateCategoryController, createProductController, getallProductsController, getallproductsByCategory,deleteProductController, updateProductController, singleProductController, logout, getsingleServiceById, findserviceProviders, updatetheAccountStatus } = require("../../controllers/Admin/Admincontroller");
 const router = express.Router();
