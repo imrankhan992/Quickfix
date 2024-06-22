@@ -17,7 +17,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        // origin: "http://localhost:5173",
+        origin: "https://quickfix-281be.web.app",
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -25,7 +26,7 @@ const io = new Server(server, {
 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173","https://noahai.ai"];
 
 app.use(
     cors({
