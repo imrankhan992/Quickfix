@@ -7,7 +7,7 @@ import Profile from "./components/Signup/Profile";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import SubmitProfile from "./components/Signup/SubmitProfile";
-import RegistrationPrivate from "./components/PrivateRoutes/registrationPrivate";
+
 import SetUprofilePrivate from "./components/PrivateRoutes/SetupProfile";
 import Login from "./components/Login/Login";
 import AdminPrivate from "./components/PrivateRoutes/AdminPrivate";
@@ -57,6 +57,7 @@ import ChattingServiceProvider from "./components/User/ServiceProvider/Chatting"
 import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAcceptedOrder";
 import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvider/SingleAcceptedOrder";
 import ChooseJob from "./components/Signup/ChooseJob";
+import RegistrationPrivate from "./components/PrivateRoutes/RegistrationPrivate";
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
