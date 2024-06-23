@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import ChooseJob from "./components/Signup/chooseJob";
+
 import SPSignup from "./components/Signup/SPSignup";
 import Congratulation from "./components/Signup/Congratulation";
 import CheckEmail from "./components/Signup/CheckEmail";
@@ -56,6 +56,7 @@ import Chatting from "./components/User/serviceConsumer/Chatting";
 import ChattingServiceProvider from "./components/User/ServiceProvider/Chatting";
 import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAcceptedOrder";
 import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvider/SingleAcceptedOrder";
+import ChooseJob from "./components/Signup/ChooseJob";
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
