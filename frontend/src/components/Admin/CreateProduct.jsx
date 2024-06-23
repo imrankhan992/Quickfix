@@ -13,15 +13,7 @@ import Loader from "../Spinner/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import "./createProduct.css";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
@@ -34,6 +26,13 @@ import { Button } from "@material-tailwind/react";
 import axiosInstance from "@/ulities/axios";
 import { errorToast, showtoast } from "@/Toast/Toast";
 import { Loader2 } from "lucide-react";
+import {  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue, } from "../ui/select";
 
 const TABLE_HEAD = ["Member", "Status", "Date", "View", "Quick Action"];
 

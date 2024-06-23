@@ -1,20 +1,20 @@
 import * as React from "react";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { CiCircleCheck } from "react-icons/ci";
 import { CiTimer } from "react-icons/ci";
 import { RxCrossCircled } from "react-icons/rx";
 import { CiCircleAlert } from "react-icons/ci";
 import { TbLockOff } from "react-icons/tb";
 import { MdOutlineChangeHistory } from "react-icons/md";
+import { Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,} from "../ui/select";
+
 
 export function AccountStatus({setaccountStatus}) {
   return (
