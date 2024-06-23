@@ -45,7 +45,7 @@ exports.postNewOrder = async (req, res) => {
       CityName,
       orderExpireAt: orderExpiresAt
     });
-    console.log(req.body);
+    // console.log(req.body);
     const savedOrder = await newOrder.save();
 
     if (savedOrder) {
@@ -75,7 +75,7 @@ exports.postNewOrder = async (req, res) => {
       newOrder,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       message: "Internal server error",
       error,
@@ -157,7 +157,7 @@ exports.sendOffer = async (req, res) => {
 
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ success: false, message: "Internal Server Error" })
   }
 }
@@ -181,66 +181,128 @@ exports.acceptOffer = async (req, res) => {
     const allSocketIds = getallSocketIds();
     const { orderId, serviceProviderId } = req.body;
     const { _id } = req.user;
-    const order = await Order.findById(orderId);
-    const orders = await Order.findById(orderId).populate("serviceId").populate("totalOffers.serviceProvider");
+
+    // Find the order and populate necessary fields
+    const order = await Order.findById(orderId).populate("serviceId").populate("totalOffers.serviceProvider");
+
     if (!order) {
-      return res.status(400).json({ success: false, message: "Order not found" })
+      return res.status(400).json({ success: false, message: "Order not found" });
     }
-    // check if the order already accepted by the client
+
+    // Check if the order already accepted by the client
     const checkAccepted = order.totalOffers.find(offer => offer.status === "accepted");
     if (checkAccepted) {
-      return res.status(400).json({ success: false, message: "Service provider already hired for this project. " })
+      return res.status(400).json({ success: false, message: "Service provider already hired for this project." });
     }
-    // update the status of the offer to accepted and reject others
+console.log(order.totalOffers,"this is total offers")
+    // Update the status of the offer to accepted and reject others
     order.totalOffers.forEach(offer => {
-      if (offer.serviceProvider.toString() === serviceProviderId.toString()) {
-        offer.status = "accepted";
-      } else {
-        offer.status = "rejected";
-      }
+      offer.status = offer.serviceProvider?._id.toString() === serviceProviderId.toString() ? "accepted" : "rejected";
+    });
+
+    // Save the order with updated offers
+    const updatedOrder = await order.save();
+    if (!updatedOrder) {
+      return res.status(400).json({ success: false, message: "Offer not accepted" });
     }
-    );
 
-
-
-    // save the order
-    const check = await order.save();
-    if (!check) {
-      return res.status(400).json({ success: false, message: "Offer not accepted" })
-    }
-    // save it to the acceptOrder collection
+    // Save acceptance details to the AcceptOrder collection
     const newAcceptOrder = new AcceptOrder({
       order: orderId,
       serviceProvider: serviceProviderId,
       clientId: _id,
       isAccepted: true,
-      price: checkOffer.price
+      price: updatedOrder.price  // Assuming `updatedOrder` has the correct price after save
     });
     await newAcceptOrder.save();
 
-
-    // send notification to the service provider
+    // Send notification to the service provider if available
     const socketId = allSocketIds[serviceProviderId];
-    console.log(socketId, "socketId");
-    if (socketId !== undefined) {
-      io?.to(socketId)?.emit("offerAccepted", order);
+    if (socketId) {
+      io?.to(socketId)?.emit("offerAccepted", updatedOrder);
     }
+
+    // Send email notification to the service provider
     const serviceProvider = await registrationModel.findById(serviceProviderId);
-    // send email to the service provider
     await sendEmail({
       email: serviceProvider?.email,
-      subject: "Congratulation! Offer Accepted",
+      subject: "Congratulations! Offer Accepted",
       html: `
-      <body style="font-family:Arial,sans-serif;background-color:#f7f8fa;margin:0;padding:0"><div style="max-width:700px;margin:30px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1)"><div style="text-align:center;border-bottom:2px solid #eee;padding-bottom:20px"><h1 style="color:#333;font-size:2em;margin:0">Order Confirmation Receipt</h1><h2 style="color:#666;font-size:1.2em;margin:5px 0 0 0">Congratulations! Your Offer Has Been Accepted</h2></div><div style="padding:20px 0"><p style="font-size:1em;color:#333;line-height:1.6">Dear ${serviceProvider?.firstname},</p><p style="font-size:1em;color:#333;line-height:1.6">We are delighted to inform you that your offer has been accepted. Thank you for choosing our services. Below are the details of your order and appointment:</p><div style="margin-bottom:20px"><h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Order Details:</h2><table style="width:100%;border-collapse:collapse"><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Order Number</th><td style="padding:10px;border:1px solid #ddd">${orders?._id}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Service Name</th><td style="padding:10px;border:1px solid #ddd">${orders?.serviceId?.title}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Quantity</th><td style="padding:10px;border:1px solid #ddd">${orders?.quantity}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Price</th><td style="padding:10px;border:1px solid #ddd">${checkOffer?.price}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Total</th><td style="padding:10px;border:1px solid #ddd">${checkOffer?.price}</td></tr></table></div><div style="margin-bottom:20px"><h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Appointment Details:</h2><table style="width:100%;border-collapse:collapse"><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Date</th><td style="padding:10px;border:1px solid #ddd">${orders?.dateandtime}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Time</th><td style="padding:10px;border:1px solid #ddd">${orders?.dateandtime}</td></tr><tr><th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Location</th><td style="padding:10px;border:1px solid #ddd">${orders?.address}</td></tr></table></div><div style="margin-bottom:20px"><h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Next Steps:</h2><p style="margin:8px 0;font-size:1em;color:#555">1.<strong>Confirmation:</strong>Please confirm your appointment by replying to this email or calling us at [Phone Number].</p><p style="margin:8px 0;font-size:1em;color:#555">2.<strong>Preparation:</strong>Prepare any necessary documents or information needed for the appointment.</p><p style="margin:8px 0;font-size:1em;color:#555">3.<strong>Contact Us:</strong>If you have any questions or need to reschedule, feel free to contact our support team.</p></div></div><div style="text-align:center;padding-top:20px;color:#777"><p style="margin:5px 0">Thank you! We look forward to serving you and ensuring a great experience.</p><p style="margin:5px 0">Best regards,</p><p style="margin:5px 0">[Your Company Name]</p><p style="margin:5px 0">[Your Contact Information]</p></div></div></body>
+        <body style="font-family:Arial,sans-serif;background-color:#f7f8fa;margin:0;padding:0">
+          <div style="max-width:700px;margin:30px auto;padding:20px;background:#fff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1)">
+            <div style="text-align:center;border-bottom:2px solid #eee;padding-bottom:20px">
+              <h1 style="color:#333;font-size:2em;margin:0">Order Confirmation Receipt</h1>
+              <h2 style="color:#666;font-size:1.2em;margin:5px 0 0 0">Congratulations! Your Offer Has Been Accepted</h2>
+            </div>
+            <div style="padding:20px 0">
+              <p style="font-size:1em;color:#333;line-height:1.6">Dear ${serviceProvider?.firstname},</p>
+              <p style="font-size:1em;color:#333;line-height:1.6">
+                We are delighted to inform you that your offer has been accepted. Thank you for choosing our services.
+                Below are the details of your order and appointment:
+              </p>
+              <div style="margin-bottom:20px">
+                <h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Order Details:</h2>
+                <table style="width:100%;border-collapse:collapse">
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Order Number</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder._id}</td>
+                  </tr>
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Service Name</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.serviceId?.title}</td>
+                  </tr>
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Quantity</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.quantity}</td>
+                  </tr>
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Price</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.price}</td>
+                  </tr>
+                </table>
+              </div>
+              <div style="margin-bottom:20px">
+                <h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Appointment Details:</h2>
+                <table style="width:100%;border-collapse:collapse">
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Date</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.dateandtime}</td>
+                  </tr>
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Time</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.dateandtime}</td>
+                  </tr>
+                  <tr>
+                    <th style="padding:10px;border:1px solid #ddd;background-color:#f4f4f4;text-align:left">Location</th>
+                    <td style="padding:10px;border:1px solid #ddd">${updatedOrder?.address}</td>
+                  </tr>
+                </table>
+              </div>
+              <div style="margin-bottom:20px">
+                <h2 style="font-size:1.3em;color:#333;border-bottom:2px solid #4caf50;padding-bottom:5px;margin-bottom:10px">Next Steps:</h2>
+                <p style="margin:8px 0;font-size:1em;color:#555">1. <strong>Confirmation:</strong> Please confirm your appointment by replying to this email or calling us at [Phone Number].</p>
+                <p style="margin:8px 0;font-size:1em;color:#555">2. <strong>Preparation:</strong> Prepare any necessary documents or information needed for the appointment.</p>
+                <p style="margin:8px 0;font-size:1em;color:#555">3. <strong>Contact Us:</strong> If you have any questions or need to reschedule, feel free to contact our support team.</p>
+              </div>
+            </div>
+            <div style="text-align:center;padding-top:20px;color:#777">
+              <p style="margin:5px 0">Thank you! We look forward to serving you and ensuring a great experience.</p>
+              <p style="margin:5px 0">Best regards,</p>
+              <p style="margin:5px 0">[Your Company Name]</p>
+              <p style="margin:5px 0">[Your Contact Information]</p>
+            </div>
+          </div>
+        </body>
       `
     });
 
-    res.status(200).json({ success: true, message: "Offer accepted successfully", order });
+    res.status(200).json({ success: true, message: "Offer accepted successfully", order: updatedOrder });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message })
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+};
+
 
 exports.getAcceptedOffersClient = async (req, res) => {
   try {
@@ -256,7 +318,7 @@ exports.getAcceptedOffersClient = async (req, res) => {
 
     res.status(200).json({ success: true, orders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -279,7 +341,7 @@ exports.getSingleAcceptedOffer = async (req, res) => {
     res.status(200).json({ success: true, order });
   }
   catch (error) {
-    console.log(error);
+    // console.log(error);
     // object cast error
     if (error.name === "CastError") {
       return res.status(400).json({ success: false, message: "Order not found" })
@@ -306,7 +368,7 @@ exports.getAcceptedOffersServiceProvider = async (req, res) => {
 
     res.status(200).json({ success: true, orders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -328,7 +390,7 @@ exports.getSingleServiceProviderOffer = async (req, res) => {
     res.status(200).json({ success: true, order });
   }
   catch (error) {
-    console.log(error);
+    // console.log(error);
     // object cast error
     if (error.name === "CastError") {
       return res.status(400).json({ success: false, message: "Order not found" })
@@ -348,7 +410,7 @@ exports.deleteOrder = async (req, res) => {
     }
     res.status(200).json({ success: true, message: "Order cancel successfully" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 }
