@@ -36,18 +36,18 @@ import useTrackPrice from "@/Hooks/useTrackPrice";
 import useDeleteOrder from "@/Hooks/useDeleteOrder";
 
 const FindServiceProviders = () => {
-    // formate date
-    const formateDate = (date) => {
-      //  I WANT TO GET live counter that how many time remaining in order expire
-      const newDate = new Date(date);
-      return newDate.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-    };
+  // formate date
+  const formateDate = (date) => {
+    //  I WANT TO GET live counter that how many time remaining in order expire
+    const newDate = new Date(date);
+    return newDate.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  };
   const { deleteOrder, sendOrderLoading } = useDeleteOrder();
   const { socket, newOrder, onlineUsers, orderExpiresTime } =
     useSocketContext();
@@ -229,15 +229,14 @@ const FindServiceProviders = () => {
   const getallserviceProvidersnearMe = async () => {
     try {
       setloadingserviceproviders(true);
-      console.log("near by services run start")
+      console.log("near by services run start");
       const { data } = await axiosInstance.post(
         "/api/v1/find-serviceproviders/nearme",
         {
           city: CityName,
           currentLocation,
           job: currentservice?.category?._id,
-        },
-        
+        }
       );
       if (data?.success) {
         setloadingserviceproviders(false);
@@ -512,12 +511,14 @@ const FindServiceProviders = () => {
                 </Button>
               )}
               {orderExpiresTime && (
-            <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
-              <h2>Order Expires At : </h2>
-               <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
-                {formateDate(orderExpiresTime) > new Date() ? formateDate(orderExpiresTime) : "Order Expired"}
-                </h5>
-            </div>
+                <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
+                  <h2>Order Expires At : </h2>
+                  <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
+                    {formateDate(orderExpiresTime) > new Date()
+                      ? formateDate(orderExpiresTime)
+                      : "Order Expired"}
+                  </h5>
+                </div>
               )}
               {sendOrderLoading && (
                 <Button
@@ -658,12 +659,10 @@ const FindServiceProviders = () => {
             );
           })}
         {/*if not service provider found then display not found  */}
-        {sucess === "show" && (
-          <p className="text-red-500">No service providers found</p>
-        )}
-        {currentServiceProviders?.length <= 0 && (
-          <div className={sucess === "show" ? "hidden" : ""}>
-            <ImagePlacehoderSkeleton />
+        {loadingserviceproviders && <ImagePlacehoderSkeleton />}
+        {!loadingserviceproviders && currentServiceProviders?.length <= 0 && (
+          <div>
+            <p className="text-red-500">No service providers found</p>
           </div>
         )}
       </aside>
