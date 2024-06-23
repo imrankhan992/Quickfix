@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+
 
 import logo from "../../assets/quicfixlogo.png"
 import { Link, useNavigate } from "react-router-dom";
@@ -261,9 +261,7 @@ const SPSignup = () => {
             </div>
             {/* accept terms and conditons */}
             <div className="flex items-top  space-x-2 col-span-2">
-              {/* <Checkbox id="checked" name="checked"   onClick={(e)=>{return setchecked(e.target.value==="on"?true:false)}} /> */}
-              {/* <Checkbox id="checked" name="checked"   onCheckedChange={(e)=>{console.log(e.target.value==="on");}} /> */}
-
+             
               <input
                 type="checkbox"
                 onChange={handleChange}

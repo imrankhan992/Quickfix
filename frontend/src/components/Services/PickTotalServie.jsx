@@ -12,9 +12,10 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 import { Switch, Typography } from "@material-tailwind/react";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Button } from "../ui/button";
+
 
 const PickTotalServie = ({
   currentservice,

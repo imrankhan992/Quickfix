@@ -13,15 +13,7 @@ import Loader from "../Spinner/Spinner";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Input } from "../ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import "./createProduct.css";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";

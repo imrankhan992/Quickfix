@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { registration } from "@/Schemas";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Loader2 } from "lucide-react";
+
 import { userRegisterAction } from './../Actions/UserAction';
 import { AlertDestructive } from "../Alerts/ErrorAlert";
 import { Input } from "../ui/input";
@@ -256,8 +256,7 @@ const UserSignup = () => {
             </div>
             {/* accept terms and conditons */}
             <div className="flex items-top  space-x-2 col-span-2">
-              {/* <Checkbox id="checked" name="checked"   onClick={(e)=>{return setchecked(e.target.value==="on"?true:false)}} /> */}
-              {/* <Checkbox id="checked" name="checked"   onCheckedChange={(e)=>{console.log(e.target.value==="on");}} /> */}
+             
 
               <input
                 type="checkbox"

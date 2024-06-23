@@ -15,7 +15,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Input } from "../ui/input";
 
 import "./createProduct.css";
-import { Label } from "../ui/label";
+
 import { Textarea } from "../ui/textarea";
 
 import { useFormik } from "formik";
@@ -32,7 +32,9 @@ import {  Select,
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue, } from "../ui/select";
+  SelectValue } from "../ui/select";
+import { Label } from "../ui/label";
+
 
 const TABLE_HEAD = ["Member", "Status", "Date", "View", "Quick Action"];
 
@@ -149,7 +151,7 @@ export function CreateProduct() {
                       ""
                     )}
                   </div>
-                  <label
+                  <Label
                     htmlFor="fileInput"
                     className="w-full flex items-center"
                   >
@@ -167,7 +169,7 @@ export function CreateProduct() {
                         </>
                       )}
                     </p>
-                  </label>
+                  </Label>
                 </div>
               </div>
               <div className="col-span-2  ">

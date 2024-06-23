@@ -8,8 +8,8 @@ import ReactStars from "react-rating-stars-component";
 import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/Input";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
