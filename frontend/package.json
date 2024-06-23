@@ -33,6 +33,7 @@
     "@remixicon/react": "^4.1.1",
     "@tremor/react": "^3.13.4",
     "axios": "^1.6.7",
+    "backend": "file:..",
     "chart.js": "^4.4.2",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.0.1",
