@@ -20,7 +20,8 @@ const allowedOrigins = [
     "http://localhost:5173", // Local development
     "https://quickfix-281be.web.app", // Production,
     "https://noahai.ai",
-    "http://localhost:4000"
+    "http://localhost:4000",
+    "https://quickfix-8pw7.onrender.com"
 ];
 const io = new Server(server, {
     cors: {
