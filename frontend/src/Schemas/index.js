@@ -70,4 +70,19 @@ export const FindServiceProvidersSchema = Yup.object().shape({
 
 });
 
+// update order status
 
+export const UpdateOrderStatusSchemaByClient = Yup.object().shape({
+
+    clientSideOrderStatus: Yup.string().required('Field is required'),
+
+
+});
+// update order status
+
+export const UpdateOrderStatusSchemaByProvider = Yup.object().shape({
+
+    serviceProviderOrderStatus: Yup.string().required('Field is required'),
+
+
+});

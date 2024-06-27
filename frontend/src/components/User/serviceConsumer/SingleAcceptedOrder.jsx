@@ -9,10 +9,15 @@ import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
 
 import { useParams } from "react-router-dom";
-import { Chip } from "@material-tailwind/react";
+import { Button, Chip } from "@material-tailwind/react";
 import dateFormate from "@/Hooks/dateFormate";
 import { MessageSpeedDial } from "./SpeedDial";
 import { useSocketContext } from "@/context/SocketContext";
+import OrderStatusUpdate from "./OrderStatusUpdate";
+import { useFormik } from 'formik';
+import { UpdateOrderStatusSchemaByClient } from "@/Schemas";
+import useUpdateOrderStatusByClient from "@/Hooks/useUpdateOrderStatusByClient";
+import data from "./StatusUpdateData";
 
 const SingleAcceptedOrder = () => {
   const { selectedConversation, setSelectedConversation } = useSocketContext();
@@ -20,6 +25,8 @@ const SingleAcceptedOrder = () => {
   const { user } = useSelector((state) => state.user);
   const [offers, setOffers] = useState();
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState()
+const {updateStatus,UpdateLoading} = useUpdateOrderStatusByClient()
   const { id } = useParams();
   const getAcceptedOffersById = async () => {
     try {
@@ -42,9 +49,33 @@ const SingleAcceptedOrder = () => {
   useEffect(() => {
     getAcceptedOffersById();
     
-  }, [id,offers?.serviceProvider]);
-
-
+  }, [id]);
+ 
+// formik 
+const {
+  values,
+  handleBlur,
+  handleChange,
+  handleSubmit,
+  setFieldValue,
+  errors,
+  touched,
+} = useFormik({
+  initialValues: {
+    clientSideOrderStatus:"",
+    orderId:""
+  },
+  validationSchema: UpdateOrderStatusSchemaByClient,
+  onSubmit: async (values, { setSubmitting }) => {
+   await updateStatus(values)
+  },
+});
+// set initial value of formik
+  useEffect(() => {
+    setFieldValue("clientSideOrderStatus",status);
+    setFieldValue("orderId",offers?._id)
+  }, [status,offers?._id])
+ 
   return (
     <div className=" w-full h-full mx-auto max-w-[1750px] bg-cardbg relative">
       <MessageSpeedDial id={offers?.serviceProvider?._id} />
@@ -61,15 +92,29 @@ const SingleAcceptedOrder = () => {
                 Order Id: {id}
               </h5>
               <Chip
-                color="green"
-                value="Pending"
-                className="inline-block arimo"
+                className={`inline-block arimo px-2 arimo bg-buttoncolor text-hoverblack font-bold  ${offers?.serviceProviderOrderStatus==="processing"?"bg-green-500":""}`}
+                value={`${offers?.finalOrderStatus==="Incomplete"?offers?.serviceProviderOrderStatus:offers?.finalOrderStatus}`}
+                
+                
               />
             </div>
 
             <div className=" mx-auto bg-white rounded-lg shadow-lg p-8 mt-12 text-hoverblack select-none ">
-              <div className="flex justify-between items-center border-b pb-4 mb-4">
+              <div className="flex justify-between items-center border-b pb-4 mb-4 relative">
+                
                 <h1 className="text-2xl font-bold">Order Details</h1>
+                <div className="flex flex-col gap-2">
+                  <h2 className="font-bold text-hoverblack">Update Order Status</h2>
+               <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+               <OrderStatusUpdate status={status} setStatus={setStatus} handleBlur={handleBlur} data={data} />
+               {
+                errors?.clientSideOrderStatus  && (<p className="arimo text-errorcolor text-sm">{errors?.clientSideOrderStatus}</p>)
+               }
+              {
+                UpdateLoading ? <Button  color="blue" disabled>Loading...</Button> : <Button color="blue" type="submit">Update</Button>
+              }
+               </form>
+                </div>
                 <div className="text-green-600 font-bold">Accepted</div>
               </div>
               <div className="bg-gray-100 rounded-lg p-6 mb-6">

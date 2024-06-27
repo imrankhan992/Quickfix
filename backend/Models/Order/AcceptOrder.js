@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+
 const acceptOrderSchema = new mongoose.Schema({
     order: {
         type: mongoose.Schema.ObjectId,
@@ -22,9 +23,22 @@ const acceptOrderSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: true
+    },
+    clientSideOrderStatus: {
+        type: String,
+        enum: [ "pending","completed", "Cancel"],
+        default: "pending"
+    },
+    serviceProviderOrderStatus: {
+        type: String,
+        enum: ["pending", "processing", "completed", "Cancel"],
+        default: "pending"
+    },
+    finalOrderStatus:{
+        type: String,
+        enum: ["Incomplete", "Completed"],
+        default: "Incomplete"
     }
-
 }, { timestamps: true });
-
 
 module.exports = mongoose.model("AcceptedOrders", acceptOrderSchema);

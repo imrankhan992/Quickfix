@@ -58,6 +58,7 @@ import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAccepte
 import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvider/SingleAcceptedOrder";
 import ChooseJob from "./components/Signup/ChooseJob";
 import RegistrationPrivate from "./components/PrivateRoutes/RegistrationPrivate";
+
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
@@ -73,6 +74,7 @@ const {newOrder} = useSocketContext()
       <IdleTimerContainer>
         <Router>
           <Routes>
+          
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={!user ? <ChooseJob /> : <Home />} />
             <Route

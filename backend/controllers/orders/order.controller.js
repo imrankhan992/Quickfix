@@ -194,7 +194,7 @@ exports.acceptOffer = async (req, res) => {
     if (checkAccepted) {
       return res.status(400).json({ success: false, message: "Service provider already hired for this project." });
     }
-console.log(order.totalOffers,"this is total offers")
+    console.log(order.totalOffers, "this is total offers")
     // Update the status of the offer to accepted and reject others
     order.totalOffers.forEach(offer => {
       offer.status = offer.serviceProvider?._id.toString() === serviceProviderId.toString() ? "accepted" : "rejected";
@@ -414,3 +414,60 @@ exports.deleteOrder = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 }
+
+// update order  status by client
+exports.updateOrderStatusByClient = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { clientSideOrderStatus } = req.body;
+    const order = await AcceptOrder.findByIdAndUpdate(id, { clientSideOrderStatus }, { new: true });
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    res.status(200).json({ success: true, message: "Order status updated successfully" });
+  } catch (error) {
+    // console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+
+// update order by service provider
+
+exports.updateOrderStatusByProvider = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { serviceProviderOrderStatus } = req.body;
+    const order = await AcceptOrder.findByIdAndUpdate(id, { serviceProviderOrderStatus }, { new: true });
+    if (!order) {
+      throw new Error("Order not found");
+    }
+    res.status(200).json({ success: true, message: "Order status updated successfully" });
+  } catch (error) {
+    // console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+// get all the orders which is accepted by the client
+exports.getAllAcceptedOrdersByClient = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const orders = await AcceptOrder.find({ clientId: _id })
+      .populate("serviceProvider")
+      .populate("clientId")
+      .populate({
+        path: "order",
+        populate: [
+          
+          { path: "serviceId" },
+        ],
+      })
+    
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+

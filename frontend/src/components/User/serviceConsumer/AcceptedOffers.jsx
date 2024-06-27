@@ -14,6 +14,7 @@ const AcceptedOffers = () => {
     const { user } = useSelector((state) => state.user);
     const [offers, setOffers] = useState([]);
     const [loading, setLoading] = useState(false)
+    console.log(offers)
     const getAcceptedOffers = async () => {
         try {
             setLoading(true)
@@ -50,7 +51,7 @@ return (
             </div>
            <div className="flex flex-wrap gap-8">
            {offers?.map((order) => (
-                <Badge content="Pending"  className="text-[12px] px-2 arimo bg-buttoncolor text-hoverblack font-bold select-none">
+                <Badge content={`${order?.finalOrderStatus==="Incomplete"?order?.serviceProviderOrderStatus:order?.finalOrderStatus}`}  className={`text-[12px] px-2 arimo bg-buttoncolor text-hoverblack font-bold select-none ${order?.serviceProviderOrderStatus==="processing"?"bg-green-500":""}`}>
                 <AcceptOfferCard order={order}/>
                 </Badge>
               ))}
