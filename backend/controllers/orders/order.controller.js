@@ -471,3 +471,24 @@ exports.getAllAcceptedOrdersByClient = async (req, res) => {
   }
 }
 
+// get all the orders which is accepted by the service provider
+exports.getAllAcceptedOrdersByProvider = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const orders = await AcceptOrder.find({ serviceProvider: _id })
+      .populate("serviceProvider")
+      .populate("clientId")
+      .populate({
+        path: "order",
+        populate: [
+          
+          { path: "serviceId" },
+        ],
+      })
+    
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+}

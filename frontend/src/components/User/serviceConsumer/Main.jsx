@@ -8,6 +8,8 @@ import { MdOutlineSentimentSatisfied } from "react-icons/md";
 import { IoIosAlert } from "react-icons/io";
 import useGetAllAcceptedOrdersByClient from "@/Hooks/useGetAllAcceptedOrdersByClient";
 import Loading from "@/Pages/Loading";
+import Alert from "@/components/AlertForUpdateOrders/Alert";
+import { RatingsAlert } from "@/components/AlertForUpdateOrders/RatingsAlert";
 
 const Main = ({ user, products }) => {
   const ratingChanged = (newRating) => {
@@ -28,26 +30,30 @@ const Main = ({ user, products }) => {
             {acceptedOrders?.map((order) => {
               return order?.clientSideOrderStatus === "pending" &&
                 order?.serviceProviderOrderStatus === "completed" ? (
-                <div className=" bg-[#FFF6D1] shadow-md mb-2 flex gap-3 items-start p-4 rounded-lg border-l-4 border-[#F58802]">
-                  <IoIosAlert color="#F58802" size={25} className="text" />
-                  <div>
-                    <h1 className="arimo font-bold text-hoverblack">
-                      Alert:
-                    </h1>
-                    <p className="text-hoverblack max-w-xl text-sm">
-                      {" "}
-                      your Project   is{" "}
-                      <strong>completed </strong> by the service provider Side
-                      but from your side is still pending . <span className="text-">Project id ( <strong>{order?._id}</strong>)</span>
-                    </p>
-                  </div>
-                </div>
+                <Alert order={order} />
               ) : (
                 ""
               );
             })}
           </>
         )}
+        {/* check if clientSideOrderStatus and serviceProviderOrderStatus === completed then give review */}
+        {acceptedOrders?.map((order, index) => {
+          return order?.clientSideOrderStatus === "completed" &&
+            order?.serviceProviderOrderStatus === "completed" ? (
+            <>
+              {order?.serviceProvider?.reviews?.find(
+                (item) => item.user.toString() === user?._id.toString()
+              ) ? (
+                ""
+              ) : (
+                <RatingsAlert orders={order} index={index} />
+              )}
+            </>
+          ) : (
+            ""
+          );
+        })}
         <h1 className="text-3xl pb-4 text-hoverblack pt-2 font-bold armo">
           Hello! {user?.firstname + " " + user?.lastname}
         </h1>

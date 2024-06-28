@@ -1,12 +1,11 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
-
     activeStatus: {
         type: String,
-        default: "Offline"
+        default: "Offline",
     },
     lastActive: {
         type: Date,
@@ -33,18 +32,16 @@ const userSchema = new mongoose.Schema({
     },
     experience: {
         type: String,
-
     },
     city: {
         type: String,
     },
     job: {
         type: mongoose.Schema.ObjectId,
-        ref: "Category"
+        ref: "Category",
     },
     zipcode: {
         type: String,
-
     },
     accountStatus: {
         type: String,
@@ -84,17 +81,52 @@ const userSchema = new mongoose.Schema({
             type: Number,
         },
     },
+    ratings: {
+        type: Number,
+        default: 0,
+    },
+    numOfReviews: {
+        type: Number,
+        default: 0,
+    },
+    reviews: [
+        {
+            user: {
+                type: mongoose.Schema.ObjectId,
+                ref: "User",
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            order: {
+                type: mongoose.Schema.ObjectId,
+                ref: "Order",
+            },
+            rating: {
+                type: Number,
+                required: true,
+            },
+            feedback: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
     verifyEmailToken: String,
-    verifyEmailExpires: Date
+    verifyEmailExpires: Date,
 });
 userSchema.index({ currentlocation: "2dsphere" });
 //creating password reset token
 userSchema.methods.getverifyEmailToken = async function () {
     const resetToken = crypto.randomBytes(20).toString("hex");
-    this.verifyEmailToken = crypto.createHash("sha256").update(resetToken).digest("hex");
-    this.verifyEmailExpires = Date.now() + 15 * 60 * 1000
-    return resetToken
-}
+    this.verifyEmailToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    this.verifyEmailExpires = Date.now() + 15 * 60 * 1000;
+    return resetToken;
+};
 // password encrypt before save
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {

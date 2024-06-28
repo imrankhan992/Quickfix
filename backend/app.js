@@ -4,6 +4,7 @@ const serviceProviderRegistration = require("./Routes/ServiceProvider/Registrati
 const AdminRoute = require("./Routes/Admin/AdminRoute");
 const userroute = require("./Routes/User/userRoute");
 const orderRouter = require("./Routes/Orders/order.route");
+const reviewsRoute = require("./Routes/Reviews/reviews.route")
 const messagesRoute = require("./Routes/Messages/messages");
 const dotenv = require("dotenv").config();
 const MongodbConnection = require("./config/database");
@@ -56,6 +57,7 @@ app.use("/api/v1/", AdminRoute);
 app.use("/api/v1/", userroute);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/messages", messagesRoute);
+app.use("/api/v1/", reviewsRoute);
 
 app.use(express.static(path.join(rootFolder, "/frontend/dist")));
 

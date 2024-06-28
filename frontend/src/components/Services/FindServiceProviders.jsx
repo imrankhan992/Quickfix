@@ -36,18 +36,27 @@ import useTrackPrice from "@/Hooks/useTrackPrice";
 import useDeleteOrder from "@/Hooks/useDeleteOrder";
 
 const FindServiceProviders = () => {
-    // formate date
-    const formateDate = (date) => {
-      //  I WANT TO GET live counter that how many time remaining in order expire
-      const newDate = new Date(date);
-      return newDate.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-    };
+  const options = {
+    value: 0,
+    readOnly: true,
+    precision: 0.5,
+    edit: false,
+    size: window.innerWidth < 600 ? 15 : 22,
+    isHalf: true,
+  };
+
+  // formate date
+  const formateDate = (date) => {
+    //  I WANT TO GET live counter that how many time remaining in order expire
+    const newDate = new Date(date);
+    return newDate.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  };
   const { deleteOrder, sendOrderLoading } = useDeleteOrder();
   const { socket, newOrder, onlineUsers, orderExpiresTime } =
     useSocketContext();
@@ -132,7 +141,7 @@ const FindServiceProviders = () => {
     if (currentLocation && CityName && currentservice) {
       getallserviceProvidersnearMe();
     }
-  }, [currentLocation, CityName,currentservice]);
+  }, [currentLocation, CityName, currentservice]);
 
   useEffect(() => {
     if (address) {
@@ -229,15 +238,14 @@ const FindServiceProviders = () => {
   const getallserviceProvidersnearMe = async () => {
     try {
       setloadingserviceproviders(true);
-      console.log("near by services run start")
+      console.log("near by services run start");
       const { data } = await axiosInstance.post(
         "/api/v1/find-serviceproviders/nearme",
         {
           city: CityName,
           currentLocation,
           job: currentservice?.category?._id,
-        },
-        
+        }
       );
       if (data?.success) {
         setloadingserviceproviders(false);
@@ -249,7 +257,7 @@ const FindServiceProviders = () => {
       }
       if (!data?.success) {
         setloadingserviceproviders(false);
-        
+
         setsucess("not show");
       }
     } catch (error) {
@@ -257,9 +265,7 @@ const FindServiceProviders = () => {
       setloadingserviceproviders(false);
     }
   };
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-  };
+
   let recommendedPrice = [];
   if (currentservice) {
     for (let i = 1; i <= 5; i++) {
@@ -512,12 +518,14 @@ const FindServiceProviders = () => {
                 </Button>
               )}
               {orderExpiresTime && (
-            <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
-              <h2>Order Expires At : </h2>
-               <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
-                {formateDate(orderExpiresTime) > new Date() ? formateDate(orderExpiresTime) : "Order Expired"}
-                </h5>
-            </div>
+                <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
+                  <h2>Order Expires At : </h2>
+                  <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
+                    {formateDate(orderExpiresTime) > new Date()
+                      ? formateDate(orderExpiresTime)
+                      : "Order Expired"}
+                  </h5>
+                </div>
               )}
               {sendOrderLoading && (
                 <Button
@@ -587,7 +595,8 @@ const FindServiceProviders = () => {
             </div>
           </>
         )}
-        {!loadingserviceproviders && currentServiceProviders.length > 0 &&
+        {!loadingserviceproviders &&
+          currentServiceProviders.length > 0 &&
           currentServiceProviders?.map((serviceprovider, index) => {
             return (
               <div
@@ -626,16 +635,13 @@ const FindServiceProviders = () => {
                         formatLastActive(serviceprovider?.lastActive)}
                     </p>{" "}
                     <div className="flex justify-between items-center ">
-                      <ReactStars
-                        count={5}
-                        onChange={ratingChanged}
-                        size={20}
-                        activeColor="#ffd700"
-                        edit={false}
-                        value={3.3}
-                        half={true}
-                      />
-                      <p className="arimo text-[13px]">3.4</p>
+                      <ReactStars value={serviceprovider?.ratings || 0}
+                readOnly={true}
+                precision={0.5}
+                size={window.innerWidth < 600 ? 15 : 22}
+                isHalf={true}
+                edit={false} />
+                      <p className="arimo text-[13px]">({serviceprovider?.ratings})</p>
                     </div>
                   </div>
                 </div>
@@ -661,7 +667,7 @@ const FindServiceProviders = () => {
         {sucess === "show" && (
           <p className="text-red-500">No service providers found</p>
         )}
-        {!loadingserviceproviders&& currentServiceProviders?.length <= 0 && (
+        {!loadingserviceproviders && currentServiceProviders?.length <= 0 && (
           <div className={sucess === "show" ? "hidden" : ""}>
             <ImagePlacehoderSkeleton />
           </div>

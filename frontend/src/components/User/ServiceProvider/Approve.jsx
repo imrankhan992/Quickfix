@@ -6,8 +6,13 @@ import { PiMoney } from "react-icons/pi";
 import { VscLayersActive } from "react-icons/vsc";
 import { MdOutlineSentimentSatisfied } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
+import useGetAllAcceptedOrdersByProvider from "@/Hooks/useGetAllAcceptedOrdersByProvider";
+import Loading from "@/Pages/Loading";
+import Alert from "@/components/AlertForUpdateOrders/Alert";
 
 const Approve = ({ products }) => {
+  const { loading, acceptedOrders } = useGetAllAcceptedOrdersByProvider();
+  console.log(acceptedOrders, "this is accepted orders");
   const { user } = useSelector((state) => state.user);
   return (
     <>
@@ -18,6 +23,20 @@ const Approve = ({ products }) => {
           </h1>
           <Header user={user} />
         </div>
+        {loading && <Loading />}
+
+        {acceptedOrders?.length > 0 && !loading && (
+          <>
+            {acceptedOrders?.map((order) => {
+              return order?.clientSideOrderStatus === "completed" &&
+                order?.serviceProviderOrderStatus === "pending" || order?.serviceProviderOrderStatus === "processing" ? (
+               <Alert order={order} />
+              ) : (
+                ""
+              );
+            })}
+          </>
+        )}
         <div className="p-6 flex gap-4">
           <div>
             <div className="grid md:grid-cols-3  gap-2">
