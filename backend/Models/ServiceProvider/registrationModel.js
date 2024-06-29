@@ -89,6 +89,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    stripeCustomerId: {
+        type: String,
+        required: true
+    },
+    walletBalance: {
+        type: Number,
+        default: 0
+    },
     reviews: [
         {
             user: {

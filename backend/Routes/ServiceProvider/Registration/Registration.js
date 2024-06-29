@@ -9,6 +9,9 @@ const {
     loaddata,
     loginUserController,
     submitProfileornot,
+    getWalletBalance,
+    rechargeWallet,
+    updateWallet,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated, authorizeRoles } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -22,6 +25,12 @@ router.route("/setup").post(isAuthenticated, upload.single("avatar"), setupProfi
 router.route("/admin/logout").get(logout);
 router.route("/user/mydata").get(isAuthenticated, loaddata);
 router.route("/login").post(loginUserController);
+
+// payment
+
+router.get('/wallet/:userId', getWalletBalance);
+router.post('/recharge-wallet', rechargeWallet);
+router.post('/update-wallet', updateWallet);
 // protected
 router.route("/protected-serviceprovider").get(isAuthenticated,authorizeRoles("serviceprovider"),submitProfileornot)
 

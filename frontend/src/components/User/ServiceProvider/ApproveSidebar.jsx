@@ -9,14 +9,13 @@ import {
 import { MdOutlineRequestQuote } from "react-icons/md";
 import { MdDashboard } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { TbCategoryPlus } from "react-icons/tb";
-import { GrUserWorker } from "react-icons/gr";
-import { GiCardboardBoxClosed } from "react-icons/gi";
+
 import { MdCleaningServices } from "react-icons/md";
-import { GiClick } from "react-icons/gi";
+
 import { BsClockHistory } from "react-icons/bs";
-import { IoSettingsOutline } from "react-icons/io5";
+;
 import { RiProfileLine,RiStackFill  } from "react-icons/ri";
+import { FcCurrencyExchange } from "react-icons/fc";
 
 export function ApproveSidebar({ open }) {
   return (
@@ -101,6 +100,20 @@ export function ApproveSidebar({ open }) {
               <BsClockHistory className="h-5 w-5" />
             </ListItemPrefix>
             Previous Orders
+          </ListItem>
+        </Link>
+        <Link to={"/serviceprovider/dashboard/recharge-account"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 4
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <FcCurrencyExchange className="h-5 w-5" />
+            </ListItemPrefix>
+          Recharge Account
           </ListItem>
         </Link>
             

@@ -11,7 +11,7 @@ const MongodbConnection = require("./config/database");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const rootFolder = path.resolve()
+const rootFolder = path.resolve();
 
 const { Server } = require("socket.io");
 const http = require("http");

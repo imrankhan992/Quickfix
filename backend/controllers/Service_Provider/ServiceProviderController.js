@@ -4,10 +4,13 @@ const crypto = require("crypto");
 const { sendToken } = require("../../utils/sendToken");
 const cloudinary = require("../../Middleware/cloudinary");
 const UserModel = require("../../Models/User/UserModel");
+const stripe = require('stripe')('sk_test_51PX0FHLhXKwMvDT9RIsWf3w4ZK0qdPXajDHjvcffavOlf3VuPZZ1XeikM4TgArFBTCMZDSBNRESkwCjiWmZlHKvB00pztnZ98m');
 
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
+        const customer = await stripe.customers.create({ email });
+        console.log(customer)
         const userexist = await registrationModel.findOne({
             email: req.body.email,
         });
@@ -30,13 +33,14 @@ exports.registerUserController = async (req, res) => {
                 lastname,
                 email,
                 password,
+                stripeCustomerId: customer.id
             });
 
             const verifyToken = await newuser.getverifyEmailToken();
             await newuser.save({ validateBeforeSave: false });
             const verifyEmailUrl = `${process.env.FRONTENT_URL}/api/v1/email/account/verify/${verifyToken}`;
             const message = `Your Email Verify Token is  :- \n\n ${verifyEmailUrl} \n\n if you have not requested this email then, please ignore it`;
-            const html =  `
+            const html = `
             <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f9f9f9;margin:0;padding:0"><div style="max-width:600px;margin:0 auto;background-color:#fff;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05)"><div style="text-align:center;padding:20px 0;border-bottom:1px solid #eee"><h1 style="color:#333;font-size:24px;margin-bottom:20px">QuickFix</h1></div><div style="padding:30px;text-align:center"><h1 style="color:#333;font-size:24px;margin-bottom:20px">Email Verification</h1><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Hi ${newuser?.firstname},</p><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Thank you for registering with us. Please click the button below to verify your email address and complete your registration.</p><a href=${verifyEmailUrl} style="display:inline-block;margin-top:20px;padding:15px 30px;background-color:#007bff;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;transition:background-color .3s ease">Verify Email</a></div><div style="margin-top:30px;padding:20px;background-color:#f4f4f4;text-align:center;color:#888;font-size:14px"><p style="margin:5px 0">If you did not create an account, no further action is required.</p><p style="margin:5px 0">&copy; 2024 Your Company Name. All rights reserved.</p><div style="margin-top:10px"><a href="https://facebook.com/yourcompany" style="margin:0 5px"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Facebook" style="width:32px"></a><a href="https://twitter.com/yourcompany" style="margin:0 5px"><img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1716249600&semt=ais_user" alt="Twitter" style="width:32px"></a><a href="https://instagram.com/yourcompany" style="margin:0 5px"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7-0xfKFBqt9MIsyKA3el52qEj9htrawhjM6ppqNIuQ&s" alt="Instagram" style="width:32px"></a></div></div></div></body>
         `
             await sendEmail({
@@ -44,7 +48,7 @@ exports.registerUserController = async (req, res) => {
                 message,
                 name: newuser?.firstname,
                 html,
-                subject:"QuickFix Email Verification"
+                subject: "QuickFix Email Verification"
             });
             res.status(200).json({ success: true, user: newuser })
             // sendToken(newuser, 200, res);
@@ -60,7 +64,7 @@ exports.registerUserController = async (req, res) => {
             await userexist.save({ validateBeforeSave: false });
             const verifyEmailUrl = `${process.env.FRONTENT_URL}/api/v1/email/account/verify/${verifyToken}`;
             const message = `Your Email Verify Token is  :- \n\n ${verifyEmailUrl} \n\n if you have not requested this email then, please ignore it`;
-            const html =  `
+            const html = `
             <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f9f9f9;margin:0;padding:0"><div style="max-width:600px;margin:0 auto;background-color:#fff;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05)"><div style="text-align:center;padding:20px 0;border-bottom:1px solid #eee"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Your Logo" style="width:150px"></div><div style="padding:30px;text-align:center"><h1 style="color:#333;font-size:24px;margin-bottom:20px">Email Verification</h1><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Hi ${userexist?.firstname},</p><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Thank you for registering with us. Please click the button below to verify your email address and complete your registration.</p><a href=${verifyEmailUrl} style="display:inline-block;margin-top:20px;padding:15px 30px;background-color:#007bff;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;transition:background-color .3s ease">Verify Email</a></div><div style="margin-top:30px;padding:20px;background-color:#f4f4f4;text-align:center;color:#888;font-size:14px"><p style="margin:5px 0">If you did not create an account, no further action is required.</p><p style="margin:5px 0">&copy; 2024 Your Company Name. All rights reserved.</p><div style="margin-top:10px"><a href="https://facebook.com/yourcompany" style="margin:0 5px"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Facebook" style="width:32px"></a><a href="https://twitter.com/yourcompany" style="margin:0 5px"><img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1716249600&semt=ais_user" alt="Twitter" style="width:32px"></a><a href="https://instagram.com/yourcompany" style="margin:0 5px"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7-0xfKFBqt9MIsyKA3el52qEj9htrawhjM6ppqNIuQ&s" alt="Instagram" style="width:32px"></a></div></div></div></body>
         `
             await sendEmail({
@@ -68,7 +72,7 @@ exports.registerUserController = async (req, res) => {
                 message,
                 name: userexist?.firstname,
                 html,
-                subject:"QuickFix Email Verification"
+                subject: "QuickFix Email Verification"
             });
 
             res.status(200).json({ success: true, user: userexist })
@@ -76,7 +80,7 @@ exports.registerUserController = async (req, res) => {
         }
     } catch (error) {
 
-       console.log(error);
+        console.log(error);
         res.status(500).json({
             message: error.message,
             error,
@@ -142,9 +146,9 @@ exports.setupProfileController = async (req, res) => {
         user.city = city;
         user.job = job;
         user.zipcode = zipcode;
-        user.currentlocation ={
-            lat:currentlocation.lat,
-            lng:currentlocation.lng
+        user.currentlocation = {
+            lat: currentlocation.lat,
+            lng: currentlocation.lng
         }
         user.avatar = {
             url: cloudinaryResult.secure_url,
@@ -230,7 +234,7 @@ exports.loaddata = async (req, res) => {
         }
         if (serviceprovider) {
             return res.status(200).json({
-                user:serviceprovider,
+                user: serviceprovider,
                 message: "User  found",
                 success: true,
             });
@@ -254,13 +258,13 @@ exports.loginUserController = async (req, res) => {
         const userExist2 = await UserModel.findOne({ email });
 
         if (userExist1 && await userExist1.comparePassword(password) && userExist1.emailVerify) {
-            userExist1.activeStatus="Online"
+            userExist1.activeStatus = "Online"
             await userExist1.save()
             sendToken(userExist1, 200, res)
 
 
         } else if (userExist2 && await userExist2.comparePassword(password) && userExist2.emailVerify) {
-            userExist2.activeStatus="Online"
+            userExist2.activeStatus = "Online"
             await userExist2.save()
             sendToken(userExist2, 200, res)
 
@@ -310,7 +314,7 @@ exports.submitProfileornot = async (req, res) => {
 
 exports.getallServiceprovider = async (req, res) => {
     try {
-        const sp_provider = await registrationModel.find({emailVerify:true});
+        const sp_provider = await registrationModel.find({ emailVerify: true });
         res.status(200).json({
             success: true,
             user: sp_provider
@@ -324,3 +328,42 @@ exports.getallServiceprovider = async (req, res) => {
     }
 }
 
+
+// Get wallet balance
+exports.getWalletBalance = async (req, res) => {
+    try {
+        const user = await registrationModel.findById(req.params.userId);
+        res.status(200).json({ balance: user.walletBalance });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+// Recharge wallet
+exports.rechargeWallet = async (req, res) => {
+    const { userId, amount } = req.body;
+    try {
+        const user = await registrationModel.findById(userId);
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount * 100, // amount in cents
+            currency: 'pkr',
+            customer: user.stripeCustomerId,
+        });
+        res.status(200).json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+// update wallet
+exports.updateWallet = async (req, res) => {
+    const { userId, amount } = req.body;
+    try {
+        const user = await registrationModel.findById(userId);
+        user.walletBalance += amount;
+        await user.save();
+        res.status(200).json({ balance: user.walletBalance });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

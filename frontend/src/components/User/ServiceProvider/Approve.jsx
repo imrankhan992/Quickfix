@@ -28,9 +28,10 @@ const Approve = ({ products }) => {
         {acceptedOrders?.length > 0 && !loading && (
           <>
             {acceptedOrders?.map((order) => {
-              return order?.clientSideOrderStatus === "completed" &&
-                order?.serviceProviderOrderStatus === "pending" || order?.serviceProviderOrderStatus === "processing" ? (
-               <Alert order={order} />
+              return (order?.clientSideOrderStatus === "completed" &&
+                order?.serviceProviderOrderStatus === "pending") ||
+                order?.serviceProviderOrderStatus === "processing" ? (
+                <Alert order={order} />
               ) : (
                 ""
               );
@@ -53,7 +54,10 @@ const Approve = ({ products }) => {
                     </h2>
                   </div>
                   <h1 className="text-5xl text-mutedcolor font-bold">
-                    RS <span className="text-[#1F1E30] font-bold ">100</span>
+                    RS{" "}
+                    <span className="text-[#1F1E30] font-bold ">
+                      {user?.walletBalance}
+                    </span>
                   </h1>
                 </div>
               </div>
@@ -94,9 +98,15 @@ const Approve = ({ products }) => {
                   <div className="flex gap-2 justify-evenly">
                     <div className="flex gap-2 justify-between">
                       <FaStar className="text-xl text-yellow-900" />{" "}
-                      <p className="text-[#1F1E30] font-medium">{user?.ratings}</p>
+                      <p className="text-[#1F1E30] font-medium">
+                        {user?.ratings}
+                      </p>
                     </div>{" "}
-                    <p className="text-[#1F1E30] font-medium">{user?.ratings>4&&"Excellent"} {user?.ratings>3&&"Fair"} {user?.ratings<3&&"Poor"}</p>
+                    <p className="text-[#1F1E30] font-medium">
+                      {user?.ratings > 4 && "Excellent"}{" "}
+                      {user?.ratings > 3 && "Fair"}{" "}
+                      {user?.ratings < 3 && "Poor"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -124,8 +134,6 @@ const Approve = ({ products }) => {
               </div>
             </div>
           </div>
-         
-      
         </div>
       </main>
     </>

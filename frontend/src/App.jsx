@@ -58,6 +58,7 @@ import SingleAcceptedOrder from "./components/User/serviceConsumer/SingleAccepte
 import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvider/SingleAcceptedOrder";
 import ChooseJob from "./components/Signup/ChooseJob";
 import RegistrationPrivate from "./components/PrivateRoutes/RegistrationPrivate";
+import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
 
 function App() {
 const {newOrder} = useSocketContext()
@@ -163,6 +164,7 @@ const {newOrder} = useSocketContext()
               <Route path="chatting/:id" element={<ChattingServiceProvider />} />
               <Route path="request/order" element={<RequestOrder />} />
               <Route path="single/order" element={<SingleOrder />} />
+              <Route path="recharge-account" element={<RechargeAccount />} />
               <Route
                 path="previous-orders"
                 element={<ServiceProviderPreviousOrders />}
