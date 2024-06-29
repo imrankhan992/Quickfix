@@ -15,23 +15,12 @@ import {
   Drawer,
   Card,
 } from "@material-tailwind/react";
-// import {
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-// } from "@heroicons/react/24/solid";
-// import {
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-// } from "@heroicons/react/24/outline";
-import { RiPresentationFill } from "react-icons/ri";
+
+import { RiPresentationFill, RiProfileLine, RiStackFill } from "react-icons/ri";
+import { FaBarsStaggered } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { MdCleaningServices, MdDashboard, MdOutlineRequestQuote } from "react-icons/md";
+import { BsClockHistory } from "react-icons/bs";
 
 export function BurgerMenu() {
   const [open, setOpen] = React.useState(0);
@@ -47,192 +36,125 @@ export function BurgerMenu() {
  
   return (
     <div className="md:hidden block absolute">
-      <IconButton variant="text" size="lg" onClick={openDrawer}>
+      <IconButton variant="text" size="lg" className="fixed top-5 left-4" onClick={openDrawer}>
         {isDrawerOpen ? (
-          <RiPresentationFill className="h-8 w-8 stroke-2" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 p-1" />
         ) : (
-          <RiPresentationFill className="h-8 w-8 stroke-2" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 p-1" />
         )}
       </IconButton>
-      <Drawer open={isDrawerOpen} onClose={closeDrawer}>
+      <Drawer open={isDrawerOpen} onClose={closeDrawer} className="bg-sidebarbg">
         <Card
           color="transparent"
           shadow={false}
           className="h-[calc(100vh-2rem)] w-full p-4"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
-            <img
+            {/* <img
               src="https://docs.material-tailwind.com/img/logo-ct-dark.png"
               alt="brand"
               className="h-8 w-8"
-            />
-            <Typography variant="h5" color="blue-gray">
-              Sidebar
+            /> */}
+            <Typography variant="h5" color="white">
+             QuickFix
             </Typography>
           </div>
-          <div className="p-2">
-            <Input
-              icon={<RiPresentationFill className="h-5 w-5" />}
-              label="Search"
-            />
-          </div>
+          
           <List>
-            <Accordion
-              open={open === 1}
-              icon={
-                <RiPresentationFill
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 1 ? "rotate-180" : ""
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 1}>
-                <AccordionHeader
-                  onClick={() => handleOpen(1)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <RiPresentationFill className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="blue-gray" className="mr-auto font-normal">
-                    Dashboard
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Analytics
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Reporting
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Projects
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
-            <Accordion
-              open={open === 2}
-              icon={
-                <RiPresentationFill
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 2 ? "rotate-180" : ""
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 2}>
-                <AccordionHeader
-                  onClick={() => handleOpen(2)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <RiPresentationFill className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="blue-gray" className="mr-auto font-normal">
-                    E-Commerce
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Orders
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Products
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
-            <hr className="my-2 border-blue-gray-50" />
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Inbox
-              <ListItemSuffix>
-                <Chip
-                  value="14"
-                  size="sm"
-                  variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
-                />
-              </ListItemSuffix>
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Profile
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Log Out
-            </ListItem>
-          </List>
-          <Alert
-            open={openAlert}
-            className="mt-auto"
-            onClose={() => setOpenAlert(false)}
+        {/* dashboard */}
+        <Link to={"/serviceprovider/dashboard/my profile"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 1
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
           >
-            <RiPresentationFill className="mb-4 h-12 w-12" />
-            <Typography variant="h6" className="mb-1">
-              Upgrade to PRO
-            </Typography>
-            <Typography variant="small" className="font-normal opacity-80">
-              Upgrade to Material Tailwind PRO and get even more components,
-              plugins, advanced features and premium.
-            </Typography>
-            <div className="mt-4 flex gap-3">
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium opacity-80"
-                onClick={() => setOpenAlert(false)}
-              >
-                Dismiss
-              </Typography>
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium"
-              >
-                Upgrade Now
-              </Typography>
-            </div>
-          </Alert>
+            <ListItemPrefix>
+              <MdDashboard className="h-5 w-5" />
+            </ListItemPrefix>
+            Dashboard
+          </ListItem>
+        </Link>
+
+        {/* services */}
+        <Link to={"/serviceprovider/dashboard/services"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 2
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <MdCleaningServices className="h-5 w-5" />
+            </ListItemPrefix>
+            Services
+          </ListItem>
+        </Link>
+        {/* users */}
+        <Link to={"/serviceprovider/dashboard/orders"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 3
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <RiStackFill  className="h-5 w-5" />
+            </ListItemPrefix>
+            My orders
+          </ListItem>
+        </Link>
+        {/* request order */}
+        <Link to={"/serviceprovider/dashboard/request/order"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 6
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <MdOutlineRequestQuote className="h-5 w-5" />
+            </ListItemPrefix>
+            Request Order
+          </ListItem>
+        </Link>
+        {/* previous order */}
+        <Link to={"/serviceprovider/dashboard/previous-orders"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 4
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <BsClockHistory className="h-5 w-5" />
+            </ListItemPrefix>
+            Previous Orders
+          </ListItem>
+        </Link>
+            
+        {/* get all product */}
+        <Link to={"/serviceprovider/dashboard/yours/profile"}>
+          <ListItem
+            className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
+              open === 5
+                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
+                : ""
+            }`}
+          >
+            <ListItemPrefix>
+              <RiProfileLine className="h-5 w-5" />
+            </ListItemPrefix>
+            Profile
+          </ListItem>
+        </Link>
+      </List>
+         
         </Card>
       </Drawer>
     </div>

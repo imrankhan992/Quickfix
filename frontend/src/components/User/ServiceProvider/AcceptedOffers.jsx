@@ -51,7 +51,7 @@ const AcceptedOffers = () => {
               offers?.length > 0 &&
               offers?.map((order) => (
                 <Badge
-                  content="Pending"
+                content={`${order?.serviceProviderOrderStatus}`}
                   className="text-[15px] armo bg-buttoncolor text-hoverblack font-bold select-none"
                 >
                   <AcceptOfferCard order={order} />

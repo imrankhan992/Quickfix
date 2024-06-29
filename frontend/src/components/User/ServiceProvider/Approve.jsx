@@ -17,8 +17,8 @@ const Approve = ({ products }) => {
   return (
     <>
       <main className="text-primarycolor w-full  bg-cardbg">
-        <div className="px-8 grid grid-cols-2 py-4 ">
-          <h1 className="text-2xl  text-[#1F1E30] font-bold">
+        <div className="md:px-8 flex justify-between py-4 ">
+          <h1 className="md:text-2xl  hidden md:block text-[#1F1E30] font-bold">
             Welcome back {user?.firstname + " " + user?.lastname}
           </h1>
           <Header user={user} />
@@ -37,7 +37,7 @@ const Approve = ({ products }) => {
             })}
           </>
         )}
-        <div className="p-6 flex gap-4">
+        <div className="md:p-6 py-4 flex gap-4 items-center justify-center">
           <div>
             <div className="grid md:grid-cols-3  gap-2">
               {/* total revene dev */}
@@ -94,9 +94,9 @@ const Approve = ({ products }) => {
                   <div className="flex gap-2 justify-evenly">
                     <div className="flex gap-2 justify-between">
                       <FaStar className="text-xl text-yellow-900" />{" "}
-                      <p className="text-[#1F1E30] font-medium">4.9</p>
+                      <p className="text-[#1F1E30] font-medium">{user?.ratings}</p>
                     </div>{" "}
-                    <p className="text-[#1F1E30] font-medium">Excellent</p>
+                    <p className="text-[#1F1E30] font-medium">{user?.ratings>4&&"Excellent"} {user?.ratings>3&&"Fair"} {user?.ratings<3&&"Poor"}</p>
                   </div>
                 </div>
               </div>

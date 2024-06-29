@@ -12,12 +12,10 @@ import Alert from "@/components/AlertForUpdateOrders/Alert";
 import { RatingsAlert } from "@/components/AlertForUpdateOrders/RatingsAlert";
 
 const Main = ({ user, products }) => {
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-  };
+ 
 
   const { loading, acceptedOrders } = useGetAllAcceptedOrdersByClient();
-  console.log(acceptedOrders, "this is accepted orders");
+ console.log(user)
   return (
     <main className="text-primarycolor w-full h-full">
       <Header user={user} />
@@ -113,9 +111,9 @@ const Main = ({ user, products }) => {
                 <div className="flex gap-2 justify-evenly">
                   <div className="flex gap-2 justify-between">
                     <FaStar className="text-xl text-yellow-900" />{" "}
-                    <p className="text-[#1F1E30] font-medium">4.9</p>
+                    <p className="text-[#1F1E30] font-medium">{user?.ratings}</p>
                   </div>{" "}
-                  <p className="text-[#1F1E30] font-medium">Excellent</p>
+                  <p className="text-[#1F1E30] font-medium">{user?.ratings > 4 ?"Excellent":"Fair"}</p>
                 </div>
               </div>
             </div>

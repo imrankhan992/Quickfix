@@ -19,7 +19,7 @@ export const SocketContextProvider = ({ children }) => {
   // https://noahai.ai 
   const initlizeSocket = () => {
     if (user) {
-      const socket = io("https://quickfix-8pw7.onrender.com", {
+      const socket = io("http://localhost:4000", {
         query: {
           userId: user?._id,
         },

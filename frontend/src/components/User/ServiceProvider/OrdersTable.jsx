@@ -49,11 +49,11 @@ export function OrdersTable({ activeTab }) {
   }, [activeTab, newOrder]);
 
   return filteredOrders?.map((order) => {
-    console.log(order,"this is order data");
+    
     return (
-      <>
+      <div className="w-full">
         <div className="border-x-2  shadow-md w-full select-none  flex-col bg-primarycolor   mb-4">
-          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2">
+          <div className="md:flex items-center justify-start w-full md:gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
             <div>
               <p className="font-bold">Order placed</p>
               <span className="text-mutedcolor">2/4/2024</span>
@@ -76,7 +76,7 @@ export function OrdersTable({ activeTab }) {
             </div>
           </div>
           {/* second part */}
-          <div className="flex  items-center w-full   justify-self-auto gap-28 py-5 px-6">
+          <div className="flex md:flex-row flex-col  items-center w-full   justify-self-auto md:gap-28 py-5 px-6">
             <div>
               <img
                 src={order?.serviceId?.picture?.url}
@@ -134,14 +134,14 @@ export function OrdersTable({ activeTab }) {
             </div>
           </div>
           {/* footer */}
-          <div className="flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2">
+          <div className="md:flex items-center justify-start w-full gap-16 py-5 px-8 bg-[#FAFAFA] border-y-2 text-hoverblack">
             <div className="flex gap-4">
               <p className="font-bold">Appointment Date:</p>
               <span className="text-mutedcolor">2/4/2024</span>
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   });
 }

@@ -8,6 +8,7 @@ import ReactStars from "react-rating-stars-component";
 import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
+import { Link } from "react-router-dom";
 
 const Services = () => {
   const [category, setcategory] = useState("All");
@@ -93,9 +94,11 @@ const Services = () => {
             {filteredProducts &&
               filteredProducts?.map((product, index) => {
                 return (
+                  <Link to={`/service/find/serviceproviders/nearby/${product?._id}`}>
+                  
                   <div
                     key={index}
-                    className="flex gap-2 border p-4 rounded-lg bg-primarycolor text-hoverblack"
+                    className="flex gap-2 border p-4 rounded-lg bg-primarycolor text-hoverblack hover:bg-buttoncolor transition-colors duration-1000 group"
                   >
                     <div className="text-hoverblack">
                       <img
@@ -106,7 +109,7 @@ const Services = () => {
                     </div>
                     <div className="flex flex-col gap-1">
                       <h1 className="text-hoverblack">{product?.title}</h1>
-                      <p className=" text-mutedcolor">{product?.description}</p>
+                      <p className=" text-mutedcolor group-hover:text-primarycolor  transition-colors duration-1000">{product?.description}</p>
                       <p className="text-hoverblack">Rs:{product?.price}</p>
                       <div className="flex justify-between gap-3">
                         <div className="flex items-center justify-center">
@@ -124,6 +127,7 @@ const Services = () => {
                       </div>
                     </div>
                   </div>
+                  </Link>
                 );
               })}
             {/* if product not found */}

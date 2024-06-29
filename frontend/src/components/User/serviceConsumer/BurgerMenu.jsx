@@ -50,19 +50,19 @@ export function BurgerMenu({open}) {
   const closeDrawer = () => setIsDrawerOpen(false);
  
   return (
-    <div className="md:hidden block absolute  z-50 px-4">
-      <IconButton variant="text" size="lg" onClick={openDrawer}>
+    <div className="md:hidden block absolute   z-50 px-4">
+      <IconButton variant="text" size="lg" className="fixed " onClick={openDrawer}>
         {isDrawerOpen ? (
-          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack " />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack p-1" />
         ) : (
-          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack p-1" />
         )}
       </IconButton>
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>
         <Card
           color="transparent"
-          shadow={false}
-          className="h-[calc(100vh-2rem)] w-full p-4 bg-sidebarbg"
+          shadow={true}
+          className="h-[calc(100vh)] rounded-none w-full p-4 bg-sidebarbg"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
            

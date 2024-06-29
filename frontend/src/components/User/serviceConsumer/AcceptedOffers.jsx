@@ -51,7 +51,7 @@ return (
             </div>
            <div className="flex flex-wrap gap-8">
            {offers?.map((order) => (
-                <Badge content={`${order?.finalOrderStatus==="Incomplete"?order?.serviceProviderOrderStatus:order?.finalOrderStatus}`}  className={`text-[12px] px-2 arimo bg-buttoncolor text-hoverblack font-bold select-none ${order?.serviceProviderOrderStatus==="processing"?"bg-green-500":""}`}>
+                <Badge content={`${order?.clientSideOrderStatus}`}  className={`text-[12px] px-2 arimo bg-buttoncolor text-hoverblack font-bold select-none ${order?.serviceProviderOrderStatus==="processing"?"bg-green-500":""}`}>
                 <AcceptOfferCard order={order}/>
                 </Badge>
               ))}

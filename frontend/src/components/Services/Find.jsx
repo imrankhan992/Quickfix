@@ -208,13 +208,16 @@ function Find({
         options={options}
       >
         <>
-          <Marker
+         <Marker
+           key="12345A_@67"
             position={currentLocation}
             icon={{
               url: pin,
               scaledSize: new window.google.maps.Size(60, 60),
             }}
+          
           />
+         
           {currentServiceProviders.length > 0 &&
             currentServiceProviders?.map((serviceProvider) => {
               return (
