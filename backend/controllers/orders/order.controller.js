@@ -4,6 +4,8 @@ const OrderModel = require("../../Models/Order/Order");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const sendEmail = require("../../utils/sendEmail");
 
+
+
 exports.postNewOrder = async (req, res) => {
   try {
     const {
@@ -59,12 +61,16 @@ exports.postNewOrder = async (req, res) => {
       const { io, getallSocketIds } = require("../../app");
       const allSocketIds = getallSocketIds();
 
-
-      serviceProviders.forEach((serviceProvider) => {
+      const adminCut = price * 0.2; // Calculate the admin's cut
+      serviceProviders.forEach(async (serviceProvider) => {
         const socketId = allSocketIds[serviceProvider._id];
+        const provider = await registrationModel.findById(serviceProvider._id);
 
-        if (socketId !== undefined) {
-          io?.to(socketId)?.emit("order", newOrder);
+
+        if (provider.walletBalance >= adminCut) {
+          if (socketId !== undefined) {
+            io?.to(socketId)?.emit("order", newOrder);
+          }
         }
       });
     }
@@ -194,11 +200,16 @@ exports.acceptOffer = async (req, res) => {
     if (checkAccepted) {
       return res.status(400).json({ success: false, message: "Service provider already hired for this project." });
     }
-    console.log(order.totalOffers, "this is total offers")
+
     // Update the status of the offer to accepted and reject others
     order.totalOffers.forEach(offer => {
       offer.status = offer.serviceProvider?._id.toString() === serviceProviderId.toString() ? "accepted" : "rejected";
     });
+
+    // update the offer price which given by the service provider
+    const newPrice = order.totalOffers.find(offer => offer.serviceProvider?._id.toString() === serviceProviderId.toString()).price;
+
+
 
     // Save the order with updated offers
     const updatedOrder = await order.save();
@@ -206,14 +217,26 @@ exports.acceptOffer = async (req, res) => {
       return res.status(400).json({ success: false, message: "Offer not accepted" });
     }
 
+
+
     // Save acceptance details to the AcceptOrder collection
     const newAcceptOrder = new AcceptOrder({
       order: orderId,
       serviceProvider: serviceProviderId,
       clientId: _id,
       isAccepted: true,
-      price: updatedOrder.price  // Assuming `updatedOrder` has the correct price after save
+      price: newPrice
     });
+    // deduct 20% of the price from the service provider walletBalance
+    const serviceProviderWallet = await registrationModel.findById(serviceProviderId);
+    
+    // check if sufficient balance is available in the wallet
+    if (serviceProviderWallet.walletBalance <= 0 || serviceProviderWallet.walletBalance < newPrice * 0.2) {
+      throw new Error("OOPS!  Insufficient balance in the service provider wallet. Please hire another service Provider.");
+    }
+    serviceProviderWallet.walletBalance -= newPrice * 0.2;
+    await serviceProviderWallet.save();
+
     await newAcceptOrder.save();
 
     // Send notification to the service provider if available
@@ -459,11 +482,11 @@ exports.getAllAcceptedOrdersByClient = async (req, res) => {
       .populate({
         path: "order",
         populate: [
-          
+
           { path: "serviceId" },
         ],
       })
-    
+
     res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);
@@ -481,11 +504,11 @@ exports.getAllAcceptedOrdersByProvider = async (req, res) => {
       .populate({
         path: "order",
         populate: [
-          
+
           { path: "serviceId" },
         ],
       })
-    
+
     res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);
