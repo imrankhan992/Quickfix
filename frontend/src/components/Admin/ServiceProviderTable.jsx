@@ -58,15 +58,15 @@ export function ServiceProviderTable() {
       >
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
-            <Typography variant="h5" className="text-primarycolor">
+            <Typography variant="h5" className="text-hoverblack">
               Members list
             </Typography>
-            <Typography color="gray" className="mt-1 font-normal text-primarycolor">
+            <Typography color="gray" className="mt-1 font-normal text-hoverblack">
               See information about all service providers
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
+            <Button variant="outlined" size="sm" className="arimo text-hoverblack">
               view all
             </Button>
           </div>
@@ -74,11 +74,11 @@ export function ServiceProviderTable() {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row bg-thirdcolor">
           
           <div className="w-full md:w-72">
-            <Input label="Search" color="white" icon={<FaUserClock className="h-5 w-5" />} className="disabled:bg-green-500 placeholder-shown:border-red-500 outline-none focus:border-primarycolor" />
+            <Input label="Search" color="white" icon={<FaUserClock className="h-5 w-5" />} className="disabled:bg-green-500 placeholder-shown:border-red-500 outline-none focus:border-hoverblaktext-hoverblack" />
           </div>
         </div>
       </CardHeader>
-      <CardBody className="px-0 bg-thirdcolor text-primarycolor overflow-auto">
+      <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -90,7 +90,7 @@ export function ServiceProviderTable() {
                   <Typography
                     variant="small"
                     color="blue-gray"
-                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-primarycolor"
+                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-hoverblack"
                   >
                     {head}{" "}
                     
@@ -116,14 +116,14 @@ export function ServiceProviderTable() {
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal text-primarycolor"
+                            className="font-normal text-hoverblack"
                           >
                             {name}
                           </Typography>
                           <Typography
                             variant="small"
                             color="blue-gray"
-                            className="font-normal opacity-70 text-primarycolor"
+                            className="font-normal opacity-70 text-hoverblack"
                           >
                             {email}
                           </Typography>
@@ -134,7 +134,7 @@ export function ServiceProviderTable() {
                     <td className={classes}>
                       <div className="w-max ">
                         <Chip
-                        className="text-primarycolor"
+                        className="text-hoverblack"
                           variant="ghost"
                           size="sm"
                           value={accountStatus}
@@ -146,7 +146,7 @@ export function ServiceProviderTable() {
                       <Typography
                         variant="small"
                         color="blue-gray"
-                        className="font-normal text-primarycolor"
+                        className="font-normal text-hoverblack"
                       >
                         11/2/24
                       </Typography>

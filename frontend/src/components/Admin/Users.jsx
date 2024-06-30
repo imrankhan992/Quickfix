@@ -48,12 +48,12 @@ export function Users() {
       <div className="flex ">
         <Aside open={3} />
 
-        <main className="lg:w-[100%] w-full  min-h-screen">
+        <main className="lg:w-[100%] w-full  h-full bg-thirdcolor">
           <Header />
           <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
             {/* heading */}
 
-            <h3 className="text-primarycolor text-2xl">
+            <h3 className="text-hoverblack text-2xl">
               All Service Providers
             </h3>
             {/* table */}
@@ -66,12 +66,12 @@ export function Users() {
                 >
                   <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
-                      <Typography variant="h5" className="text-primarycolor">
+                      <Typography variant="h5" className="text-hoverblack">
                         Customer list
                       </Typography>
                       <Typography
                         color="gray"
-                        className="mt-1 font-normal text-primarycolor"
+                        className="mt-1 font-normal text-hoverblack"
                       >
                         See information about all members
                       </Typography>
@@ -89,7 +89,7 @@ export function Users() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardBody className="px-0 bg-thirdcolor text-primarycolor overflow-auto">
+                <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
                   <table className="mt-4 w-full min-w-max table-auto text-left">
                     <thead>
                       <tr>
@@ -101,7 +101,7 @@ export function Users() {
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-primarycolor"
+                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-hoverblack"
                             >
                               {head}{" "}
                             </Typography>
@@ -142,14 +142,14 @@ export function Users() {
                                     <Typography
                                       variant="small"
                                       color="blue-gray"
-                                      className="font-normal text-primarycolor"
+                                      className="font-normal text-hoverblack"
                                     >
                                       {firstname + " " + lastname}
                                     </Typography>
                                     <Typography
                                       variant="small"
                                       color="blue-gray"
-                                      className="font-normal opacity-70 text-primarycolor"
+                                      className="font-normal opacity-70 text-hoverblack"
                                     >
                                       {email}
                                     </Typography>
@@ -160,7 +160,7 @@ export function Users() {
                               <td className={classes}>
                                 <div className="w-max ">
                                   <Chip
-                                    className="text-primarycolor"
+                                    className="text-hoverblack"
                                     variant="ghost"
                                     size="sm"
                                     value={accountStatus}
@@ -176,7 +176,7 @@ export function Users() {
                                 <Typography
                                   variant="small"
                                   color="blue-gray"
-                                  className="font-normal text-primarycolor"
+                                  className="font-normal text-hoverblack"
                                 >
                                   23/3/4
                                 </Typography>
@@ -186,7 +186,7 @@ export function Users() {
                                   <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="font-normal text-primarycolor underline"
+                                    className="font-normal text-hoverblack underline"
                                   >
                                     View Profile
                                   </Typography>

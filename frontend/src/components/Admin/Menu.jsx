@@ -50,7 +50,7 @@ export function Menu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="">
-        <Button className="p-0 bg-bodycolor hover:bg-bodycolor rounded-full flex    gap-2">
+        <Button className="p-0 bg-cardbg hover:bg-cardbg rounded-full flex    gap-2">
           <AvatarPicture />
           <div className="flex justify-start flex-col p-2">
             <p>{Adminuser?.firstname + " " + Adminuser?.lastname}</p>
@@ -58,7 +58,7 @@ export function Menu() {
           </div>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56 bg-primarycolor">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

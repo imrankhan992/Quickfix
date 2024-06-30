@@ -85,13 +85,13 @@ const Settings = () => {
       <div className="flex relative">
         <BurgerMenu />
         <Aside open={5} />
-        <main className="text-primarycolor w-full">
+        <main className="text-hoverblack w-full">
           <div>
             <Header user={user} />
           </div>
 
           <div className="px-8 py-6">
-            <div className="flex items-center justify-start text-3xl">
+            <div className="flex items-center justify-start text-3xl text-hoverblack font-bold">
               Settings
             </div>
             {/*input grid */}
@@ -112,7 +112,7 @@ const Settings = () => {
                   onBlur={handleBlur}
                 />
 
-                <div className="flex gap-1 items-center justify-center border border-buttonborder text-primarycolor hover:bg-thirdcolor py-1 px-3  bg-buttoncolor   mt-3 rounded-full mb-6">
+                <div className="flex gap-1 items-center justify-center border border-buttonborder text-hoverblack hover:bg-thirdcolor py-1 px-3  bg-buttoncolor   mt-3 rounded-full mb-6">
                   {" "}
                   Upload Photo
                 </div>
@@ -125,7 +125,7 @@ const Settings = () => {
                 <div>
                   <Label
                     htmlFor="name"
-                    className="font-normal text-primarycolor text-lg"
+                    className="font-normal text-hoverblack text-lg"
                   >
                     First name
                   </Label>
@@ -134,7 +134,7 @@ const Settings = () => {
                     name="firstname"
                     defaultValue={user?.firstname}
                     id="name"
-                    className={` rounded-lg border bg-inputbg_color focus-visible:ring-offset-0 border-bordercolor ${
+                    className={` rounded-lg border bg-primarycolor focus-visible:ring-offset-0 border-bordercolor ${
                       errors?.firstname && touched?.firstname
                         ? "border-errorcolor border-2"
                         : ""
@@ -158,12 +158,12 @@ const Settings = () => {
                 <div>
                   <Label
                     htmlFor="lastname"
-                    className="font-normal text-primarycolor text-lg"
+                    className="font-normal text-hoverblack text-lg"
                   >
                     Last name
                   </Label>
                   <Input
-                    className={` rounded-lg border bg-inputbg_color focus-visible:ring-offset-0 border-bordercolor ${
+                    className={` rounded-lg border bg-primarycolor focus-visible:ring-offset-0 border-bordercolor ${
                       errors?.lastname && touched?.lastname
                         ? "border-errorcolor border-2"
                         : ""
@@ -191,12 +191,12 @@ const Settings = () => {
                 <div className="col-span-2">
                   <Label
                     htmlFor="email"
-                    className="font-normal text-primarycolor text-lg"
+                    className="font-normal text-hoverblack text-lg"
                   >
                     Email "Email cannot be changed"
                   </Label>
                   <Input
-                    className={` rounded-lg bg-inputbg_color focus-visible:ring-offset-0 border border-bordercolor ${
+                    className={` rounded-lg bg-primarycolor focus-visible:ring-offset-0 border border-bordercolor ${
                       errors?.email && touched?.email
                         ? "border-errorcolor border-2"
                         : ""
@@ -213,7 +213,7 @@ const Settings = () => {
                 <div className="py-5 items-center flex justify-center col-span-2">
                   {!loading && (
                     <Button
-                      className="bg-buttoncolor outline outline-buttonborder "
+                      className="bg-buttoncolor outline outline-buttonborder text-hoverblack arimo font-bold"
                       type="submit"
                     >
                       Save

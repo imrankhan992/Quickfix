@@ -29,7 +29,7 @@ export function DeleteCategory({deleteCategory,_id}) {
           unmount: { scale: 0.9, y: -100 },
         }}
       >
-        <DialogHeader className="text-primarycolor flex gap-3">
+        <DialogHeader className="text-hoverblack flex gap-3">
           <FaExclamationTriangle className="text-red-900 text-3xl" />
           <div className="flex justify-start">
             <p className="text-[16px]">
@@ -52,7 +52,7 @@ export function DeleteCategory({deleteCategory,_id}) {
           <Button
             variant="text"
             onClick={handleOpen}
-            className="mr-1 capitalize text-sm bg-none text-primarycolor"
+            className="mr-1 capitalize text-sm bg-none text-hoverblack"
             
           >
             <span>No,Cancel</span>

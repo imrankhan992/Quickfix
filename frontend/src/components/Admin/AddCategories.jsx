@@ -121,13 +121,13 @@ export function AddCategories() {
       <div className="flex ">
         <Aside open={2} />
 
-        <main className="lg:w-[100%] w-full  min-h-screen">
+        <main className="lg:w-[100%] w-full  h-full bg-cardbg">
           <Header />
           <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
             {/* heading */}
 
             <div className="flex justify-between">
-              <h3 className="text-primarycolor text-2xl">Add Services</h3>
+              <h3 className="text-hoverblack text-2xl font-bold arimo">Add Services</h3>
 
               <CreateCategory
                 createService={createService}
@@ -145,24 +145,9 @@ export function AddCategories() {
                   shadow={false}
                   className="rounded-none bg-thirdcolor"
                 >
-                  <div className="flex justify-start items-center  gap-4 md:flex-row bg-thirdcolor">
-                    <div className="w-full md:w-72">
-                      <Input
-                        label="Search"
-                        color="white"
-                      className=""
-                        icon={<AiOutlineProfile className="h-5 w-5" />}
-                        
-                      />
-                    </div>
-                    <div>
-                      <Button className="bg-buttoncolor text-primarycolor border border-buttonborder capitalize text-sm flex gap-1 items-center justify-center py-2 px-2">
-                        <CiFilter className="text-[18px] font-bold" /> Filter
-                      </Button>
-                    </div>
-                  </div>
+                  
                 </CardHeader>
-                <CardBody className="px-0 bg-thirdcolor text-primarycolor overflow-auto">
+                <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
                   <table className="mt-4 w-full min-w-max table-auto text-left">
                     <thead>
                       <tr>
@@ -174,7 +159,7 @@ export function AddCategories() {
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70   text-primarycolor"
+                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70   text-hoverblack"
                             >
                               {head}{" "}
                             </Typography>
@@ -196,7 +181,7 @@ export function AddCategories() {
                                 <Typography
                                   variant="small"
                                   color="blue-gray"
-                                  className="font-normal text-primarycolor"
+                                  className="font-normal text-hoverblack"
                                 >
                                   {category}
                                 </Typography>
@@ -207,7 +192,7 @@ export function AddCategories() {
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="font-normal text-primarycolor"
+                                className="font-normal text-hoverblack"
                               >
                                 3 products
                               </Typography>
@@ -216,7 +201,7 @@ export function AddCategories() {
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="font-normal text-primarycolor"
+                                className="font-normal text-hoverblack"
                               >
                                 <div className="flex items-center justify-center gap-3">
                                   <EditCategory

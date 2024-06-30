@@ -26,12 +26,12 @@ const Main = () => {
   
   return (
     <>
-      <main className="lg:w-[100%] w-full  min-h-screen">
+      <main className="lg:w-[100%] w-full  h-full bg-cardbg">
         <Header />
         <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
           {/* heading */}
 
-          <h3 className="text-primarycolor text-2xl">Dashboard</h3>
+          <h3 className="text-hoverblack font-bold text-2xl">Dashboard</h3>
           {/* three divs */}
           <div className="text-primarycolor grid md:grid-cols-4 gap-4 ">
             <div className="border-2 h-52 rounded-md p-4 bg-primarycolor  ">
@@ -47,9 +47,7 @@ const Main = () => {
                 </p>
               </div>
               {/* graph */}
-              <div>
-                <SparkChart />
-              </div>
+              
             </div>
             {/* second box */}
             <div className="border-2 h-52 rounded-md p-4 bg-primarycolor  ">
@@ -64,9 +62,7 @@ const Main = () => {
                 </p>
               </div>
               {/* graph */}
-              <div>
-                <SparkChart />
-              </div>
+              
             </div>
             {/* service provider count */}
             
@@ -82,9 +78,7 @@ const Main = () => {
                 </p>
               </div>
               {/* graph */}
-              <div>
-                <SparkChart />
-              </div>
+              
             </div>
              {/* reveniew */}
             
@@ -100,9 +94,7 @@ const Main = () => {
                 </p>
               </div>
               {/* graph */}
-              <div>
-                <SparkChart />
-              </div>
+              
             </div>
           </div>
           {/* recent service providers */}

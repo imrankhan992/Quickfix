@@ -31,6 +31,9 @@ router.route("/login").post(loginUserController);
 router.get('/wallet/:userId', getWalletBalance);
 router.post('/recharge-wallet', rechargeWallet);
 router.post('/update-wallet', updateWallet);
+
+
+
 // protected
 router.route("/protected-serviceprovider").get(isAuthenticated,authorizeRoles("serviceprovider"),submitProfileornot)
 

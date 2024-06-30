@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Header from "./Header";
 import ReactStars from "react-rating-stars-component";
@@ -9,11 +9,54 @@ import { FaStar } from "react-icons/fa";
 import useGetAllAcceptedOrdersByProvider from "@/Hooks/useGetAllAcceptedOrdersByProvider";
 import Loading from "@/Pages/Loading";
 import Alert from "@/components/AlertForUpdateOrders/Alert";
+import axiosInstance from "@/ulities/axios";
 
-const Approve = ({ products }) => {
+const Approve = () => {
+  const [balance, setBalance] = useState(0);
+  const [orderLength,setOrderLength ] = useState(0);
+  const [balanceLoading, setBalanceLoading] = useState(false);
+  const [LengthLoading, setLengthLoading] = useState(false);
+  const fetchWalletBalance = async () => {
+    try {
+      setBalanceLoading(true);
+      const { data } = await axiosInstance.get(`/api/v1/wallet/${user?._id}`);
+      if (data?.success) {
+        setBalance(data.balance);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setBalanceLoading(false);
+    }
+  };
+  // get all active orders
+
+
+  const getActiveOrderLength = async () => {
+    try {
+      setLengthLoading(true);
+      const { data } = await axiosInstance.get(`/api/v1/order/get-all-active-orders`);
+      if (data?.success) {
+        setOrderLength(data.totalOrdersLength);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLengthLoading(false);
+    }
+  };
   const { loading, acceptedOrders } = useGetAllAcceptedOrdersByProvider();
-  console.log(acceptedOrders, "this is accepted orders");
+
   const { user } = useSelector((state) => state.user);
+  // i want when account balance update then it should be updated in the dashboard using useEffect
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchWalletBalance();
+      getActiveOrderLength();
+    }
+  }, [user?._id]);
+
   return (
     <>
       <main className="text-primarycolor w-full  bg-cardbg">
@@ -31,7 +74,7 @@ const Approve = ({ products }) => {
               return (order?.clientSideOrderStatus === "completed" &&
                 order?.serviceProviderOrderStatus === "pending") ||
                 order?.serviceProviderOrderStatus === "processing" ? (
-                <Alert order={order} />
+                <Alert order={order} user={user} />
               ) : (
                 ""
               );
@@ -53,12 +96,16 @@ const Approve = ({ products }) => {
                       Account Balance
                     </h2>
                   </div>
-                  <h1 className="text-5xl text-mutedcolor font-bold">
-                    RS{" "}
-                    <span className="text-[#1F1E30] font-bold ">
-                      {user?.walletBalance}
-                    </span>
-                  </h1>
+                  {!balanceLoading && (
+                    <h1 className="text-5xl text-mutedcolor font-bold">
+                      RS{" "}
+                      <span className="text-[#1F1E30] font-bold ">
+                        {balance}
+                      </span>
+                    </h1>
+                  )}
+
+                  {balanceLoading && <Loading />}
                 </div>
               </div>
               {/* Active Orders */}
@@ -74,7 +121,7 @@ const Approve = ({ products }) => {
                     </h2>
                   </div>
                   <h1 className="text-5xl text-mutedcolor font-bold">
-                    <span className="text-[#1F1E30] font-bold ">0</span>
+                    <span className="text-[#1F1E30] font-bold ">{orderLength}</span>
                   </h1>
                 </div>
               </div>
@@ -103,9 +150,17 @@ const Approve = ({ products }) => {
                       </p>
                     </div>{" "}
                     <p className="text-[#1F1E30] font-medium">
-                      {user?.ratings > 4 && "Excellent"}{" "}
-                      {user?.ratings > 3 && "Fair"}{" "}
-                      {user?.ratings < 3 && "Poor"}
+                      {user?.ratings > 4.5
+                        ? "Excellent"
+                        : user?.ratings > 4
+                        ? "Very Good"
+                        : user?.ratings > 3.5
+                        ? "Good"
+                        : user?.ratings > 3
+                        ? "Fair"
+                        : user?.ratings > 2.5
+                        ? "Average"
+                        : "Poor"}
                     </p>
                   </div>
                 </div>

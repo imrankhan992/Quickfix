@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import ReactStars from "react-rating-stars-component";
 import { FaStar } from "react-icons/fa";
@@ -10,12 +10,37 @@ import useGetAllAcceptedOrdersByClient from "@/Hooks/useGetAllAcceptedOrdersByCl
 import Loading from "@/Pages/Loading";
 import Alert from "@/components/AlertForUpdateOrders/Alert";
 import { RatingsAlert } from "@/components/AlertForUpdateOrders/RatingsAlert";
+import axiosInstance from "@/ulities/axios";
 
 const Main = ({ user, products }) => {
- 
+  const [lengthLoading, setLengthLoading] = useState(false);
+  const [orderLength, setOrderLength] = useState(0);
+  const [totalActiveOrdersLength, setTotalActiveOrdersLength] = useState(0)
+  const getActiveOrderLength = async () => {
+    try {
+      setLengthLoading(true);
+      const { data } = await axiosInstance.get(
+        `/api/v1/order/get-all-active-orders-client`
+      );
+      if (data?.success) {
+        setOrderLength(data.totalOrdersLength);
+        setTotalActiveOrdersLength(data.totalOrdersLengthBySpecificClient)
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLengthLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user?._id) {
+      getActiveOrderLength();
+    }
+  }, [user?._id]);
 
   const { loading, acceptedOrders } = useGetAllAcceptedOrdersByClient();
- console.log(user)
+
   return (
     <main className="text-primarycolor w-full h-full">
       <Header user={user} />
@@ -28,7 +53,7 @@ const Main = ({ user, products }) => {
             {acceptedOrders?.map((order) => {
               return order?.clientSideOrderStatus === "pending" &&
                 order?.serviceProviderOrderStatus === "completed" ? (
-                <Alert order={order} />
+                <Alert order={order} user={user} />
               ) : (
                 ""
               );
@@ -70,7 +95,7 @@ const Main = ({ user, products }) => {
                   </h2>
                 </div>
                 <h1 className="text-5xl text-mutedcolor font-bold">
-                  RS <span className="text-[#1F1E30] font-bold ">100</span>
+                  RS <span className="text-[#1F1E30] font-bold ">{totalActiveOrdersLength}</span>
                 </h1>
               </div>
             </div>
@@ -87,7 +112,9 @@ const Main = ({ user, products }) => {
                   </h2>
                 </div>
                 <h1 className="text-5xl text-mutedcolor font-bold">
-                  <span className="text-[#1F1E30] font-bold ">0</span>
+                  <span className="text-[#1F1E30] font-bold ">
+                    {orderLength}
+                  </span>
                 </h1>
               </div>
             </div>
@@ -111,83 +138,24 @@ const Main = ({ user, products }) => {
                 <div className="flex gap-2 justify-evenly">
                   <div className="flex gap-2 justify-between">
                     <FaStar className="text-xl text-yellow-900" />{" "}
-                    <p className="text-[#1F1E30] font-medium">{user?.ratings}</p>
+                    <p className="text-[#1F1E30] font-medium">
+                      {user?.ratings}
+                    </p>
                   </div>{" "}
-                  <p className="text-[#1F1E30] font-medium">{user?.ratings > 4 ?"Excellent":"Fair"}</p>
+                  <p className="text-[#1F1E30] font-medium">
+                    {user?.ratings > 4 ? "Excellent" : "Fair"}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* recent orders */}
-          <div className="py-10">
-            <h1 className="text-3xl text-hoverblack font-bold">
-              Recent orders:
-            </h1>
-            <p className="text-red-500 text-xl text-center p-6">
-              Orders history not found.
-            </p>
-          </div>
-          {/* customer feedback*/}
-          <div className="py-10">
-            <h1 className="text-3xl text-hoverblack font-bold">
-              Customer Feedback:
-            </h1>
-
-            <div className="flex items-center justify-center py-8">
-              <p className="text-red-500 text-xl text-center p-6">Not found</p>
-            </div>
-          </div>
+          
+         
         </div>
 
-        {/* recent orders */}
-        <div className="py-10">
-          <h1 className="text-3xl">Recent orders:</h1>
-          <p className="text-red-500 text-xl text-center p-6">
-            You have placed no orders.
-          </p>
-        </div>
-        {/* top 10 services */}
-        <div className="py-10">
-          <h1 className="text-3xl">Latest Service:</h1>
-
-          <div className="grid md:grid-cols-3 gap-3  w-full h-full py-8 ">
-            {products?.map((product) => {
-              return (
-                <>
-                  <div className="flex gap-2 border p-4 rounded-lg bg-thirdcolor">
-                    <div className="text-primarycolor">
-                      <img
-                        src={product?.picture?.url}
-                        className="w-32 h-32 rounded-lg object-contain"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <h1 className="text-primarycolor">{product?.title}</h1>
-                      <p className=" text-mutedcolor">{product?.description}</p>
-                      <p className="text-primarycolor">Rs:{product?.price}</p>
-                      <div className="flex justify-between gap-3">
-                        <div className="flex items-center justify-center">
-                          <p className="text-primarycolor">
-                            <ReactStars
-                              count={5}
-                              size={20}
-                              activeColor="#ffd700"
-                              edit={false}
-                              value={0}
-                              half={true}
-                            />
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
+        
+        
       </div>
     </main>
   );

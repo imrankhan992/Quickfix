@@ -19,7 +19,7 @@ export function Sidebar({open}) {
   
 
   return (
-    <Card className="h-full   rounded-none bg-thirdcolor ">
+    <Card className="h-full   rounded-none bg-sidebarbg ">
       <div className="mb-2 p-4 flex items-center justify-center">
         <Typography variant="h5" className="text-primarycolor">
           QuickFix

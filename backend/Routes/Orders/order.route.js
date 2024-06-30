@@ -1,5 +1,5 @@
 const express = require('express');
-const { postNewOrder, getAllOrder, sendOffer, getAllOrdersWhichClientPost,updateOrderStatusByProvider, updateOrderStatusByClient,getSingleServiceProviderOffer,acceptOffer,getAcceptedOffersServiceProvider, getAcceptedOffersClient, getSingleAcceptedOffer, deleteOrder, getAllAcceptedOrdersByClient, getAllAcceptedOrdersByProvider,  } = require('../../controllers/orders/order.controller');
+const { postNewOrder, getAllOrder, sendOffer, getAllOrdersWhichClientPost,updateOrderStatusByProvider, updateOrderStatusByClient,getSingleServiceProviderOffer,acceptOffer,getAcceptedOffersServiceProvider, getAcceptedOffersClient, getSingleAcceptedOffer, deleteOrder, getAllAcceptedOrdersByClient, getAllAcceptedOrdersByProvider, getallActiveOrders, getallActiveOrdersClient,  } = require('../../controllers/orders/order.controller');
 const { isAuthenticated } = require('../../Middleware/auhRegistration');
 const router = express.Router();
 router.post("/send", isAuthenticated, postNewOrder)
@@ -16,4 +16,6 @@ router.put("/update-order-status/client/:id", isAuthenticated, updateOrderStatus
 router.put("/update-order-status/provider/:id", isAuthenticated, updateOrderStatusByProvider)
 router.get("/get-all-accepted-order-by-client", isAuthenticated, getAllAcceptedOrdersByClient)
 router.get("/get-all-accepted-order-by-provider", isAuthenticated, getAllAcceptedOrdersByProvider)
+router.get("/get-all-active-orders", isAuthenticated, getallActiveOrders)
+router.get("/get-all-active-orders-client", isAuthenticated, getallActiveOrdersClient)
 module.exports = router;

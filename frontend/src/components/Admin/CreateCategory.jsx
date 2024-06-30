@@ -28,10 +28,10 @@ export function CreateCategory({
     <>
       <Button
         onClick={handleOpen}
-        className="bg-buttoncolor border border-buttonborder flex gap-2 items-center justify-center capitalize text-sm"
+        className="bg-buttoncolor border border-buttonborder flex gap-2 items-center justify-center capitalize text-sm arimo text-hoverblack"
       >
         <FaPlus />
-        Add new services
+        Add new service
       </Button>
       <Dialog
         size="xs"
@@ -45,7 +45,7 @@ export function CreateCategory({
       >
         <Card className="mx-auto w-full max-w-[24rem] bg-thirdcolor rounded-2xl">
           <CardBody className="flex flex-col gap-4">
-            <Typography variant="h4" className="text-primarycolor">
+            <Typography variant="h4" className="text-hoverblack">
               Add new Service
             </Typography>
             {/* <Typography
@@ -63,14 +63,14 @@ export function CreateCategory({
               onChange={(e) => {
                 setservices(e.target.value);
               }}
-              className="rounded-md bg-inputbg_color border-bordercolor"
+              className="rounded-md bg-primarycolor border-bordercolor"
               placeholder="Type here..."
             />
           </CardBody>
           <CardFooter className="pt-0">
             {!loading && (
               <Button
-                className="bg-buttoncolor border border-buttonborder capitalize text-sm"
+                className="bg-buttoncolor border border-buttonborder capitalize text-sm text-hoverblack font-bold arimo"
                 onClick={() => {
                   handleOpen();
                   createService();

@@ -19,7 +19,7 @@ const RechargeAccount = () => {
           <Header user={user} />
 
           <div className="px-8 py-6">
-            <p className="text-black">this is recharge account</p>
+           
             <Stripe/>
           </div>
         </main>

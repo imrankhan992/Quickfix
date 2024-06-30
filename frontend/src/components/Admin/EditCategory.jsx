@@ -43,7 +43,7 @@ export function EditCategory({
       >
         <Card className="mx-auto w-full max-w-[24rem] bg-thirdcolor rounded-2xl">
           <CardBody className="flex flex-col gap-4">
-            <Typography variant="h4" className="text-primarycolor">
+            <Typography variant="h4" className="text-hoverblack">
               Update Service
             </Typography>
             {/* <Typography
@@ -61,7 +61,7 @@ export function EditCategory({
               onChange={(e) => {
                 setcategory(e.target.value);
               }}
-              className="rounded-md bg-inputbg_color border-bordercolor text-primarycolor"
+              className="rounded-md bg-primarycolor border-bordercolor text-hoverblack"
               placeholder="Type here..."
             />
           </CardBody>
@@ -70,7 +70,7 @@ export function EditCategory({
              
             )} */}
             <Button
-              className="bg-thirdcolor border border-primarycolor capitalize text-sm"
+              className="bg-thirdcolor border border-primarycolor capitalize text-sm arimo font-bold text-hoverblack"
               onClick={() => {
                 handleOpen();
               }}
@@ -78,7 +78,7 @@ export function EditCategory({
               Cancel
             </Button>
             <Button
-              className="bg-buttoncolor border border-buttonborder capitalize text-sm"
+              className="bg-buttoncolor border border-buttonborder capitalize text-sm arimo font-bold text-hoverblack"
               onClick={() => {
                 handleOpen();
                 updateCategory(_id);

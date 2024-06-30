@@ -4,6 +4,8 @@ const crypto = require("crypto");
 const { sendToken } = require("../../utils/sendToken");
 const cloudinary = require("../../Middleware/cloudinary");
 const UserModel = require("../../Models/User/UserModel");
+const Transaction = require("../../Models/Transaction/transaction.model");
+const AcceptOrder = require("../../Models/Order/AcceptOrder");
 const stripe = require('stripe')('sk_test_51PX0FHLhXKwMvDT9RIsWf3w4ZK0qdPXajDHjvcffavOlf3VuPZZ1XeikM4TgArFBTCMZDSBNRESkwCjiWmZlHKvB00pztnZ98m');
 
 exports.registerUserController = async (req, res) => {
@@ -38,7 +40,7 @@ exports.registerUserController = async (req, res) => {
 
             const verifyToken = await newuser.getverifyEmailToken();
             await newuser.save({ validateBeforeSave: false });
-            const verifyEmailUrl = `${process.env.FRONTENT_URL}/api/v1/email/account/verify/${verifyToken}`;
+            const verifyEmailUrl = `https://quickfix-8pw7.onrender.com/api/v1/email/account/verify/${verifyToken}`;
             const message = `Your Email Verify Token is  :- \n\n ${verifyEmailUrl} \n\n if you have not requested this email then, please ignore it`;
             const html = `
             <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f9f9f9;margin:0;padding:0"><div style="max-width:600px;margin:0 auto;background-color:#fff;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05)"><div style="text-align:center;padding:20px 0;border-bottom:1px solid #eee"><h1 style="color:#333;font-size:24px;margin-bottom:20px">QuickFix</h1></div><div style="padding:30px;text-align:center"><h1 style="color:#333;font-size:24px;margin-bottom:20px">Email Verification</h1><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Hi ${newuser?.firstname},</p><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Thank you for registering with us. Please click the button below to verify your email address and complete your registration.</p><a href=${verifyEmailUrl} style="display:inline-block;margin-top:20px;padding:15px 30px;background-color:#007bff;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;transition:background-color .3s ease">Verify Email</a></div><div style="margin-top:30px;padding:20px;background-color:#f4f4f4;text-align:center;color:#888;font-size:14px"><p style="margin:5px 0">If you did not create an account, no further action is required.</p><p style="margin:5px 0">&copy; 2024 Your Company Name. All rights reserved.</p><div style="margin-top:10px"><a href="https://facebook.com/yourcompany" style="margin:0 5px"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Facebook" style="width:32px"></a><a href="https://twitter.com/yourcompany" style="margin:0 5px"><img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1716249600&semt=ais_user" alt="Twitter" style="width:32px"></a><a href="https://instagram.com/yourcompany" style="margin:0 5px"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7-0xfKFBqt9MIsyKA3el52qEj9htrawhjM6ppqNIuQ&s" alt="Instagram" style="width:32px"></a></div></div></div></body>
@@ -62,7 +64,7 @@ exports.registerUserController = async (req, res) => {
             userexist.password = password;
             const verifyToken = await userexist.getverifyEmailToken();
             await userexist.save({ validateBeforeSave: false });
-            const verifyEmailUrl = `${process.env.FRONTENT_URL}/api/v1/email/account/verify/${verifyToken}`;
+            const verifyEmailUrl = `https://quickfix-8pw7.onrender.com/api/v1/email/account/verify/${verifyToken}`;
             const message = `Your Email Verify Token is  :- \n\n ${verifyEmailUrl} \n\n if you have not requested this email then, please ignore it`;
             const html = `
             <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f9f9f9;margin:0;padding:0"><div style="max-width:600px;margin:0 auto;background-color:#fff;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05)"><div style="text-align:center;padding:20px 0;border-bottom:1px solid #eee"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Your Logo" style="width:150px"></div><div style="padding:30px;text-align:center"><h1 style="color:#333;font-size:24px;margin-bottom:20px">Email Verification</h1><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Hi ${userexist?.firstname},</p><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Thank you for registering with us. Please click the button below to verify your email address and complete your registration.</p><a href=${verifyEmailUrl} style="display:inline-block;margin-top:20px;padding:15px 30px;background-color:#007bff;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;transition:background-color .3s ease">Verify Email</a></div><div style="margin-top:30px;padding:20px;background-color:#f4f4f4;text-align:center;color:#888;font-size:14px"><p style="margin:5px 0">If you did not create an account, no further action is required.</p><p style="margin:5px 0">&copy; 2024 Your Company Name. All rights reserved.</p><div style="margin-top:10px"><a href="https://facebook.com/yourcompany" style="margin:0 5px"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Facebook" style="width:32px"></a><a href="https://twitter.com/yourcompany" style="margin:0 5px"><img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1716249600&semt=ais_user" alt="Twitter" style="width:32px"></a><a href="https://instagram.com/yourcompany" style="margin:0 5px"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7-0xfKFBqt9MIsyKA3el52qEj9htrawhjM6ppqNIuQ&s" alt="Instagram" style="width:32px"></a></div></div></div></body>
@@ -333,7 +335,7 @@ exports.getallServiceprovider = async (req, res) => {
 exports.getWalletBalance = async (req, res) => {
     try {
         const user = await registrationModel.findById(req.params.userId);
-        res.status(200).json({ balance: user.walletBalance });
+        res.status(200).json({ balance: user.walletBalance, success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -350,6 +352,7 @@ exports.rechargeWallet = async (req, res) => {
             currency: 'pkr',
             customer: user.stripeCustomerId,
         });
+        
         res.status(200).json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -361,9 +364,20 @@ exports.updateWallet = async (req, res) => {
     try {
         const user = await registrationModel.findById(userId);
         user.walletBalance += amount;
+        // Create a transaction record
+        const newTransaction = new Transaction({
+            userId: userId,
+            type: 'Wallet recharge',
+            amount: amount,
+            description: 'Wallet recharge',
+        });
+        await newTransaction.save();
         await user.save();
+       
         res.status(200).json({ balance: user.walletBalance });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+

@@ -29,11 +29,13 @@ const Stripe = () => {
   }, [user?._id]);
 
   return (
-    <div>
-      <h1>QuickFix</h1>
+    <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md">
+      <h1 className="text-2xl font-bold mb-6 text-center">QuickFix</h1>
       {user?._id && (
         <div>
-          <h2>Wallet Balance: ${balance}</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Wallet Balance: RS {balance}
+          </h2>
           <Elements stripe={stripePromise}>
             <CheckoutForm userId={user._id} />
           </Elements>
@@ -46,7 +48,7 @@ const Stripe = () => {
 const CheckoutForm = ({ userId }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [isCardComplete, setIsCardComplete] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -81,8 +83,9 @@ const CheckoutForm = ({ userId }) => {
       );
 
       if (result.error) {
+        
         setErrorMessage(result.error.message);
-        console.error(result.error.message);
+        console.error(result.error);
       } else {
         if (result.paymentIntent.status === "succeeded") {
           await axiosInstance.post("/api/v1/update-wallet", {
@@ -102,27 +105,53 @@ const CheckoutForm = ({ userId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement
-        onChange={(e) => {
-          setIsCardComplete(e.complete);
-          setErrorMessage(e.error ? e.error.message : "");
-        }}
-      />
+    <form onSubmit={handleSubmit} className="space-y-4"><h3 className="text-sm text-mutedcolor text-end"><strong>Note:</strong> Recharge at least RS150</h3>
+      <div className="p-3 border border-gray-300 rounded-md bg-primarycolor">
+        
+        <CardElement
+          onChange={(e) => {
+            setIsCardComplete(e.complete);
+            setErrorMessage(e.error ? e.error.message : "");
+          }}
+          options={{
+            style: {
+              base: {
+             
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+        />
+      </div>
+      
       <input
+      
         type="number"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-        placeholder="Amount to Recharge"
+        placeholder="Amount to Recharge - Minimum RS150"
+        className="w-full p-2 border border-gray-300 rounded-md bg-primarycolor"
         required
       />
       <button
         type="submit"
         disabled={!stripe || isProcessing || !isCardComplete}
+        className={`w-full p-3 bg-buttoncolor text-hoverblack font-bold arimo rounded-md ${
+          isProcessing || !isCardComplete ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         {isProcessing ? "Processing..." : "Pay"}
       </button>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {errorMessage && (
+        <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+      )}
     </form>
   );
 };

@@ -13,8 +13,7 @@ import { Link } from "react-router-dom";
 import { MdCleaningServices } from "react-icons/md";
 
 import { BsClockHistory } from "react-icons/bs";
-;
-import { RiProfileLine,RiStackFill  } from "react-icons/ri";
+import { RiProfileLine, RiStackFill } from "react-icons/ri";
 import { FcCurrencyExchange } from "react-icons/fc";
 
 export function ApproveSidebar({ open }) {
@@ -67,7 +66,7 @@ export function ApproveSidebar({ open }) {
             }`}
           >
             <ListItemPrefix>
-              <RiStackFill  className="h-5 w-5" />
+              <RiStackFill className="h-5 w-5" />
             </ListItemPrefix>
             My orders
           </ListItem>
@@ -102,10 +101,11 @@ export function ApproveSidebar({ open }) {
             Previous Orders
           </ListItem>
         </Link>
+        {/* recharge account */}
         <Link to={"/serviceprovider/dashboard/recharge-account"}>
           <ListItem
             className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
-              open === 4
+              open === 7
                 ? "bg-buttoncolor text-hoverblack border-buttonborder border"
                 : ""
             }`}
@@ -113,10 +113,10 @@ export function ApproveSidebar({ open }) {
             <ListItemPrefix>
               <FcCurrencyExchange className="h-5 w-5" />
             </ListItemPrefix>
-          Recharge Account
+            Recharge Account
           </ListItem>
         </Link>
-            
+
         {/* get all product */}
         <Link to={"/serviceprovider/dashboard/yours/profile"}>
           <ListItem

@@ -2,9 +2,8 @@ const AcceptOrder = require("../../Models/Order/AcceptOrder");
 const Order = require("../../Models/Order/Order");
 const OrderModel = require("../../Models/Order/Order");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
+const Transaction = require("../../Models/Transaction/transaction.model");
 const sendEmail = require("../../utils/sendEmail");
-
-
 
 exports.postNewOrder = async (req, res) => {
   try {
@@ -18,7 +17,7 @@ exports.postNewOrder = async (req, res) => {
       CityName,
       currentService,
       category,
-      orderExpiresAt
+      orderExpiresAt,
     } = req.body;
 
     if (
@@ -45,7 +44,7 @@ exports.postNewOrder = async (req, res) => {
       serviceId,
       category,
       CityName,
-      orderExpireAt: orderExpiresAt
+      orderExpireAt: orderExpiresAt,
     });
     // console.log(req.body);
     const savedOrder = await newOrder.save();
@@ -56,7 +55,6 @@ exports.postNewOrder = async (req, res) => {
         city: CityName,
       });
 
-
       await savedOrder.populate("serviceId"); // Populate serviceId field
       const { io, getallSocketIds } = require("../../app");
       const allSocketIds = getallSocketIds();
@@ -65,7 +63,6 @@ exports.postNewOrder = async (req, res) => {
       serviceProviders.forEach(async (serviceProvider) => {
         const socketId = allSocketIds[serviceProvider._id];
         const provider = await registrationModel.findById(serviceProvider._id);
-
 
         if (provider.walletBalance >= adminCut) {
           if (socketId !== undefined) {
@@ -94,13 +91,15 @@ exports.getAllOrder = async (req, res) => {
   try {
     const { _id, job } = req?.user;
     const { CityName } = req.body;
-    const orders = await OrderModel.find({ category: job, CityName }).populate("serviceId").populate("clientId");
+    const orders = await OrderModel.find({ category: job, CityName })
+      .populate("serviceId")
+      .populate("clientId");
 
-    res.status(200).json({ success: true, orders })
+    res.status(200).json({ success: true, orders });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Server Error" })
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
 exports.sendOffer = async (req, res) => {
   try {
@@ -111,7 +110,9 @@ exports.sendOffer = async (req, res) => {
     const { _id } = req.user;
     const order = await Order.findById(orderId);
     if (!order) {
-      return res.status(400).json({ success: false, message: "Order not found" })
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not found" });
     }
 
     let newOffer = {
@@ -119,27 +120,43 @@ exports.sendOffer = async (req, res) => {
       price,
       distance,
       time,
-      orderId: orderId
+      orderId: orderId,
     };
     // check if the order is expired
     if (order.orderExpireAt < new Date()) {
-      return res.status(400).json({ success: false, message: "Order expired" })
+      return res.status(400).json({ success: false, message: "Order expired" });
     }
     // check if the offer is already sent
-    const checkOffer = order.totalOffers.find(offer => offer.serviceProvider.toString() === _id.toString());
+    const checkOffer = order.totalOffers.find(
+      (offer) => offer.serviceProvider.toString() === _id.toString()
+    );
     if (checkOffer) {
-      return res.status(400).json({ success: false, message: "Offer already sent please wait for the response..." })
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Offer already sent please wait for the response...",
+        });
     }
     // check if the order is already accepted by the client in the array
-    const checkAccepted = order.totalOffers.find(offer => offer.status === "accepted");
+    const checkAccepted = order.totalOffers.find(
+      (offer) => offer.status === "accepted"
+    );
     if (checkAccepted) {
-      return res.status(400).json({ success: false, message: "Sorry! This project is taken by other service provider " })
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Sorry! This project is taken by other service provider ",
+        });
     }
 
     order.totalOffers.push(newOffer);
     const check = await order.save();
     if (!check) {
-      return res.status(400).json({ success: false, message: "Offer not sent" })
+      return res
+        .status(400)
+        .json({ success: false, message: "Offer not sent" });
     }
 
     const socketId = allSocketIds[order.clientId];
@@ -150,23 +167,20 @@ exports.sendOffer = async (req, res) => {
         firstname: req?.user?.firstname,
         lastname: req?.user?.lastname,
         avatar: req?.user?.avatar?.url,
-      }
-    }
-
+      },
+    };
 
     if (socketId !== undefined) {
-
       io?.to(socketId)?.emit("sendOffer", newOffer);
     }
-    res.status(200).json({ success: true, message: "Offer sent successfully", order });
-
-
-
+    res
+      .status(200)
+      .json({ success: true, message: "Offer sent successfully", order });
   } catch (error) {
     // console.log(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" })
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
-}
+};
 
 // get all orders which client has placed
 exports.getAllOrdersWhichClientPost = async (req, res) => {
@@ -174,12 +188,14 @@ exports.getAllOrdersWhichClientPost = async (req, res) => {
     const { _id } = req.user;
     // populate the totalOffer array with serviceProvider details
 
-    const orders = await OrderModel.find({ clientId: _id }).populate("serviceId").populate("totalOffers.serviceProvider");
-    res.status(200).json({ success: true, orders })
+    const orders = await OrderModel.find({ clientId: _id })
+      .populate("serviceId")
+      .populate("totalOffers.serviceProvider");
+    res.status(200).json({ success: true, orders });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 exports.acceptOffer = async (req, res) => {
   try {
@@ -189,35 +205,50 @@ exports.acceptOffer = async (req, res) => {
     const { _id } = req.user;
 
     // Find the order and populate necessary fields
-    const order = await Order.findById(orderId).populate("serviceId").populate("totalOffers.serviceProvider");
+    const order = await Order.findById(orderId)
+      .populate("serviceId")
+      .populate("totalOffers.serviceProvider");
 
     if (!order) {
-      return res.status(400).json({ success: false, message: "Order not found" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not found" });
     }
 
     // Check if the order already accepted by the client
-    const checkAccepted = order.totalOffers.find(offer => offer.status === "accepted");
+    const checkAccepted = order.totalOffers.find(
+      (offer) => offer.status === "accepted"
+    );
     if (checkAccepted) {
-      return res.status(400).json({ success: false, message: "Service provider already hired for this project." });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Service provider already hired for this project.",
+        });
     }
 
     // Update the status of the offer to accepted and reject others
-    order.totalOffers.forEach(offer => {
-      offer.status = offer.serviceProvider?._id.toString() === serviceProviderId.toString() ? "accepted" : "rejected";
+    order.totalOffers.forEach((offer) => {
+      offer.status =
+        offer.serviceProvider?._id.toString() === serviceProviderId.toString()
+          ? "accepted"
+          : "rejected";
     });
 
-    // update the offer price which given by the service provider
-    const newPrice = order.totalOffers.find(offer => offer.serviceProvider?._id.toString() === serviceProviderId.toString()).price;
-
-
+    // Update the offer price which is given by the service provider
+    const newPrice = order.totalOffers.find(
+      (offer) =>
+        offer.serviceProvider?._id.toString() === serviceProviderId.toString()
+    ).price;
 
     // Save the order with updated offers
     const updatedOrder = await order.save();
     if (!updatedOrder) {
-      return res.status(400).json({ success: false, message: "Offer not accepted" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Offer not accepted" });
     }
-
-
 
     // Save acceptance details to the AcceptOrder collection
     const newAcceptOrder = new AcceptOrder({
@@ -225,19 +256,38 @@ exports.acceptOffer = async (req, res) => {
       serviceProvider: serviceProviderId,
       clientId: _id,
       isAccepted: true,
-      price: newPrice
+      price: newPrice,
     });
-    // deduct 20% of the price from the service provider walletBalance
-    const serviceProviderWallet = await registrationModel.findById(serviceProviderId);
-    
-    // check if sufficient balance is available in the wallet
-    if (serviceProviderWallet.walletBalance <= 0 || serviceProviderWallet.walletBalance < newPrice * 0.2) {
-      throw new Error("OOPS!  Insufficient balance in the service provider wallet. Please hire another service Provider.");
+
+    // Deduct 20% of the price from the service provider walletBalance
+    const serviceProviderWallet = await registrationModel.findById(
+      serviceProviderId
+    );
+
+    // Check if sufficient balance is available in the wallet
+    if (
+      serviceProviderWallet.walletBalance <= 0 ||
+      serviceProviderWallet.walletBalance < newPrice * 0.2
+    ) {
+      throw new Error(
+        "OOPS!  Insufficient balance in the service provider wallet. Please hire another service Provider."
+      );
     }
-    serviceProviderWallet.walletBalance -= newPrice * 0.2;
+    const deductionAmount = newPrice * 0.2;
+    serviceProviderWallet.walletBalance -= deductionAmount;
     await serviceProviderWallet.save();
 
     await newAcceptOrder.save();
+
+    // Create a transaction record
+    const newTransaction = new Transaction({
+      userId: serviceProviderId,
+      type: "deduction",
+      amount: deductionAmount,
+      description: `Deduction for order ${orderId}`,
+    });
+
+    await newTransaction.save();
 
     // Send notification to the service provider if available
     const socketId = allSocketIds[serviceProviderId];
@@ -316,16 +366,21 @@ exports.acceptOffer = async (req, res) => {
             </div>
           </div>
         </body>
-      `
+      `,
     });
 
-    res.status(200).json({ success: true, message: "Offer accepted successfully", order: updatedOrder });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Offer accepted successfully",
+        order: updatedOrder,
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 exports.getAcceptedOffersClient = async (req, res) => {
   try {
@@ -350,30 +405,27 @@ exports.getSingleAcceptedOffer = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const order = await AcceptOrder.findById(id).populate("serviceProvider")
+    const order = await AcceptOrder.findById(id)
+      .populate("serviceProvider")
       .populate({
         path: "order",
-        populate: [
-          { path: "clientId" },
-          { path: "serviceId" },
-        ],
-      })
+        populate: [{ path: "clientId" }, { path: "serviceId" }],
+      });
     if (!order) {
       throw new Error("Order not found");
     }
     res.status(200).json({ success: true, order });
-  }
-  catch (error) {
+  } catch (error) {
     // console.log(error);
     // object cast error
     if (error.name === "CastError") {
-      return res.status(400).json({ success: false, message: "Order not found" })
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not found" });
     }
     res.status(500).json({ success: false, message: error.message });
   }
-
-}
-
+};
 
 // get accepted order by service provider
 exports.getAcceptedOffersServiceProvider = async (req, res) => {
@@ -386,7 +438,6 @@ exports.getAcceptedOffersServiceProvider = async (req, res) => {
         populate: {
           path: "serviceId",
         },
-
       });
 
     res.status(200).json({ success: true, orders });
@@ -402,26 +453,23 @@ exports.getSingleServiceProviderOffer = async (req, res) => {
     const { id } = req.params;
     const order = await AcceptOrder.findById(id).populate({
       path: "order",
-      populate: [
-        { path: "clientId" },
-        { path: "serviceId" },
-      ],
+      populate: [{ path: "clientId" }, { path: "serviceId" }],
     });
     if (!order) {
       throw new Error("Order not found");
     }
     res.status(200).json({ success: true, order });
-  }
-  catch (error) {
+  } catch (error) {
     // console.log(error);
     // object cast error
     if (error.name === "CastError") {
-      return res.status(400).json({ success: false, message: "Order not found" })
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not found" });
     }
     res.status(500).json({ success: false, message: error.message });
   }
-
-}
+};
 
 // delete order by client
 exports.deleteOrder = async (req, res) => {
@@ -431,29 +479,36 @@ exports.deleteOrder = async (req, res) => {
     if (!order) {
       throw new Error("Order not found");
     }
-    res.status(200).json({ success: true, message: "Order cancel successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Order cancel successfully" });
   } catch (error) {
     // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 // update order  status by client
 exports.updateOrderStatusByClient = async (req, res) => {
   try {
     const { id } = req.params;
     const { clientSideOrderStatus } = req.body;
-    const order = await AcceptOrder.findByIdAndUpdate(id, { clientSideOrderStatus }, { new: true });
+    const order = await AcceptOrder.findByIdAndUpdate(
+      id,
+      { clientSideOrderStatus },
+      { new: true }
+    );
     if (!order) {
       throw new Error("Order not found");
     }
-    res.status(200).json({ success: true, message: "Order status updated successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Order status updated successfully" });
   } catch (error) {
     // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
-}
-
+};
 
 // update order by service provider
 
@@ -461,16 +516,22 @@ exports.updateOrderStatusByProvider = async (req, res) => {
   try {
     const { id } = req.params;
     const { serviceProviderOrderStatus } = req.body;
-    const order = await AcceptOrder.findByIdAndUpdate(id, { serviceProviderOrderStatus }, { new: true });
+    const order = await AcceptOrder.findByIdAndUpdate(
+      id,
+      { serviceProviderOrderStatus },
+      { new: true }
+    );
     if (!order) {
       throw new Error("Order not found");
     }
-    res.status(200).json({ success: true, message: "Order status updated successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Order status updated successfully" });
   } catch (error) {
     // console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 // get all the orders which is accepted by the client
 exports.getAllAcceptedOrdersByClient = async (req, res) => {
@@ -481,18 +542,15 @@ exports.getAllAcceptedOrdersByClient = async (req, res) => {
       .populate("clientId")
       .populate({
         path: "order",
-        populate: [
-
-          { path: "serviceId" },
-        ],
-      })
+        populate: [{ path: "serviceId" }],
+      });
 
     res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 // get all the orders which is accepted by the service provider
 exports.getAllAcceptedOrdersByProvider = async (req, res) => {
@@ -503,15 +561,63 @@ exports.getAllAcceptedOrdersByProvider = async (req, res) => {
       .populate("clientId")
       .populate({
         path: "order",
-        populate: [
-
-          { path: "serviceId" },
-        ],
-      })
+        populate: [{ path: "serviceId" }],
+      });
 
     res.status(200).json({ success: true, orders });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
-}
+};
+
+
+// get all active orders of serviceProvider
+
+exports.getallActiveOrders = async (req, res) => {
+  try {
+    const id = req.user._id;
+    const orders = await AcceptOrder.find({
+      serviceProvider: id,
+      $or: [
+        { serviceProviderOrderStatus: { $ne: "completed" } },
+        { clientSideOrderStatus: { $ne: "completed" } }
+      ]
+    });
+    
+    const totalOrdersLength = orders.length;
+    res.status(200).json({ orders, totalOrdersLength, success: true });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// get all active orders of serviceProvider
+
+exports.getallActiveOrdersClient = async (req, res) => {
+  try {
+    const id = req.user._id;
+    const orders = await AcceptOrder.find({
+      clientId: id,
+      $or: [
+        { serviceProviderOrderStatus: { $ne: "completed" } },
+        { clientSideOrderStatus: { $ne: "completed" } }
+      ]
+    });
+    const AllActiveOrders = await AcceptOrder.find({clientId:id});
+    const totalOrdersLengthBySpecificClient = AllActiveOrders.length;
+    
+    const totalOrdersLength = orders.length;
+    res.status(200).json({ orders, totalOrdersLength, totalOrdersLengthBySpecificClient,success: true });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+

@@ -23,10 +23,10 @@ const Congratulation = () => {
       <div className="flex flex-col justify-center items-center w-full h-[100%]">
       
         <FaCheckCircle className="text-5xl text-greencolor animate-bounce " />
-        <div className="text-3xl text-primarycolor text-center ">
+        <div className="text-3xl text-hoverblack text-center ">
           congratulations! your Account has been created
         </div>
-        <div className="flex justify-center  items-center text-primarycolor  w-full m-4">Redirecting.... {count}</div>
+        <div className="flex justify-center  items-center text-hoverblack  w-full m-4">Redirecting.... {count}</div>
       </div>
     </div>
   );
