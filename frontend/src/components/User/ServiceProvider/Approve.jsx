@@ -167,15 +167,7 @@ const Approve = () => {
               </div>
             </div>
 
-            {/* recent orders */}
-            <div className="py-10">
-              <h1 className="text-3xl text-hoverblack font-bold">
-                Recent orders:
-              </h1>
-              <p className="text-red-500 text-xl text-center p-6">
-                Orders history not found.
-              </p>
-            </div>
+           
             {/* customer feedback*/}
             <div className="py-10">
               <h1 className="text-3xl text-hoverblack font-bold">

@@ -88,19 +88,7 @@ export function Sidebar({open}) {
           Accepted Offers
         </ListItem>
         </Link>
-          {/* previous order */}
-          <Link to={"/user/dashboard/previous-orders"}>
-        <ListItem  className={`text-primarycolor rounded-full focus:bg-buttoncolor focus:text-hoverblack  focus:bg-opacity-100 hover:bg-buttoncolor hover:text-hoverblack hover:border-buttonborder hover:border ${
-              open === 4
-                ? "bg-buttoncolor text-hoverblack border-buttonborder border"
-                : ""
-            }`}>
-          <ListItemPrefix>
-            <BsClockHistory className="h-5 w-5" />
-          </ListItemPrefix>
-          Previous Orders
-        </ListItem>
-        </Link>
+         
 
         {/* get all product */}
         <Link to={"/user/dashboard/settings"}>

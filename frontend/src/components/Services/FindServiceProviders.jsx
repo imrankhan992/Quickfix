@@ -45,6 +45,7 @@ const FindServiceProviders = () => {
     isHalf: true,
   };
 
+
   // formate date
   const formateDate = (date) => {
     //  I WANT TO GET live counter that how many time remaining in order expire
@@ -469,20 +470,7 @@ const FindServiceProviders = () => {
                 </div>
               </div>
             </div>
-            {/* find */}
-            <Switch
-              label={
-                <div className="ml-4">
-                  <Typography color="blue-gray" className="arimo font-semibold">
-                    Automatically accept the nearest{" "}
-                    {currentservice?.category?.category} for PKR {"300"}
-                  </Typography>
-                </div>
-              }
-              containerProps={{
-                className: "-mt-5 ",
-              }}
-            />
+            
 
             <div>
               <Button

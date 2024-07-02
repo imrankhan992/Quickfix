@@ -5,6 +5,7 @@ import Aside from "./Aside";
 import { useSelector } from "react-redux";
 import Header from "./Header";
 import Stripe from "@/components/StripePayment/Stripe";
+import TransactionHistory from "./Transaction";
 
 
 const RechargeAccount = () => {
@@ -21,6 +22,11 @@ const RechargeAccount = () => {
           <div className="px-8 py-6">
            
             <Stripe/>
+          </div>
+          {/* transaction history */}
+          <div>
+            
+            <TransactionHistory/>
           </div>
         </main>
       </div>

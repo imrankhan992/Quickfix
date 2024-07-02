@@ -58,6 +58,7 @@ exports.postNewOrder = async (req, res) => {
       await savedOrder.populate("serviceId"); // Populate serviceId field
       const { io, getallSocketIds } = require("../../app");
       const allSocketIds = getallSocketIds();
+      console.log(allSocketIds,"this is post order all socket ids")
 
       const adminCut = price * 0.2; // Calculate the admin's cut
       serviceProviders.forEach(async (serviceProvider) => {

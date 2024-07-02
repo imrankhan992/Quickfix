@@ -12,6 +12,7 @@ const {
     getWalletBalance,
     rechargeWallet,
     updateWallet,
+    getallTransaction,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated, authorizeRoles } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -28,9 +29,10 @@ router.route("/login").post(loginUserController);
 
 // payment
 
-router.get('/wallet/:userId', getWalletBalance);
-router.post('/recharge-wallet', rechargeWallet);
-router.post('/update-wallet', updateWallet);
+router.get('/wallet/:userId', isAuthenticated,getWalletBalance);
+router.post('/recharge-wallet', isAuthenticated,rechargeWallet);
+router.post('/update-wallet', isAuthenticated,updateWallet);
+router.get('/get-all-transactions-details',isAuthenticated, getallTransaction);
 
 
 

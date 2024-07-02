@@ -381,3 +381,15 @@ exports.updateWallet = async (req, res) => {
 };
 
 
+// get all transaction of user 
+exports.getallTransaction = async (req, res) => {
+    try {
+        const id = req.user._id
+        
+        const transactions = await Transaction.find({ userId: id });
+        
+        res.status(200).json({ transactions, success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
