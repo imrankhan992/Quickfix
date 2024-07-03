@@ -30,11 +30,7 @@ const RequestOrder = () => {
       value: "Expired Orders",
      
     },
-    {
-      label: "Completed Orders",
-      value: "Completed Orders",
     
-    },
   ];
   return (
     <div className=" w-full h-[100vh] mx-auto max-w-[1750px] ">
@@ -66,13 +62,7 @@ const RequestOrder = () => {
                     </Tab>
                   ))}
                 </TabsHeader>
-                {/* <TabsBody>
-                  {data.map(({ value, desc }) => (
-                    <TabPanel key={value} value={value}>
-                      {desc}
-                    </TabPanel>
-                  ))}
-                </TabsBody> */}
+                
               </Tabs>
             </div>
 

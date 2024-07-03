@@ -15,7 +15,7 @@ import axiosInstance from "@/ulities/axios";
 const Main = ({ user, products }) => {
   const [lengthLoading, setLengthLoading] = useState(false);
   const [orderLength, setOrderLength] = useState(0);
-  const [totalActiveOrdersLength, setTotalActiveOrdersLength] = useState(0)
+  const [totalActiveOrdersLength, setTotalActiveOrdersLength] = useState(0);
   const getActiveOrderLength = async () => {
     try {
       setLengthLoading(true);
@@ -24,7 +24,7 @@ const Main = ({ user, products }) => {
       );
       if (data?.success) {
         setOrderLength(data.totalOrdersLength);
-        setTotalActiveOrdersLength(data.totalOrdersLengthBySpecificClient)
+        setTotalActiveOrdersLength(data.totalOrdersLengthBySpecificClient);
       }
     } catch (error) {
       console.log(error);
@@ -62,20 +62,20 @@ const Main = ({ user, products }) => {
         )}
         {/* check if clientSideOrderStatus and serviceProviderOrderStatus === completed then give review */}
         {acceptedOrders?.map((order, index) => {
-          return order?.clientSideOrderStatus === "completed" &&
-            order?.serviceProviderOrderStatus === "completed" ? (
-            <>
-              {order?.serviceProvider?.reviews?.find(
-                (item) => item.user.toString() === user?._id.toString()
-              ) ? (
-                ""
-              ) : (
-                <RatingsAlert orders={order} index={index} />
-              )}
-            </>
-          ) : (
-            ""
+          // Check if both client and service provider order statuses are completed
+          const isOrderCompleted =
+            order?.clientSideOrderStatus === "completed" &&
+            order?.serviceProviderOrderStatus === "completed";
+
+          // Check if a review exists for this order
+          const reviewExists = order?.serviceProvider?.reviews?.some(
+            (item) => item.order.toString() === order?.order?._id.toString()
           );
+
+          // Show RatingsAlert component if order is completed and review doesn't exist
+          return isOrderCompleted && !reviewExists ? (
+            <RatingsAlert orders={order} index={index} />
+          ) : null;
         })}
         <h1 className="text-3xl pb-4 text-hoverblack pt-2 font-bold armo">
           Hello! {user?.firstname + " " + user?.lastname}
@@ -95,7 +95,10 @@ const Main = ({ user, products }) => {
                   </h2>
                 </div>
                 <h1 className="text-5xl text-mutedcolor font-bold">
-                  RS <span className="text-[#1F1E30] font-bold ">{totalActiveOrdersLength}</span>
+                  RS{" "}
+                  <span className="text-[#1F1E30] font-bold ">
+                    {totalActiveOrdersLength}
+                  </span>
                 </h1>
               </div>
             </div>
@@ -149,13 +152,7 @@ const Main = ({ user, products }) => {
               </div>
             </div>
           </div>
-
-          
-         
         </div>
-
-        
-        
       </div>
     </main>
   );

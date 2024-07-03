@@ -14,6 +14,7 @@ const useOrdersNotification = () => {
     try {
       setLoading(true)
       const { data } = await axiosInstance.post("/api/v1/order/get-orders", { CityName: user?.city });
+     
       if (data?.success) {
         setNewOrder(data?.orders)
       }

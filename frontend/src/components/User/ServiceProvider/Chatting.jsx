@@ -16,7 +16,6 @@ import SendMessageInput from "../serviceConsumer/SendMessageInput";
 import MessageSkeleton from "../serviceConsumer/MessageSkeleton";
 import Messages from "../serviceConsumer/Messages";
 
-;
 const Chatting = () => {
   const { user } = useSelector((state) => state.user);
   const { loading, messages } = useGetMessages();
@@ -37,9 +36,9 @@ const Chatting = () => {
         <main className="text-primarycolor w-full">
           <Header user={user} />
 
-          <div className="px-8 relative py-6 mt-16 flex flex-col w-[50%]  mx-auto border  bg-primarycolor overflow-auto justify-between h-screen ">
+          <div className="px-8 relative py-6 mt-16 flex flex-col md:w-[70%]  mx-auto border rounded-xl  bg-primarycolor overflow-auto justify-between h-screen ">
             <div className=" flex flex-col justify-between  ">
-              <div className="flex gap-2">
+              <div className="flex gap-2 sticky top-0  z-20">
                 <Chip
                   variant="ghost"
                   color={onlineUsers?.includes(id) ? "green" : "red"}
@@ -47,7 +46,7 @@ const Chatting = () => {
                   value={onlineUsers?.includes(id) ? "Online" : "Offline"}
                   icon={
                     <span
-                      className={`mx-auto mt-1 block h-2 w-2 rounded-full ${
+                      className={`mx-auto mt-1 block h-2 w-2 font-bold rounded-full ${
                         onlineUsers?.includes(id)
                           ? "bg-green-900"
                           : "bg-red-900"

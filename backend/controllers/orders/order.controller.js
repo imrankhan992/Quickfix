@@ -92,6 +92,7 @@ exports.getAllOrder = async (req, res) => {
   try {
     const { _id, job } = req?.user;
     const { CityName } = req.body;
+    console.log(req.body)
     const orders = await OrderModel.find({ category: job, CityName })
       .populate("serviceId")
       .populate("clientId");

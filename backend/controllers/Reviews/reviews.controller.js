@@ -5,14 +5,14 @@ exports.postNewReview = async (req, res) => {
     try {
         const { id } = req.params;
         const { rating, serviceProviderId, feedback } = req.body;
-        
+
         // Check whether the rating is a number
         const ratingNumber = Number(rating);
         if (isNaN(ratingNumber)) {
             throw new Error("Rating must be a number");
         }
 
-        console.log(req.body);
+
         const { _id } = req.user;
         const fullName = `${req.user.firstname} ${req.user.lastname}`;
 
@@ -31,25 +31,32 @@ exports.postNewReview = async (req, res) => {
         if (serviceProvider.isBlocked) {
             throw new Error("You cannot give a review to a blocked service provider");
         }
+        // i want to check client gives review on which order if he gives review on same order then he can't give review again
+
+
 
         const isReviewed = serviceProvider.reviews.find(
-            (item) => item.user.toString() === _id.toString()
+            (item) => item.order.toString() === id.toString()
         );
+        console.log(isReviewed, "this is is reviewd");
 
-        
+
         if (isReviewed) {
-            throw new Error("You have already given a review for this service provider");
+            throw new Error(`You have already given a review for this service provider ${isReviewed}`);
         }
 
+        
         serviceProvider.reviews.push({
             user: _id,
             order: id,
             rating: ratingNumber,
             feedback: feedback,
             name: fullName,
-        });
+            date: new Date(), 
+          });
+          
 
-       
+
 
         let avg = 0;
         serviceProvider.ratings = serviceProvider.reviews.forEach((rev) => {
@@ -57,7 +64,7 @@ exports.postNewReview = async (req, res) => {
         })
         serviceProvider.ratings = avg / serviceProvider.reviews.length;
         await serviceProvider.save({ validateBeforeSave: false });
-       
+
 
         return res.status(200).json({ success: true, message: "Review added successfully" });
     } catch (error) {

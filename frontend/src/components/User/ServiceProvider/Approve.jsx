@@ -10,10 +10,10 @@ import useGetAllAcceptedOrdersByProvider from "@/Hooks/useGetAllAcceptedOrdersBy
 import Loading from "@/Pages/Loading";
 import Alert from "@/components/AlertForUpdateOrders/Alert";
 import axiosInstance from "@/ulities/axios";
-
+import Rating from "react-rating-stars-component";
 const Approve = () => {
   const [balance, setBalance] = useState(0);
-  const [orderLength,setOrderLength ] = useState(0);
+  const [orderLength, setOrderLength] = useState(0);
   const [balanceLoading, setBalanceLoading] = useState(false);
   const [LengthLoading, setLengthLoading] = useState(false);
   const fetchWalletBalance = async () => {
@@ -29,13 +29,15 @@ const Approve = () => {
       setBalanceLoading(false);
     }
   };
-  // get all active orders
 
+  // get all active orders
 
   const getActiveOrderLength = async () => {
     try {
       setLengthLoading(true);
-      const { data } = await axiosInstance.get(`/api/v1/order/get-all-active-orders`);
+      const { data } = await axiosInstance.get(
+        `/api/v1/order/get-all-active-orders`
+      );
       if (data?.success) {
         setOrderLength(data.totalOrdersLength);
       }
@@ -48,7 +50,8 @@ const Approve = () => {
   const { loading, acceptedOrders } = useGetAllAcceptedOrdersByProvider();
 
   const { user } = useSelector((state) => state.user);
-  // i want when account balance update then it should be updated in the dashboard using useEffect
+  const { reviews } = user;
+  console.log(reviews, "this is the reviews");
 
   useEffect(() => {
     if (user?._id) {
@@ -121,7 +124,9 @@ const Approve = () => {
                     </h2>
                   </div>
                   <h1 className="text-5xl text-mutedcolor font-bold">
-                    <span className="text-[#1F1E30] font-bold ">{orderLength}</span>
+                    <span className="text-[#1F1E30] font-bold ">
+                      {orderLength}
+                    </span>
                   </h1>
                 </div>
               </div>
@@ -167,17 +172,54 @@ const Approve = () => {
               </div>
             </div>
 
-           
             {/* customer feedback*/}
-            <div className="py-10">
-              <h1 className="text-3xl text-hoverblack font-bold">
+            <div className="py-10 text-center md:text-start">
+              <h1 className="text-3xl text-hoverblack font-bold ">
                 Customer Feedback:
               </h1>
 
-              <div className="flex items-center justify-center py-8">
-                <p className="text-red-500 text-xl text-center p-6">
-                  Not found
-                </p>
+              <div className="flex items-center  py-8 flex-wrap gap-4  justify-center">
+                {reviews?.map((review) => {
+                  return (
+                    <div className="w-full md:max-w-md p-6 bg-cardbg shadow-md rounded-md">
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                          <img
+                            className="text-lg font-bold text-hoverblack"
+                            src={`https://avatar.iran.liara.run/username?username=${review?.name}]`}
+                          ></img>
+                        </div>
+                        <div className="ml-4">
+                          <div className="flex items-center  gap-4">
+                          <h3 className="text-lg font-semibold text-hoverblack">
+                            {review?.name}
+
+                          </h3>
+                          {/* date */}
+                            <h2 className="text-sm font-semibold text-gray-600">{review?.date}</h2>
+                          </div>
+                          <p className="text-sm text-gray-500">
+                            Order ID: {review?.order}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center mb-4">
+                        <Rating
+                          value={review?.rating}
+                          readOnly={true}
+                          precision={0.5}
+                          edit={false}
+                          size={window.innerWidth < 600 ? 20 : 35}
+                          isHalf={true}
+                        />
+                        <span className="ml-2 text-hoverblack font-bold">
+                          {review?.rating}
+                        </span>
+                      </div>
+                      <p className="text-hoverblack">{review?.feedback}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

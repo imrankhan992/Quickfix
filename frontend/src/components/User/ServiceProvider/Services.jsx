@@ -8,6 +8,7 @@ import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
 import Aside from "./Aside";
+import Loading from "@/Pages/Loading";
 
 const Services = () => {
   const [category, setcategory] = useState("All");
@@ -26,20 +27,20 @@ const Services = () => {
   const filteredProducts = filterProductsByCategory();
 // console.log(filteredProducts);
 
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   //   get all products
   const getallProducts = async (req, res) => {
     try {
-      setloading(true);
+      setLoading(true);
       const { data } = await axiosInstance.get(
         "/api/v1/admin/get-all-products"
       );
       if (data?.success) {
         setproducts(data?.products);
-        setloading(false);
+        setLoading(false);
       }
     } catch (error) {
-      setloading(false);
+      setLoading(false);
       errorToast(error.response.data.message);
     }
   };
@@ -84,12 +85,12 @@ const Services = () => {
             </div>
           </div>
           <div className="px-8 pb-4">
-            <div className="flex items-center justify-start text-3xl">
+            <div className="flex items-center justify-start text-3xl font-bold">
               All Services
             </div>
           </div>
           <div className=" grid md:grid-cols-3 gap-3  w-full px-8 pb-16">
-            {filteredProducts &&
+            {filteredProducts && !loading &&
               filteredProducts?.map((product, index) => {
                 return (
                   <div
@@ -107,30 +108,25 @@ const Services = () => {
                       <h1 className="text-hoverblack">{product?.title}</h1>
                       <p className=" text-mutedcolor">{product?.description}</p>
                       <p className="text-hoverblack">Rs:{product?.price}</p>
-                      <div className="flex justify-between gap-3">
-                        <div className="flex items-center justify-center">
-                          <p className="text-hoverblack">
-                            <ReactStars
-                              count={5}
-                              size={20}
-                              activeColor="#ffd700"
-                              edit={false}
-                              value={0}
-                              half={true}
-                            />
-                          </p>
-                        </div>
-                      </div>
+                      
                     </div>
                   </div>
                 );
               })}
             {/* if product not found */}
-            {filteredProducts?.length === 0 && (
+            {filteredProducts?.length === 0 && !loading && (
               <div className="flex items-center justify-center col-span-3">
                 <p className="text-hoverblack">Oops: Products not found</p>
               </div>
             )}
+
+            {
+              filteredProducts?.length === 0 && loading && (
+               <div className="flex w-full items-center ">
+                 <Loading/>
+                </div>
+              )
+            }
           </div>
         </main>
       </div>

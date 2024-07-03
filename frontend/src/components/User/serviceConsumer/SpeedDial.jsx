@@ -35,12 +35,7 @@ export function MessageSpeedDial({id}) {
               <Typography {...labelProps}>Message</Typography>
             </SpeedDialAction>
             </Link>
-           <Link to={"#"}>
-           <SpeedDialAction className="relative bg-buttoncolor" >
-              <IoCall  className="h-5 w-5" />
-              <Typography {...labelProps}>Call</Typography>
-            </SpeedDialAction>
-           </Link>
+           
             
           </SpeedDialContent>
         </SpeedDial>

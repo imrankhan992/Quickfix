@@ -84,21 +84,21 @@ const SingleAcceptedOrder = () => {
           <Header user={user} />
 
           {!loading && (
-            <div className="px-8 py-6  ">
-              <div className="flex flex-col  justify-start  mb-7">
-                <h5 className="text-3xl text-hoverblack font-bold">
+            <div className="md:px-8 py-6 w-full ">
+              <div className="flex flex-col  justify-start px-2 mb-7">
+                <h5 className="md:text-3xl text-lg text-hoverblack font-bold">
                   {" "}
                   Order Id: {id}
                 </h5>
                 <Chip
                   color="green"
-                  value="Pending"
+                  value={offers?.serviceProviderOrderStatus}
                   className="inline-block arimo"
                 />
               </div>
 
-              <div className=" mx-auto bg-white rounded-lg shadow-lg p-8 mt-12 text-hoverblack select-none ">
-                <div className="flex justify-between items-center border-b pb-4 mb-4">
+              <div className=" mx-auto bg-white rounded-lg shadow-lg p-2 md:p-8 mt-12 text-hoverblack select-none ">
+                <div className="flex md:flex-row flex-col w-full justify-between items-center border-b pb-4 mb-4 gap-4">
                   <h1 className="text-2xl font-bold">Order Details</h1>
                   <div className="flex flex-col gap-2">
                     <h2 className="font-bold text-hoverblack">

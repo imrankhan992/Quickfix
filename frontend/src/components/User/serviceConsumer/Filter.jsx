@@ -18,7 +18,7 @@ export function Filter({ allcategories, setcategory }) {
   return (
     <DropdownMenu s>
       <DropdownMenuTrigger asChild className="p-0 border ">
-        <Button className="bg-cardbg px-2 flex items-center gap-1 outline-1 outline-bordercolor">
+        <Button className="bg-cardbg px-2 flex items-center gap-1 outline-1 outline-bordercolor font-bold text-hoverblack">
           <IoFilter />
           Add Filter
         </Button>

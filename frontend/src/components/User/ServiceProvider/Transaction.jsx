@@ -21,9 +21,9 @@ const TransactionHistory = () => {
         getAllTransactions();
     }, [user?._id]);
   return (
-    <div className="container mx-auto p-4 px-20">
+    <div className="md:container mx-auto p-4 md:px-20 overflow-auto">
       <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="bg-white shadow-md rounded-lg  overflow-auto">
         <table className="min-w-full leading-normal">
           <thead>
             <tr>
