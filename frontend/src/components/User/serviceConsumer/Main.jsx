@@ -97,7 +97,7 @@ const Main = ({ user, products }) => {
                   </h2>
                 </div>
                 <h1 className="text-5xl text-mutedcolor font-bold">
-                  RS{" "}
+                 
                   <span className="text-[#1F1E30] font-bold ">
                     {totalActiveOrdersLength}
                   </span>
