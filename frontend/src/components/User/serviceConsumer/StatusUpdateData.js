@@ -1,4 +1,4 @@
-const data = ["pending", "completed", "Cancel"];
+const data = ["pending", "completed"];
 
 // export this array
 export default data;
