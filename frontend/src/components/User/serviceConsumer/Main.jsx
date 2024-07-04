@@ -16,6 +16,7 @@ const Main = ({ user, products }) => {
   const [lengthLoading, setLengthLoading] = useState(false);
   const [orderLength, setOrderLength] = useState(0);
   const [totalActiveOrdersLength, setTotalActiveOrdersLength] = useState(0);
+  const [cancelOrderLength, setCancelOrderLength] = useState(0);
   const getActiveOrderLength = async () => {
     try {
       setLengthLoading(true);
@@ -25,6 +26,7 @@ const Main = ({ user, products }) => {
       if (data?.success) {
         setOrderLength(data.totalOrdersLength);
         setTotalActiveOrdersLength(data.totalOrdersLengthBySpecificClient);
+        setCancelOrderLength(data.cancelOrderLength);
       }
     } catch (error) {
       console.log(error);
@@ -131,23 +133,16 @@ const Main = ({ user, products }) => {
                     <MdOutlineSentimentSatisfied className="text-[#1F1E30] text-4xl " />
                   </div>
                   <h2 className="text-xl text-[#1F1E30] font-semibold ">
-                    Customer Satisfaction
+                    Cancel Orders
                   </h2>
                 </div>
-                <div className="flex justify-evenly  gap-2  ">
-                  <p className="text-[#1F1E30] font-semibold">Rate</p>{" "}
-                  <p className="text-[#1F1E30] font-semibold">Type</p>{" "}
-                </div>
-                <div className="flex gap-2 justify-evenly">
-                  <div className="flex gap-2 justify-between">
-                    <FaStar className="text-xl text-yellow-900" />{" "}
-                    <p className="text-[#1F1E30] font-medium">
-                      {user?.ratings}
-                    </p>
-                  </div>{" "}
-                  <p className="text-[#1F1E30] font-medium">
-                    {user?.ratings > 4 ? "Excellent" : "Fair"}
-                  </p>
+
+                <div className="flex gap-2 justify-center items-center">
+                  <h1 className="text-5xl text-mutedcolor font-bold">
+                    <span className="text-[#1F1E30] font-bold ">
+                      {cancelOrderLength}
+                    </span>
+                  </h1>
                 </div>
               </div>
             </div>

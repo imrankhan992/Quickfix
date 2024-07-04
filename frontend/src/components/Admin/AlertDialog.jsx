@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { spDataAction } from "../Actions/SpAction";
 
 export function AlertDialog({ id, accountStatuss }) {
+  const dispatch = useDispatch();
   const [accountStatus, setaccountStatus] = useState(accountStatuss);
   const [loading, setloading] = useState(false);
   const { SPuser, SPloading, SPsuccess, SPerror } = useSelector(
@@ -41,6 +42,7 @@ export function AlertDialog({ id, accountStatuss }) {
       if (data?.success) {
         setloading(false);
         showtoast(`account status updated successfully`);
+        dispatch(spDataAction());
       }
       if (!data?.success) {
         setloading(false);
@@ -50,7 +52,7 @@ export function AlertDialog({ id, accountStatuss }) {
       alert(error.respone.data.message);
     }
   };
-  const dispatch = useDispatch();
+ 
   useEffect(() => {
     dispatch(spDataAction);
   }, []);
@@ -61,28 +63,28 @@ export function AlertDialog({ id, accountStatuss }) {
         <Button>
           <Tooltip content="Edit User">
             <IconButton variant="text" >
-              <MdEdit className="h-4 w-4 text-primarycolor" />
+              <MdEdit className="h-4 w-4 text-hoverblack" />
             </IconButton>
           </Tooltip>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-thirdcolor">
-        <DialogHeader className={"text-primarycolor"}>
-          <DialogTitle className="text-primarycolor">
+      <DialogContent className="sm:max-w-[425px] bg-cardbg">
+        <DialogHeader className={"text-hoverblack"}>
+          <DialogTitle className="text-hoverblack">
             Update Account Status
           </DialogTitle>
-          <DialogDescription className="text-primarycolor">
-            Make changes to your profile here. Click save when you're done.
+          <DialogDescription className="text-hoverblack">
+            Update the account status of the Service Provider
           </DialogDescription>
         </DialogHeader>
-        <div className=" w-full text-primarycolor">
+        <div className=" w-full text-hoverblack">
           <AccountStatus setaccountStatus={setaccountStatus} />
         </div>
         <DialogFooter>
           {!loading && (
             <Button
               type="submit"
-              className="bg-buttoncolor outline-buttonborder  outline"
+              className="bg-buttoncolor   text-primarycolor hover:text-hoverblack hover:bg-buttoncolor"
               onClick={() => {
                 updateAccountStatus();
               }}

@@ -17,7 +17,7 @@ const center = {
   lng: 2.2945,
 };
 
-function GetAddressMap({ handleChange,touched, setaddress, errors, handleBlur }) {
+function GetAddressMap({ handleChange,touched, setaddress, errors, handleBlur,address }) {
   const [selectedPlace, setSelectedPlace] = useState(null); // State to store selected place
 
   const originRef = useRef(null); // Reference to the origin input element
@@ -29,10 +29,7 @@ function GetAddressMap({ handleChange,touched, setaddress, errors, handleBlur })
     if (originRef.current) {
       const autocomplete = originRef.current.value; // Get the Autocomplete
       setaddress(autocomplete);
-      // if (autocomplete) {
-      //   const place = autocomplete.getPlace(); // Get the selected place from the Autocomplete instance
-      //   setSelectedPlace(place); // Update the selectedPlace state with the selected place
-      // }
+      
     }
   };
 
@@ -41,6 +38,7 @@ function GetAddressMap({ handleChange,touched, setaddress, errors, handleBlur })
       <Autocomplete onLoad={() => {}} onPlaceChanged={handlePlaceChanged}>
         <Input
           type="text"
+          
           name="address"
           placeholder="Type your address here"
           ref={originRef}

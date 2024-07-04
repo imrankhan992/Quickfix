@@ -70,7 +70,7 @@ const AllProducts = () => {
           <div className="w-full  min-h-screen p-4 flex flex-col gap-4 ">
             {/* heading */}
 
-            <h3 className="text-hoverblack text-2xl font-bold arimo">All Products</h3>
+            <h3 className="text-hoverblack text-2xl font-bold arimo">All Services</h3>
             <div className=" grid md:grid-cols-3 gap-3  w-full h-full">
               <ProductsCard products={products} getallProducts={getallProducts}/>
             </div>

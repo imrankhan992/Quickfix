@@ -58,7 +58,7 @@ exports.postNewOrder = async (req, res) => {
       await savedOrder.populate("serviceId"); // Populate serviceId field
       const { io, getallSocketIds } = require("../../app");
       const allSocketIds = getallSocketIds();
-      console.log(allSocketIds,"this is post order all socket ids")
+      console.log(allSocketIds, "this is post order all socket ids")
 
       const adminCut = price * 0.2; // Calculate the admin's cut
       serviceProviders.forEach(async (serviceProvider) => {
@@ -586,7 +586,7 @@ exports.getallActiveOrders = async (req, res) => {
         { clientSideOrderStatus: { $ne: "completed" } }
       ]
     });
-    
+
     const totalOrdersLength = orders.length;
     res.status(200).json({ orders, totalOrdersLength, success: true });
   } catch (error) {
@@ -609,11 +609,19 @@ exports.getallActiveOrdersClient = async (req, res) => {
         { clientSideOrderStatus: { $ne: "completed" } }
       ]
     });
-    const AllActiveOrders = await AcceptOrder.find({clientId:id});
+    const cancelOrder = await AcceptOrder.find({
+      clientId: id,
+      $or: [
+        { serviceProviderOrderStatus: "Cancel" },
+        { clientSideOrderStatus: "Cancel" }
+      ]
+    });
+
+    const AllActiveOrders = await AcceptOrder.find({ clientId: id });
     const totalOrdersLengthBySpecificClient = AllActiveOrders.length;
-    
+    const cancelOrderLength = cancelOrder.length;
     const totalOrdersLength = orders.length;
-    res.status(200).json({ orders, totalOrdersLength, totalOrdersLengthBySpecificClient,success: true });
+    res.status(200).json({ orders, totalOrdersLength, totalOrdersLengthBySpecificClient, cancelOrderLength, success: true });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -621,5 +629,26 @@ exports.getallActiveOrdersClient = async (req, res) => {
     });
   }
 };
+
+
+exports.setOrderExpiresDateAndTime = async (req, res) => {
+  try {
+    // /api/v1/order/expire-time", {orderExpiresDateAndTime,expiresOrderId}
+    const { orderExpiresDateAndTime, expiresOrderId } = req.body;
+    const order = await Order.findById(expiresOrderId);
+    // if not order
+    if (!order) {
+      throw new Error("Order not found");
+    }
+
+    // orderExpireAt
+    order.orderExpireAt = orderExpiresDateAndTime;
+    await order.save();
+    res.status(200).json({ success: true, message: "Order expires date and time updated successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+
+  }
+}
 
 

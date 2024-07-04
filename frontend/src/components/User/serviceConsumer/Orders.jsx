@@ -47,11 +47,7 @@ const getClientPostedOrders = async () => {
       value: "Expired Orders",
      
     },
-    {
-      label: "Completed Orders",
-      value: "Completed Orders",
-    
-    },
+  
   ];
 // filter by active and expired orders and completed orders
 const filterOrders = () => {
@@ -68,11 +64,7 @@ const filterOrders = () => {
       (order) => order?.orderExpireAt < new Date().toISOString()
     );
   }
-  if (activeTab === "Completed Orders") {
-    // return orders.filter((order) => order?.totalOffers?.find(
-    //   (offer) => offer?.serviceProvider === user?._id
-    // ));
-  }
+  
 };
 // how i use this function
 const filteredOrders = filterOrders();

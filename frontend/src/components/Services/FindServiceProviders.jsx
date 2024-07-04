@@ -4,7 +4,7 @@ import BadgeOutline from "./BadgeOutline";
 import Find from "./Find";
 import "./FindServiceProvider.css";
 import axiosInstance from "@/ulities/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactStars from "react-rating-stars-component";
 import { ImagePlacehoderSkeleton } from "./ImagePlaceHolderSkeleton";
 import {
@@ -34,8 +34,18 @@ import { FindingServiceProviders } from "../Drawer/FindingServiceProviders.";
 import GetAddressMap from "./GetAddressMap";
 import useTrackPrice from "@/Hooks/useTrackPrice";
 import useDeleteOrder from "@/Hooks/useDeleteOrder";
+import { errorToast, showtoast } from "@/Toast/Toast";
 
 const FindServiceProviders = () => {
+  const getMinDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
   const options = {
     value: 0,
     readOnly: true,
@@ -44,7 +54,6 @@ const FindServiceProviders = () => {
     size: window.innerWidth < 600 ? 15 : 22,
     isHalf: true,
   };
-
 
   // formate date
   const formateDate = (date) => {
@@ -59,7 +68,7 @@ const FindServiceProviders = () => {
     });
   };
   const { deleteOrder, sendOrderLoading } = useDeleteOrder();
-  const { socket, newOrder, onlineUsers, orderExpiresTime } =
+  const { socket, newOrder, onlineUsers, orderExpiresTime,expiresOrderId } =
     useSocketContext();
 
   const { sendOrder, loading, mapTracking, setMapTracking } = useSendOrder();
@@ -67,6 +76,8 @@ const FindServiceProviders = () => {
   onlineUsers.includes(user?._id);
 
   const [currentLocation, setCurrentLocation] = useState(null);
+  console.log(currentLocation, "this is my current location");
+
   const [currentaddress, setcurrentaddress] = useState("");
   const [CityName, setCityName] = useState("");
   const [ZipCode, setZipCode] = useState("");
@@ -83,6 +94,8 @@ const FindServiceProviders = () => {
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
   const total = useTrackPrice(quantity, price);
+
+  const [orderExpiresDateAndTime, setOrderExpiresDateAndTime] = useState();
 
   const {
     values,
@@ -105,13 +118,30 @@ const FindServiceProviders = () => {
       currentService: "",
       category: "",
       // 5 time to expire the order
-      orderExpiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+      orderExpiresAt: new Date(Date.now() + 20 * 60 * 1000).toISOString(),
     },
     validationSchema: FindServiceProvidersSchema,
     onSubmit: async (values, { setSubmitting }) => {
       await sendOrder(values);
     },
   });
+const navigate = useNavigate()
+  const handleOrderExpires = async (e) => {
+    e.preventDefault();
+    if (orderExpiresDateAndTime === "") {
+      return errorToast("Please select the expire time");
+    }
+    try {
+      const { data } = await axiosInstance.put("/api/v1/order/expire-time", { orderExpiresDateAndTime, expiresOrderId });
+      if (data.success) {
+        showtoast(data?.message);
+        navigate("")
+      }
+    } catch (error) {
+      errorToast(error?.response?.data?.message || "An error occurred");
+    }
+  };
+  
 
   useEffect(() => {
     if (currentLocation === null) {
@@ -192,7 +222,7 @@ const FindServiceProviders = () => {
 
       if (data.results.length > 0) {
         const formattedAddress = data.results[0].formatted_address;
-
+        console.log("formattedAddress this is", formattedAddress);
         setcurrentaddress(formattedAddress);
       }
       if (data.status === "OK") {
@@ -212,6 +242,23 @@ const FindServiceProviders = () => {
         if (zipComponent) {
           setZipCode(zipComponent.long_name);
         }
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
+  };
+
+  const PickMyCurrentLocationAddress = async ({ lat, lng }) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAUI_hqf3GJQ7c80e0rK9aki1fT6kDVuiU`
+      );
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const formattedAddress = data.results[0].formatted_address;
+        console.log("this  picLocationAddress", formattedAddress);
+        setFieldValue("address", formattedAddress);
       }
     } catch (error) {
       console.error("Error fetching address:", error);
@@ -411,11 +458,15 @@ const FindServiceProviders = () => {
               >
                 Your Address:
               </Label>
-              <div className="flex justify-end">
-                <p className="text-sm cursor-pointer">
-                  Pick my current location
-                </p>
-              </div>
+              <div
+                className="flex justify-end"
+                onClick={() => {
+                  PickMyCurrentLocationAddress({
+                    lat: currentLocation?.lat,
+                    lng: currentLocation?.lng,
+                  });
+                }}
+              ></div>
               <div>
                 <GetAddressMap
                   handleChange={handleChange}
@@ -423,6 +474,7 @@ const FindServiceProviders = () => {
                   handleBlur={handleBlur}
                   errors={errors}
                   setaddress={setaddress}
+                  address={address}
                 />
 
                 <div className="flex gap-2 items-center ">
@@ -452,7 +504,8 @@ const FindServiceProviders = () => {
                   name="dateandtime"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
+                  min={getMinDateTime()}
+                  className={`arimo text-[16px] w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl ${
                     errors?.dateandtime && touched?.dateandtime
                       ? "border-errorcolor"
                       : ""
@@ -470,7 +523,6 @@ const FindServiceProviders = () => {
                 </div>
               </div>
             </div>
-            
 
             <div>
               <Button
@@ -506,15 +558,16 @@ const FindServiceProviders = () => {
                 </Button>
               )}
               {orderExpiresTime && (
-                <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm ">
+                <div className="flex items-center justify-center gap-2 py-2 border-b backdrop-blur-sm">
                   <h2>Order Expires At : </h2>
                   <h5 className="arimo text-[13px] font-bold underline text-errorcolor">
-                    {formateDate(orderExpiresTime) > new Date()
-                      ? formateDate(orderExpiresTime)
+                    {new Date(orderExpiresTime) > new Date()
+                      ? formateDate(new Date(orderExpiresTime))
                       : "Order Expired"}
                   </h5>
                 </div>
               )}
+
               {sendOrderLoading && (
                 <Button
                   disabled
@@ -523,7 +576,10 @@ const FindServiceProviders = () => {
                   Cancel request
                 </Button>
               )}
-              <form className="flex items-center w-full justify-center gap-3 flex-col">
+              <form
+                className="flex items-center w-full justify-center gap-3 flex-col"
+                onSubmit={handleOrderExpires}
+              >
                 <h1>
                   If you haven't received the best price or a response yet,
                   don't worry! We'll save your order for you.
@@ -535,6 +591,11 @@ const FindServiceProviders = () => {
                   Expire Time
                 </Label>
                 <Input
+                  onChange={(e) => {
+                    setOrderExpiresDateAndTime(e.target.value);
+                  }}
+                  min={getMinDateTime()}
+                  required
                   id="expireTime"
                   type="datetime-local"
                   className={`arimo text-[16px]  w-full bg-primarycolor focus:border-black focus:bg-buttoncolor p-6 h-14 rounded-xl `}
@@ -623,13 +684,17 @@ const FindServiceProviders = () => {
                         formatLastActive(serviceprovider?.lastActive)}
                     </p>{" "}
                     <div className="flex justify-between items-center ">
-                      <ReactStars value={serviceprovider?.ratings || 0}
-                readOnly={true}
-                precision={0.5}
-                size={window.innerWidth < 600 ? 15 : 22}
-                isHalf={true}
-                edit={false} />
-                      <p className="arimo text-[13px]">({serviceprovider?.ratings})</p>
+                      <ReactStars
+                        value={serviceprovider?.ratings || 0}
+                        readOnly={true}
+                        precision={0.5}
+                        size={window.innerWidth < 600 ? 15 : 22}
+                        isHalf={true}
+                        edit={false}
+                      />
+                      <p className="arimo text-[13px]">
+                        ({serviceprovider?.ratings})
+                      </p>
                     </div>
                   </div>
                 </div>

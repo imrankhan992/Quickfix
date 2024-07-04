@@ -78,7 +78,7 @@ export function Sidebar({open}) {
           <ListItemPrefix>
             <GiCardboardBoxClosed className="h-5 w-5" />
           </ListItemPrefix>
-          Add Product
+          Add Service
         </ListItem>
         </Link>
 
@@ -92,7 +92,7 @@ export function Sidebar({open}) {
           <ListItemPrefix>
             <GiCardboardBoxClosed className="h-5 w-5" />
           </ListItemPrefix>
-          All Products
+          All Services
         </ListItem>
         </Link>
       </List>

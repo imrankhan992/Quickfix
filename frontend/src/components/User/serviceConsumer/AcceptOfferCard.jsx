@@ -81,12 +81,22 @@ export function AcceptOfferCard({ order }) {
          {   formateDate(order?.order?.dateandtime)}
           </Typography>
        </div>
-        <Link to={`/user/dashboard/accepted-orders/${order?._id}`} className="inline-block  ">
+        <Link to={
+    order?.serviceProviderOrderStatus === "completed" &&
+    order?.clientSideOrderStatus === "completed"
+      ? "#"
+      : `/user/dashboard/accepted-orders/${order?._id}`
+  }
+    className="inline-block  ">
           <Button
-            
-            className="flex items-center gap-2 arimo text-sm text-hoverblack bg-buttoncolor rounded-full "
+            disabled={
+              order?.serviceProviderOrderStatus === "completed" &&
+              order?.clientSideOrderStatus === "completed"
+            }
+            className="flex items-center gap-2 arimo md:text-sm text-hoverblack bg-buttoncolor rounded-full p-1 text-[12px] md:p-3"
           >
-            Check Details
+           {order?.serviceProviderOrderStatus === "completed" &&
+      order?.clientSideOrderStatus === "completed" ?("Completed"):"Check Details "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

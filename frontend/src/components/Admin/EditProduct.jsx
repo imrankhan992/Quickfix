@@ -144,12 +144,12 @@ export function EditProduct() {
       <div className="flex ">
         <Aside open={5} />
 
-        <main className="lg:w-[100%] w-full  min-h-screen">
+        <main className="lg:w-[100%] w-full  h-full bg-cardbg">
           <Header />
           <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
             {/* heading */}
 
-            <h3 className="text-primarycolor text-2xl">Add Product</h3>
+            <h3 className="text-hoverblack font-bold  text-3xl">Edit Service</h3>
             {/* product */}
             <div className=" grid md:grid-cols-4 gap-3 ">
               <div className="w-full  rounded-lg border-bordercolor flex flex-col  ">
@@ -193,8 +193,8 @@ export function EditProduct() {
               </div>
               <div className="col-span-2  ">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                  <Label htmlFor="title" className="text-primarycolor">
-                    Title
+                  <Label htmlFor="title" className="text-hoverblack font-bold ">
+                  Title
                   </Label>
                   <Input
                     id="title"
@@ -204,7 +204,7 @@ export function EditProduct() {
                     placeholder="Title"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="bg-inputbg_color border border-bordercolor text-primarycolor focus:outline-none focus-visible:ring-offset-0"
+                    className="bg-cardbg border border-bordercolor text-hoverblack font-bold  focusoutline-none focus-visible:ring-offset-0"
                   />
                   {/* error */}
                   <div className="flex gap-2 items-center">
@@ -217,15 +217,15 @@ export function EditProduct() {
                       ""
                     )}
                   </div>
-                  <Label htmlFor="category" className="text-primarycolor">
-                    Category
+                  <Label htmlFor="category" className="text-hoverblack font-bold ">
+                  Category
                   </Label>
 
                   <select
                     name="category"
                     value={values?.category}
-                 className="bg-inputbg_color border border-bordercolor rounded-lg text-primarycolor"
-                    onBlur={handleBlur}
+                 className="bg-cardbg border border-bordercolor rounded-lg text-hoverblack font-bold "
+                   onBlur={handleBlur}
                     onChange={handleChange}
                   >
                     {allcategories?.map((cat) => {
@@ -252,8 +252,8 @@ export function EditProduct() {
                       ""
                     )}
                   </div>
-                  <Label htmlFor="description" className="text-primarycolor ">
-                    Description
+                  <Label htmlFor="description" className="text-hoverblack font-bold  ">
+                   Description
                   </Label>
                   <Textarea
                     name="description"
@@ -262,8 +262,8 @@ export function EditProduct() {
                     value={values?.description}
                     placeholder="Type your Description here."
                     id="description"
-                    className="focus-visible:ring-offset-0 focus:outline-none bg-inputbg_color border border-bordercolor text-primarycolor"
-                  />
+                    className="focus-visible:ring-offset-0 focus:outline-none bg-cardbg border border-bordercolor text-hoverblack font-bold "
+                 />
                   {/* error */}
 
                   {errors?.description && touched.description ? (
@@ -275,8 +275,8 @@ export function EditProduct() {
                     ""
                   )}
 
-                  <Label htmlFor="price" className="text-primarycolor">
-                    Price
+                  <Label htmlFor="price" className="text-hoverblack font-bold ">
+                  Price
                   </Label>
                   <Input
                     id="price"
@@ -286,7 +286,7 @@ export function EditProduct() {
                     value={values?.price}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className="bg-inputbg_color border border-bordercolor text-primarycolor focus:outline-none focus-visible:ring-offset-0"
+                    className="bg-cardbg border border-bordercolor text-hoverblack font-bold  focusoutline-none focus-visible:ring-offset-0"
                   />
                   {/* error */}
 
@@ -333,30 +333,30 @@ export function EditProduct() {
                 <Label className="text-mutedcolor font-extralight  ">
                   Category
                 </Label>
-                <p className="text-primarycolor ">
-                  {values?.category ? values?.category : "Carpainter"}
+                <p className="text-hoverblack font-bold  ">
+                 {values?.category ? values?.category : "Carpainter"}
                 </p>
                 <Label className="text-mutedcolor font-extralight  ">
                   Product Title
                 </Label>
-                <h3 className="text-primarycolor">
-                  {values?.title
+                <h3 className="text-hoverblack font-bold ">
+                {values?.title
                     ? values.title
                     : "Mannat HD, Smart LED Fire TV"}
                 </h3>
                 <Label className="text-mutedcolor font-extralight  ">
                   Description
                 </Label>
-                <p className="text-primarycolor">
-                  {values?.description
+                <p className="text-hoverblack font-bold ">
+                {values?.description
                     ? values?.description
                     : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."}
                 </p>
                 <Label className="text-mutedcolor font-extralight  ">
                   Price
                 </Label>
-                <p className="text-primarycolor">
-                  {values?.price ? values?.price : "1200"}
+                <p className="text-hoverblack font-bold ">
+                {values?.price ? values?.price : "1200"}
                 </p>
               </div>
             </div>

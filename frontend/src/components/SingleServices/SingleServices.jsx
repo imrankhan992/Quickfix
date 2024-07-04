@@ -9,9 +9,9 @@ import { useSocketContext } from "@/context/SocketContext";
 
 const SingleServices = () => {
   const { services, id } = useParams();
-  const { setOrderExpiresTime,orderExpiresTime } = useSocketContext();
-  console.log(orderExpiresTime, "this is setOrderExpiresTime");
-  setOrderExpiresTime("");
+
+  
+  
   const [products, setproducts] = useState([]);
   const getsingleserviceByCategory = async () => {
     try {

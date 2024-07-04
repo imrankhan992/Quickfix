@@ -71,7 +71,7 @@ export function Sidebar({open}) {
 
             <GiClick className="h-5 w-5" />
           </ListItemPrefix>
-          My orders
+           send orders
         </ListItem>
         </Link>
         {/* accepted orders */}
@@ -85,7 +85,7 @@ export function Sidebar({open}) {
 
             <GiClick className="h-5 w-5" />
           </ListItemPrefix>
-          Accepted Offers
+           Accepted orders
         </ListItem>
         </Link>
          

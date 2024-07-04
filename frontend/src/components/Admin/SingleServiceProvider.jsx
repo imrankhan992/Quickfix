@@ -76,8 +76,8 @@ const updateAccountStatus = async () => {
             {/* heading */}
 
             <div className="grid grid-cols-2 items-center">
-              <h3 className="text-primarycolor text-2xl">Profile Details</h3>
-              <div className="text-primarycolor">
+              <h3 className="text-hoverblack text-2xl">Profile Details</h3>
+              <div className="text-hoverblack">
                 <AccountStatus setaccountStatus={setaccountStatus} />
               </div>
             </div>
@@ -91,14 +91,14 @@ const updateAccountStatus = async () => {
                     alt={user?.firstname}
                     className="border-2 min-h-14 max-h-[200px] max-w-[200px] rounded-full"
                   />
-                  <h3 className="text-primarycolor font-medium">
+                  <h3 className="text-hoverblack font-medium">
                     {user?.firstname + " " + user?.lastname}
                   </h3>
                 </div>
               </div>
               {/* right side */}
               <div className="flex flex-col gap-3  md:col-span-2 ">
-                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">
                     Full Name
@@ -107,12 +107,12 @@ const updateAccountStatus = async () => {
                     {user?.firstname + " " + user?.lastname}
                   </p>
                 </div>
-                <div className="grid grid-cols-2  border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2  border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">Email</p>
                   <p className="text-mutedcolor text-center">{user?.email}</p>
                 </div>
-                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">
                     Email Verificaiton
@@ -121,12 +121,12 @@ const updateAccountStatus = async () => {
                     {user?.emailVerify ? "True" : "False"}
                   </p>
                 </div>
-                <div className="grid grid-cols-2  border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2  border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">City</p>
                   <p className="text-mutedcolor text-center">{user?.city}</p>
                 </div>
-                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">
                     Date of birth
@@ -135,19 +135,19 @@ const updateAccountStatus = async () => {
                     {user?.dateOfBirth}
                   </p>
                 </div>
-                <div className="grid grid-cols-2  border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2  border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">Job</p>
                   <p className="text-mutedcolor text-center">{user?.job}</p>
                 </div>
-                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">zipcode</p>
                   <p className=" text-center text-greencolor">
                     {user?.zipcode}
                   </p>
                 </div>
-                <div className="grid grid-cols-2  border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2  border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">
                     Account Status
@@ -156,7 +156,7 @@ const updateAccountStatus = async () => {
                     {user?.accountStatus}
                   </p>
                 </div>
-                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-primarycolor py-3 px-6 rounded-xl justify-start overflow-auto">
+                <div className="grid grid-cols-2 bg-thirdcolor border border-bordercolor text-hoverblack py-3 px-6 rounded-xl justify-start overflow-auto">
                   {" "}
                   <p className="border-e-2 border-bordercolor me-3 ">Address</p>
                   <p className=" text-center text-greencolor">

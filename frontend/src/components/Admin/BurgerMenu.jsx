@@ -33,6 +33,11 @@ import {
 // } from "@heroicons/react/24/outline";
 import { RiPresentationFill } from "react-icons/ri";
 import { FaBarsStaggered } from "react-icons/fa6";
+import { MdDashboard } from "react-icons/md";
+import { TbCategoryPlus } from "react-icons/tb";
+import { GrUserWorker } from "react-icons/gr";
+import { GiCardboardBoxClosed } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 export function BurgerMenu() {
   const [open, setOpen] = React.useState(0);
@@ -47,19 +52,19 @@ export function BurgerMenu() {
   const closeDrawer = () => setIsDrawerOpen(false);
  
   return (
-    <div className="md:hidden block  z-50 px-4">
+    <div className="md:hidden block  z-50 px-4 fixed">
       <IconButton variant="text" size="lg" onClick={openDrawer}>
         {isDrawerOpen ? (
-          <FaBarsStaggered className="h-8 w-8 stroke-2 text-primarycolor" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack" />
         ) : (
-          <FaBarsStaggered className="h-8 w-8 stroke-2 text-primarycolor" />
+          <FaBarsStaggered className="h-8 w-8 stroke-2 text-hoverblack" />
         )}
       </IconButton>
       <Drawer open={isDrawerOpen} onClose={closeDrawer}>
         <Card
           color="transparent"
           shadow={false}
-          className="h-[calc(100vh-2rem)] w-full p-4"
+          className="h-[calc(100vh-2rem)] w-full p-4 bg-sidebarbg"
         >
           <div className="mb-2 flex items-center gap-4 p-4">
             <img
@@ -67,173 +72,83 @@ export function BurgerMenu() {
               alt="brand"
               className="h-8 w-8"
             />
-            <Typography variant="h5" color="blue-gray">
-              Sidebar
+            <Typography variant="h5" color="white">
+              QuickFix
             </Typography>
           </div>
-          <div className="p-2">
-            <Input
-              icon={<RiPresentationFill className="h-5 w-5" />}
-              label="Search"
-            />
-          </div>
+          
           <List>
-            <Accordion
-              open={open === 1}
-              icon={
-                <RiPresentationFill
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 1 ? "rotate-180" : ""
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 1}>
-                <AccordionHeader
-                  onClick={() => handleOpen(1)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <RiPresentationFill className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="blue-gray" className="mr-auto font-normal">
-                    Dashboard
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Analytics
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Reporting
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Projects
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
-            <Accordion
-              open={open === 2}
-              icon={
-                <RiPresentationFill
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 2 ? "rotate-180" : ""
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 2}>
-                <AccordionHeader
-                  onClick={() => handleOpen(2)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <RiPresentationFill className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="blue-gray" className="mr-auto font-normal">
-                    E-Commerce
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Orders
-                  </ListItem>
-                  <ListItem>
-                    <ListItemPrefix>
-                      <RiPresentationFill strokeWidth={3} className="h-3 w-5" />
-                    </ListItemPrefix>
-                    Products
-                  </ListItem>
-                </List>
-              </AccordionBody>
-            </Accordion>
-            <hr className="my-2 border-blue-gray-50" />
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Inbox
-              <ListItemSuffix>
-                <Chip
-                  value="14"
-                  size="sm"
-                  variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
-                />
-              </ListItemSuffix>
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Profile
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Settings
-            </ListItem>
-            <ListItem>
-              <ListItemPrefix>
-                <RiPresentationFill className="h-5 w-5" />
-              </ListItemPrefix>
-              Log Out
-            </ListItem>
-          </List>
-          <Alert
-            open={openAlert}
-            className="mt-auto"
-            onClose={() => setOpenAlert(false)}
+        {/* dashboard */}
+        <Link  to={"/admin/dashboard/my profile"}>
+          <ListItem
+            className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 1
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}
           >
-            <RiPresentationFill className="mb-4 h-12 w-12" />
-            <Typography variant="h6" className="mb-1">
-              Upgrade to PRO
-            </Typography>
-            <Typography variant="small" className="font-normal opacity-80">
-              Upgrade to Material Tailwind PRO and get even more components,
-              plugins, advanced features and premium.
-            </Typography>
-            <div className="mt-4 flex gap-3">
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium opacity-80"
-                onClick={() => setOpenAlert(false)}
-              >
-                Dismiss
-              </Typography>
-              <Typography
-                as="a"
-                href="#"
-                variant="small"
-                className="font-medium"
-              >
-                Upgrade Now
-              </Typography>
-            </div>
-          </Alert>
+            <ListItemPrefix>
+              <MdDashboard className="h-5 w-5" />
+            </ListItemPrefix>
+            Dashboard
+          </ListItem>
+        </Link>
+
+        {/* services */}
+        <Link  to={"/admin/dashboard/add/services"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 2
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <TbCategoryPlus className="h-5 w-5" />
+          </ListItemPrefix>
+        Add Category
+        </ListItem>
+        </Link>
+        {/* users */}
+        <Link to={"/admin/dashboard/customers"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 3
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <GrUserWorker className="h-5 w-5" />
+          </ListItemPrefix>
+          Service Providers
+        </ListItem>
+        </Link>
+          {/* create new service */}
+          <Link to={"/admin/dashboard/create-product"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 4
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <GiCardboardBoxClosed className="h-5 w-5" />
+          </ListItemPrefix>
+          Add Service
+        </ListItem>
+        </Link>
+
+        {/* get all product */}
+        <Link to={"/admin/dashboard/all-products"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 5
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+            <GiCardboardBoxClosed className="h-5 w-5" />
+          </ListItemPrefix>
+          All Services
+        </ListItem>
+        </Link>
+      </List>
+         
         </Card>
       </Drawer>
     </div>

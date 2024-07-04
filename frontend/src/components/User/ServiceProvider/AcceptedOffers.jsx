@@ -11,7 +11,7 @@ import Loading from "@/Pages/Loading";
 import { Input } from "@/components/ui/input";
 
 const Tabs = ({ selectedTab, setSelectedTab }) => {
-  const tabs = ["Pending", "Processing", "Completed", "Cancelled", "Search"];
+  const tabs = ["Pending", "Completed", "Cancelled", "Search"];
 
   return (
     <div className="flex items-center flex-wrap gap-3 mb-8">
@@ -35,14 +35,12 @@ const Tabs = ({ selectedTab, setSelectedTab }) => {
 };
 
 const AcceptedOffers = () => {
-
   const { user } = useSelector((state) => state.user);
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Pending");
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(offers,"this is offer array")
   const getAcceptedOffers = async () => {
     try {
       setLoading(true);
@@ -63,7 +61,6 @@ const AcceptedOffers = () => {
     getAcceptedOffers();
   }, []);
 
- 
   const filteredOffers = offers.filter((offer) => {
     switch (selectedTab) {
       case "Completed":
@@ -75,15 +72,18 @@ const AcceptedOffers = () => {
       case "Cancelled":
         return offer.serviceProviderOrderStatus === "Cancel";
       case "Search":
-        const titleMatch = offer?.order?.serviceId?.title?.toLowerCase().includes(searchTerm.toLowerCase());
-        const idMatch = offer?._id?.toLowerCase().includes(searchTerm.toLowerCase());
+        const titleMatch = offer?.order?.serviceId?.title
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const idMatch = offer?._id
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
         return titleMatch || idMatch;
       default:
         return true;
     }
   });
-  
-  console.log(filteredOffers,"this is filtered offers",selectedTab,searchTerm)
+
   return (
     <div className="w-full h-screen mx-auto max-w-[1750px] bg-cardbg">
       <div className="flex relative">
@@ -94,7 +94,7 @@ const AcceptedOffers = () => {
 
           <div className="px-8 py-6">
             <div className="flex items-center justify-start text-3xl text-hoverblack font-bold mb-7">
-              Your Accepted Offers
+              Your Accepted Orders
             </div>
             <div>
               <Input
@@ -105,8 +105,8 @@ const AcceptedOffers = () => {
                 type="text"
                 id="search"
                 onChange={(e) => {
-                  setSelectedTab("Search")
-                  setSearchTerm(e.target.value)
+                  setSelectedTab("Search");
+                  setSearchTerm(e.target.value);
                 }}
               />
             </div>
@@ -126,7 +126,7 @@ const AcceptedOffers = () => {
             </div>
             {!loading && filteredOffers?.length === 0 && (
               <div className="text-center text-mutedcolor text-xl font-bold">
-                No {selectedTab} Offers
+                No {selectedTab} Orders
               </div>
             )}
             {loading && (

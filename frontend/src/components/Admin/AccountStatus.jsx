@@ -18,12 +18,12 @@ import { Select,
 
 export function AccountStatus({setaccountStatus}) {
   return (
-    <Select  onValueChange={(e)=>{setaccountStatus(e)}}>
+    <Select  onValueChange={(e)=>{setaccountStatus(e)}} >
       <SelectTrigger className="w-full bg-thirdcolor ">
-       <div className="flex gap-2 items-center"> <MdOutlineChangeHistory className="text-xl text-red-900"/> <SelectValue placeholder="Change Account Status" /></div>
+       <div className="flex gap-2 items-center bg-cardbg"> <MdOutlineChangeHistory className="text-xl text-red-900"/> <SelectValue placeholder="Change Account Status" /></div>
        
       </SelectTrigger>
-      <SelectContent >
+      <SelectContent className="w-full bg-thirdcolor " >
         <SelectGroup>
         <SelectItem value="pending" className="text-yellow-900 "><div className="flex items-center  gap-2"><CiTimer /> <span>pending</span></div></SelectItem>
         <SelectItem value="approve" className="text-green-900"><div  className="flex items-center  gap-2"><CiCircleCheck/> approve</div></SelectItem>

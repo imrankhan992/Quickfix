@@ -7,6 +7,7 @@ import { useState } from "react";
 import axiosInstance from "@/ulities/axios";
 import { errorToast, showtoast } from "@/Toast/Toast";
 import { Input } from "../../ui/input";
+import Loading from "@/Pages/Loading";
 
 const SendOffer = ({ order }) => {
   const [showMap, setShowMap] = useState(false);
@@ -22,6 +23,10 @@ const SendOffer = ({ order }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!time || !distance){
+      errorToast("Please wait for the map to load the distance and time.")
+      return
+    }
     const dataValues = {
       price: price,
       orderId: order._id,
@@ -83,7 +88,8 @@ const SendOffer = ({ order }) => {
                 <b className="arimo text-[26px] text-mutedcolor">
                   Total Distance:{" "}
                 </b>{" "}
-                <span className="text-[26px] ">{distance}</span>
+               {distance && <span className="text-[26px] ">{distance}</span>}
+               {!distance && <Loading/>}
               </p>
             </div>
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>

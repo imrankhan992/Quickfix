@@ -13,6 +13,7 @@ const {
     rechargeWallet,
     updateWallet,
     getallTransaction,
+    getAllRevenue,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated, authorizeRoles } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -33,6 +34,7 @@ router.get('/wallet/:userId', isAuthenticated,getWalletBalance);
 router.post('/recharge-wallet', isAuthenticated,rechargeWallet);
 router.post('/update-wallet', isAuthenticated,updateWallet);
 router.get('/get-all-transactions-details',isAuthenticated, getallTransaction);
+router.get('/total-revenue',isAuthenticated, getAllRevenue);
 
 
 

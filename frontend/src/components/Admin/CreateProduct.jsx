@@ -129,7 +129,7 @@ export function CreateProduct() {
           <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
             {/* heading */}
 
-            <h3 className="text-hoverblack text-2xl font-bold arimo">Add Product</h3>
+            <h3 className="text-hoverblack text-2xl font-bold arimo">Add Service</h3>
             {/* product */}
             <div className=" grid md:grid-cols-4 gap-3 ">
               <div className="w-full  rounded-lg border-bordercolor flex flex-col  ">
@@ -172,7 +172,7 @@ export function CreateProduct() {
                   </Label>
                 </div>
               </div>
-              <div className="col-span-2  ">
+              <div className="col-span-2 mt-12 md:mt-0 ">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                   <Label htmlFor="title" className="text-hoverblack">
                     Title

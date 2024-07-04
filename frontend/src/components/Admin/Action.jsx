@@ -37,7 +37,7 @@ export function ActionProduct({id,getallProducts,product}) {
       <DropdownMenuTrigger asChild>
         <Button className="focus-visible:ring-offset-0 border-none p-0"><BsThreeDotsVertical className="text-xl"/></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 focus-visible:ring-offset-0 bg-thirdcolor text-primarycolor border border-bordercolor">
+      <DropdownMenuContent className="w-56 focus-visible:ring-offset-0 bg-cardbg text-hoverblack border border-bordercolor">
         <DropdownMenuLabel>Action</DropdownMenuLabel>
         <DropdownMenuSeparator />
 

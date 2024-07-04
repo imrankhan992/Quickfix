@@ -407,3 +407,38 @@ exports.getallTransaction = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+exports.getAllRevenue= async (req, res) => {
+    try {
+      let totalRevenue = 0;
+      let hasMore = true;
+      let startingAfter = null;
+  
+      // Fetch all charges and calculate total revenue
+      while (hasMore) {
+        const params = { limit: 100 };
+        if (startingAfter) {
+          params.starting_after = startingAfter;
+        }
+        const charges = await stripe.charges.list(params);
+  
+        charges.data.forEach(charge => {
+          totalRevenue += charge.amount;
+        });
+  
+        hasMore = charges.has_more;
+        if (hasMore) {
+          startingAfter = charges.data[charges.data.length - 1].id;
+        }
+      }
+  
+      // Stripe returns amount in cents, convert it to dollars
+      totalRevenue = totalRevenue / 100;
+  
+      res.json({ totalRevenue });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+  

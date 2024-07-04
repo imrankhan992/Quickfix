@@ -3,105 +3,97 @@ import { FaUserClock } from "react-icons/fa";
 import {
   Card,
   CardHeader,
-  Input,
   Typography,
-  Button,
-  CardBody,
   Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
+  CardBody,
   Avatar,
-  IconButton,
   Tooltip,
 } from "@material-tailwind/react";
-import logo from "../../assets/quickfix logo.png";
 import { BurgerMenu } from "./BurgerMenu";
 import Aside from "./Aside";
 import Header from "./Header";
-import { MdEdit } from "react-icons/md";
 import { AlertDialog } from "./AlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { spDataAction } from "../Actions/SpAction";
 import Loader from "../Spinner/Spinner";
 import { Link } from "react-router-dom";
 
-
-
 const TABLE_HEAD = ["Member", "Status", "Date", "View", "Quick Action"];
 
+const Tabs = ({ selectedTab, setSelectedTab }) => {
+  const tabs = ["Pending", "Approved", "Deactivated", "Rejected", "Disabled"];
+
+  return (
+    <div className="flex items-center flex-wrap gap-3 mb-8">
+      {tabs.map((tab) => (
+        <button
+          key={tab}
+          onClick={() => setSelectedTab(tab)}
+          className={`px-4 py-2 font-bold text-[12px] md:text-sm ${
+            selectedTab === tab ? "bg-buttoncolor text-white" : "bg-sidebarbg text-white"
+          } rounded-md mr-2`}
+        >
+          {tab}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 export function Users() {
   const dispatch = useDispatch();
-  const { SPuser, SPloading, SPsuccess, SPerror } = useSelector(
-    (state) => state.spData
-  );
+  const { SPuser, SPloading } = useSelector((state) => state.spData);
+  const [selectedTab, setSelectedTab] = useState("Pending");
+  
   useEffect(() => {
     dispatch(spDataAction());
   }, [dispatch]);
+
+  const filteredSPuser = SPuser?.filter((user) => {
+    switch (selectedTab) {
+      case "Approved":
+        return user.accountStatus === "approve";
+      case "Deactivated":
+        return user.accountStatus === "deactivate";
+      case "Rejected":
+        return user.accountStatus === "reject";
+      case "Disabled":
+        return user.accountStatus === "disabled";
+      case "Pending":
+      default:
+        return user.accountStatus === "pending";
+    }
+  });
 
   return (
     <>
       <BurgerMenu />
       <div className="flex ">
         <Aside open={3} />
-
-        <main className="lg:w-[100%] w-full  h-full bg-thirdcolor">
+        <main className="lg:w-[100%] w-full h-full bg-thirdcolor">
           <Header />
-          <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
-            {/* heading */}
+          <div className="w-full min-h-screen p-4 flex flex-col gap-4">
+            <h3 className="text-hoverblack text-3xl font-bold ">All Service Providers</h3>
+            
+            <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-            <h3 className="text-hoverblack text-2xl">
-              All Service Providers
-            </h3>
-            {/* table */}
             {!SPloading && (
               <Card className="h-full w-full rounded-none bg-thirdcolor z-1">
-                <CardHeader
-                  floated={false}
-                  shadow={false}
-                  className="rounded-none bg-thirdcolor"
-                >
-                  <div className="mb-8 flex items-center justify-between gap-8">
-                    <div>
-                      <Typography variant="h5" className="text-hoverblack">
-                        Customer list
-                      </Typography>
-                      <Typography
-                        color="gray"
-                        className="mt-1 font-normal text-hoverblack"
-                      >
-                        See information about all members
-                      </Typography>
-                    </div>
-                   
-                  </div>
-                  <div className="flex flex-col items-center justify-between gap-4 md:flex-row bg-thirdcolor">
-                    
-                    <div className="w-full md:w-72">
-                      <Input
-                        label="Search"
-                        icon={<FaUserClock className="h-5 w-5" />}
-                        className="focus-visible:ring-offset-0 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </CardHeader>
+              
                 <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
-                  <table className="mt-4 w-full min-w-max table-auto text-left">
+                  <table className="w-full min-w-max table-auto text-left">
                     <thead>
                       <tr>
-                        {TABLE_HEAD.map((head, index) => (
+                        {TABLE_HEAD.map((head) => (
                           <th
                             key={head}
-                            className="cursor-pointer border-y border-blue-gray-100 bg-thirdcolor p-4 transition-colors hover:bg-blue-gray-50 hover:text-hoverblack"
+                            className="cursor-pointer border-y border-blue-gray-100 bg-sidebarbg p-4 transition-colors  "
                           >
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70  hover:text-hoverblack text-hoverblack"
+                              className="flex items-center justify-between gap-2 font-normal leading-none    text-primarycolor"
                             >
                               {head}{" "}
                             </Typography>
@@ -110,7 +102,7 @@ export function Users() {
                       </tr>
                     </thead>
                     <tbody>
-                      {SPuser?.map(
+                      {filteredSPuser?.map(
                         (
                           {
                             avatar,
@@ -118,26 +110,21 @@ export function Users() {
                             lastname,
                             email,
                             _id,
-                            org,
                             accountStatus,
                             date,
                           },
                           index
                         ) => {
-                          const isLast = index === SPuser?.length - 1;
+                          const isLast = index === filteredSPuser?.length - 1;
                           const classes = isLast
                             ? "p-4"
-                            : "p-4 border-b border-blue-gray-50 ";
+                            : "p-4 border-b border-blue-gray-50";
 
                           return (
-                            <tr key={firstname}>
+                            <tr key={_id}>
                               <td className={classes}>
                                 <div className="flex items-center gap-3">
-                                  <Avatar
-                                    src={avatar?.url}
-                                    alt={firstname}
-                                    size="sm"
-                                  />
+                                  <Avatar src={avatar?.url} alt={firstname} size="sm" />
                                   <div className="flex flex-col ">
                                     <Typography
                                       variant="small"
@@ -158,7 +145,7 @@ export function Users() {
                               </td>
 
                               <td className={classes}>
-                                <div className="w-max ">
+                                <div className="w-max">
                                   <Chip
                                     className="text-hoverblack"
                                     variant="ghost"
@@ -167,6 +154,14 @@ export function Users() {
                                     color={
                                       accountStatus === "pending"
                                         ? "yellow"
+                                        : accountStatus === "approve"
+                                        ? "green"
+                                        : accountStatus === "deactivate"
+                                        ? "red"
+                                        : accountStatus === "reject"
+                                        ? "red"
+                                        : accountStatus === "disabled"
+                                        ? "gray"
                                         : "blue-gray"
                                     }
                                   />
@@ -178,7 +173,7 @@ export function Users() {
                                   color="blue-gray"
                                   className="font-normal text-hoverblack"
                                 >
-                                  23/3/4
+                                  {date}
                                 </Typography>
                               </td>
                               <td className={classes}>
@@ -193,11 +188,8 @@ export function Users() {
                                 </Link>
                               </td>
                               <td className={classes}>
-                                <Tooltip content="Edit User">
-                                  <AlertDialog
-                                    id={_id}
-                                    accountStatuss={accountStatus}
-                                  />
+                                <Tooltip content="Quick Action">
+                                  <AlertDialog id={_id} accountStatuss={accountStatus} />
                                 </Tooltip>
                               </td>
                             </tr>
@@ -210,11 +202,8 @@ export function Users() {
               </Card>
             )}
 
-            {/* if sp data loading */}
             {SPloading && <Loader />}
-            
           </div>
-          {/* testing */}
         </main>
       </div>
     </>

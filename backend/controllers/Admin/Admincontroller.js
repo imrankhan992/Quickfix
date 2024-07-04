@@ -1,4 +1,5 @@
 const CategoryModel = require("../../Models/Admin/CategoryModel");
+const Order = require("../../Models/Order/Order");
 const ProductModel = require("../../Models/Product/ProductModel");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const UserModel = require("../../Models/User/UserModel");
@@ -551,6 +552,23 @@ exports.updatetheAccountStatus = async (req, res) => {
     } catch (error) {
         // Handle errors
         console.error('Error updating service provider status:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+}
+
+
+// total orders
+exports.totalOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+        
+        return res.status(200).json({
+            success: true,
+            
+            ordersLength: orders.length
+        });
+    } catch (error) {
+        console.error('Error getting total orders:', error);
         res.status(500).json({ error: 'An internal server error occurred.' });
     }
 }

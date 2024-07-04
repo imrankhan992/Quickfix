@@ -17,6 +17,7 @@ export const SocketContextProvider = ({ children }) => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [requestOrderId, setRequestOrderId] = useState();
   const [orderExpiresTime, setOrderExpiresTime] = useState();
+  const [expiresOrderId, setExpiresOrderId] = useState()
   // https://noahai.ai 
   const initlizeSocket = () => {
     if (user) {
@@ -62,6 +63,7 @@ export const SocketContextProvider = ({ children }) => {
         setSelectedConversation,
         orderExpiresTime,
         setOrderExpiresTime,
+        expiresOrderId, setExpiresOrderId
       }}
     >
       {children}

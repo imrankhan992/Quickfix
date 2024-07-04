@@ -23,7 +23,7 @@ import { CiFilter } from "react-icons/ci";
 import { CreateCategory } from "./CreateCategory";
 import { errorToast, showtoast } from "@/Toast/Toast";
 import axiosInstance from "@/ulities/axios";
-const TABLE_HEAD = ["Name", "Products", "Action"];
+const TABLE_HEAD = ["Name",  "Action"];
 import { MdOutlineDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { DeleteCategory } from "./DeleteCategory";
@@ -114,7 +114,7 @@ export function AddCategories() {
     dispatch(spDataAction());
     getallCategories();
   }, [dispatch]);
-  console.log(categores);
+ 
   return (
     <>
       <BurgerMenu />
@@ -127,7 +127,7 @@ export function AddCategories() {
             {/* heading */}
 
             <div className="flex justify-between">
-              <h3 className="text-hoverblack text-2xl font-bold arimo">Add Services</h3>
+              <h3 className="text-hoverblack text-3xl  font-bold arimo">Add Services</h3>
 
               <CreateCategory
                 createService={createService}
@@ -139,7 +139,7 @@ export function AddCategories() {
             </div>
             {/* table */}
             {!SPloading && (
-              <Card className="h-full w-full rounded-none bg-thirdcolor z-1">
+              <Card className="h-full w-full rounded-2xl bg-thirdcolor z-1">
                 <CardHeader
                   floated={false}
                   shadow={false}
@@ -147,19 +147,19 @@ export function AddCategories() {
                 >
                   
                 </CardHeader>
-                <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
+                <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto ">
                   <table className="mt-4 w-full min-w-max table-auto text-left">
                     <thead>
                       <tr>
                         {TABLE_HEAD.map((head, index) => (
                           <th
                             key={head}
-                            className="cursor-pointer border-y border-blue-gray-100 p-4 transition-colors  bg-bodycolor"
+                            className="cursor-pointer border-y border-blue-gray-100 p-4 transition-colors  bg-sidebarbg"
                           >
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none opacity-70   text-hoverblack"
+                              className="flex items-center justify-between gap-2 font-normal leading-none    text-primarycolor"
                             >
                               {head}{" "}
                             </Typography>
@@ -188,22 +188,14 @@ export function AddCategories() {
                               </div>
                             </td>
 
+                            
                             <td className={classes}>
                               <Typography
                                 variant="small"
                                 color="blue-gray"
                                 className="font-normal text-hoverblack"
                               >
-                                3 products
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal text-hoverblack"
-                              >
-                                <div className="flex items-center justify-center gap-3">
+                                <div className="flex items-center  gap-3">
                                   <EditCategory
                                     setcategory={setcategory}
                                     category={categorys}

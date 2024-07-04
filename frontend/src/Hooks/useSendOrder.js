@@ -7,7 +7,7 @@ const useSendOrder = () => {
 
     const [loading, setLoading] = useState(false);
     const [mapTracking, setMapTracking] = useState(false)
-    const { socket, setRequestOrderId,setOrderExpiresTime } = useSocketContext();
+    const { socket, setRequestOrderId,setOrderExpiresTime, setExpiresOrderId } = useSocketContext();
     const sendOrder = async (values) => {
         setLoading(true)
         try {
@@ -18,6 +18,7 @@ const useSendOrder = () => {
             );
             // console.log(data?.newOrder, "this is new order")
             setOrderExpiresTime(data?.newOrder?.orderExpireAt)
+            setExpiresOrderId(data?.newOrder?._id)
             if (data?.success) {
                 setRequestOrderId(data?.newOrder?._id);
                 setMapTracking(true)

@@ -33,7 +33,7 @@ const Chatting = () => {
         <main className="text-primarycolor w-full">
           <Header user={user} />
 
-          <div className="px-8 relative py-6 mt-16 flex flex-col w-[50%]  mx-auto border  bg-primarycolor overflow-auto justify-between h-screen ">
+          <div className="px-8 relative py-6 mt-16 flex flex-col md:w-[70%] w-full mx-auto border  bg-primarycolor overflow-auto justify-between h-screen ">
             <div className=" flex flex-col justify-between  ">
               <div className="flex gap-2">
                 <Chip
