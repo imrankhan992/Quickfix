@@ -37,6 +37,9 @@ import useDeleteOrder from "@/Hooks/useDeleteOrder";
 import { errorToast, showtoast } from "@/Toast/Toast";
 
 const FindServiceProviders = () => {
+  const formatRating = (rating) => {
+    return parseFloat(rating).toFixed(1);
+  };
   const getMinDateTime = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -114,7 +117,7 @@ const FindServiceProviders = () => {
       quantity: "",
       clientId: "",
       serviceId: "",
-      CityName: "",
+      CityName: "Abbottabad",
       currentService: "",
       category: "",
       // 5 time to expire the order
@@ -685,7 +688,7 @@ const navigate = useNavigate()
                     </p>{" "}
                     <div className="flex justify-between items-center ">
                       <ReactStars
-                        value={serviceprovider?.ratings || 0}
+                        value={serviceprovider.ratings  || 0}
                         readOnly={true}
                         precision={0.5}
                         size={window.innerWidth < 600 ? 15 : 22}
@@ -693,7 +696,7 @@ const navigate = useNavigate()
                         edit={false}
                       />
                       <p className="arimo text-[13px]">
-                        ({serviceprovider?.ratings})
+                        {formatRating(serviceprovider?.ratings)}
                       </p>
                     </div>
                   </div>

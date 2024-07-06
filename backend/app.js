@@ -90,6 +90,3 @@ server.listen(process.env.PORT, () => {
 
 // Export functions and objects
 module.exports = { app, server, io, getallSocketIds: () => userSocketMap };
-
-
-

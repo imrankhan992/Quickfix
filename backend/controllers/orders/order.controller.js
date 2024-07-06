@@ -4,7 +4,12 @@ const OrderModel = require("../../Models/Order/Order");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const Transaction = require("../../Models/Transaction/transaction.model");
 const sendEmail = require("../../utils/sendEmail");
-
+  const getSocketIds = ()=>{
+    const { io, getallSocketIds } = require("../../app");
+      const allSocketIds = getallSocketIds();
+      return {allSocketIds,io};
+  }
+  
 exports.postNewOrder = async (req, res) => {
   try {
     const {
@@ -56,8 +61,8 @@ exports.postNewOrder = async (req, res) => {
       });
 
       await savedOrder.populate("serviceId"); // Populate serviceId field
-      const { io, getallSocketIds } = require("../../app");
-      const allSocketIds = getallSocketIds();
+      const { allSocketIds, io } = getSocketIds();
+      
       console.log(allSocketIds, "this is post order all socket ids")
 
       const adminCut = price * 0.2; // Calculate the admin's cut
@@ -105,12 +110,13 @@ exports.getAllOrder = async (req, res) => {
 
 exports.sendOffer = async (req, res) => {
   try {
-    const { io, getallSocketIds } = require("../../app");
-    const allSocketIds = getallSocketIds();
+    const { allSocketIds, io } = getSocketIds();
+    
     const { price, orderId, distance, time, currentDate } = req.body;
 
     const { _id } = req.user;
     const order = await Order.findById(orderId);
+    const socketId = allSocketIds[order.clientId];
     if (!order) {
       return res
         .status(400)
@@ -161,7 +167,7 @@ exports.sendOffer = async (req, res) => {
         .json({ success: false, message: "Offer not sent" });
     }
 
-    const socketId = allSocketIds[order.clientId];
+   
     newOffer = {
       ...newOffer,
       serviceProvider: {
@@ -169,6 +175,7 @@ exports.sendOffer = async (req, res) => {
         firstname: req?.user?.firstname,
         lastname: req?.user?.lastname,
         avatar: req?.user?.avatar?.url,
+        ratings:req?.user?.ratings
       },
     };
 
@@ -201,8 +208,8 @@ exports.getAllOrdersWhichClientPost = async (req, res) => {
 
 exports.acceptOffer = async (req, res) => {
   try {
-    const { io, getallSocketIds } = require("../../app");
-    const allSocketIds = getallSocketIds();
+    const { allSocketIds, io } = getSocketIds();
+    
     const { orderId, serviceProviderId } = req.body;
     const { _id } = req.user;
 
@@ -650,5 +657,3 @@ exports.setOrderExpiresDateAndTime = async (req, res) => {
 
   }
 }
-
-

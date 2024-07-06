@@ -4,7 +4,10 @@ import React from "react";
 
 const Notify = ({ newOffer }) => {
   const { updateOffer, loading } = useOffer();
-  console.log(newOffer, "newOffer from notify");
+  console.log(newOffer, "new offer listen by service consumer");
+  const formatRating = (rating) => {
+    return parseFloat(rating).toFixed(1);
+  };
   return (
     <div className="flex-1  p-4 ">
       {/* <div className="flex items-start">
@@ -40,7 +43,7 @@ const Notify = ({ newOffer }) => {
                 className="text-sm"
                 readOnly
               />{" "}
-              <p>4.8</p>
+              <p>{formatRating(newOffer?.serviceProvider?.ratings)}</p>
               (38)
             </div>
           </div>

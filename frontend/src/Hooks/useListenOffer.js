@@ -9,7 +9,7 @@ const useListenOffer = () => {
 
   useEffect(() => {
     socket?.on("sendOffer", (newOffer) => {
-      console.log("newOffer", newOffer);
+      
       newOffer.shouldNotify = true;
       const sound = new Audio(notification);
       sound.play();

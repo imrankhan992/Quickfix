@@ -63,7 +63,7 @@ import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
 function App() {
 const {newOrder} = useSocketContext()
   useListenOrder();
-  useListenOffer( )
+  useListenOffer();
   useListenOfferAccept()
   const { user } = useSelector((state) => state.user);
   useEffect(() => {

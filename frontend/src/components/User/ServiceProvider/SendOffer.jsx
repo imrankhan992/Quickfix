@@ -34,6 +34,7 @@ const SendOffer = ({ order }) => {
       time: time,
       // get current date and time  to check if the offer is expired
       currentDate: new Date(Date.now()).toISOString(),
+      
  
     };
 

@@ -13,7 +13,7 @@ const useListenOrder = () => {
 
 
     socket?.on("order", (newOrder) => {
-      console.log(newOrder,"order listen by service consumer")
+      console.log(newOrder,"order listen by service provider")
       newOrder.shouldNotify = true;
       const sound = new Audio(notification);
       sound.play();
