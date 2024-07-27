@@ -1,7 +1,7 @@
 import useOffer from "@/Hooks/useOffer";
 import { Button, Rating, Typography } from "@material-tailwind/react";
 import React from "react";
-
+import ReactStars from "react-rating-stars-component";
 const Notify = ({ newOffer }) => {
   const { updateOffer, loading } = useOffer();
   console.log(newOffer, "new offer listen by service consumer");
@@ -37,14 +37,17 @@ const Notify = ({ newOffer }) => {
             </Typography>
             {/* ratings */}
             <div className="flex gap-2">
-              <Rating
-                color="blue-gray"
-                value="4"
-                className="text-sm"
-                readOnly
-              />{" "}
+            <ReactStars
+                        value={newOffer?.serviceProvider?.ratings  || 0}
+                        readOnly={true}
+                        precision={0.5}
+                        size={window.innerWidth < 600 ? 15 : 22}
+                        isHalf={true}
+                        edit={false}
+                      />
+              {" "}
               <p>{formatRating(newOffer?.serviceProvider?.ratings)}</p>
-              (38)
+             
             </div>
           </div>
           <div className="flex items-end flex-col">

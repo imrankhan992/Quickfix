@@ -68,7 +68,7 @@ const Chatting = () => {
 
             {loading &&
               [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
-            {!loading && messages.length === 0 && (
+            {!loading && messages?.length === 0 && (
               <div className="flex flex-col items-center justify-center w-full h-full">
                 <p className="text-center text-mutedcolor text-xl font-bold">
                   Welcome! {user?.firstname + " " + user?.lastname}{" "}

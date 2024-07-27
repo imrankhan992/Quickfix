@@ -101,7 +101,7 @@ function Find({
           
           />
          
-          {currentServiceProviders.length > 0 &&
+          {currentServiceProviders?.length > 0 &&
             currentServiceProviders?.map((serviceProvider) => {
               return (
                 <Marker
@@ -111,7 +111,7 @@ function Find({
               );
             })}
 
-          {currentServiceProviders.length > 0 &&
+          {currentServiceProviders?.length > 0 &&
             currentServiceProviders?.map((serviceProvider) => (
               <Marker
                 key={serviceProvider._id}

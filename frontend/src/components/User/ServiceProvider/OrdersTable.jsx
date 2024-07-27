@@ -60,7 +60,8 @@ export function OrdersTable({ activeTab }) {
   }, [activeTab, newOrder]);
 
   return filteredOrders?.map((order) => {
-    const twoPercent = order?.price * 0.02;
+    const twoPercent = order?.price * 0.2;
+    console.log(twoPercent,"this is two percent")
 
     return (
       user?.walletBalance >= twoPercent && (

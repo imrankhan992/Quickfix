@@ -39,7 +39,7 @@ const Approve = () => {
         `/api/v1/order/get-all-active-orders`
       );
       if (data?.success) {
-        setOrderLength(data.totalOrdersLength);
+        setOrderLength(data?.totalOrdersLength);
       }
     } catch (error) {
       console.log(error);

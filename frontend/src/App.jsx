@@ -59,6 +59,8 @@ import SingleAcceptedOrderServiceProvider from "./components/User/ServiceProvide
 import ChooseJob from "./components/Signup/ChooseJob";
 import RegistrationPrivate from "./components/PrivateRoutes/RegistrationPrivate";
 import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
+import ResetPassword from "./components/ResetPassword/resetPassword";
+import SetPassword from "./components/ResetPassword/setPassword";
 
 function App() {
 const {newOrder} = useSocketContext()
@@ -75,7 +77,9 @@ const {newOrder} = useSocketContext()
       <IdleTimerContainer>
         <Router>
           <Routes>
-          
+           {/* reset password */}
+           <Route path="/reset-password" element={<ResetPassword />} />
+           <Route path="/api/v1/email/account/reset-password/:token" element={<SetPassword />} />
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={!user ? <ChooseJob /> : <Home />} />
             <Route
@@ -102,7 +106,7 @@ const {newOrder} = useSocketContext()
             {/* verify email checking */}
             <Route
               path="/api/v1/email/"
-              element={<RegistrationPrivate route={"/api/v1/verify"} />}
+             
             >
               <Route
                 path="account/verify/:token"
@@ -113,6 +117,7 @@ const {newOrder} = useSocketContext()
                 element={<CongratsUser />}
               />
             </Route>
+           
             {/* user email verify */}
             <Route
               path="/api/v2/email/user/"

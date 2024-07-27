@@ -62,7 +62,7 @@ exports.postNewReview = async (req, res) => {
         serviceProvider.ratings = serviceProvider.reviews.forEach((rev) => {
             avg += rev.rating
         })
-        serviceProvider.ratings = avg / serviceProvider.reviews.length;
+        serviceProvider.ratings = avg / serviceProvider?.reviews?.length;
         await serviceProvider.save({ validateBeforeSave: false });
 
 

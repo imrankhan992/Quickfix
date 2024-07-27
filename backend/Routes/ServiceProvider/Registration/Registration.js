@@ -14,6 +14,8 @@ const {
     updateWallet,
     getallTransaction,
     getAllRevenue,
+    forgetPasswordServiceProvider,
+    resetPasswordServiceProvider,
 } = require("../../../controllers/Service_Provider/ServiceProviderController");
 const { isAuthenticated, authorizeRoles } = require("../../../Middleware/auhRegistration");
 const registrationModel = require("../../../Models/ServiceProvider/registrationModel");
@@ -27,6 +29,9 @@ router.route("/setup").post(isAuthenticated, upload.single("avatar"), setupProfi
 router.route("/admin/logout").get(logout);
 router.route("/user/mydata").get(isAuthenticated, loaddata);
 router.route("/login").post(loginUserController);
+// reset password
+router.route("/serviceProvider/forgot-password").post(forgetPasswordServiceProvider);
+router.route("/email/account/reset-password/:token").post(resetPasswordServiceProvider);
 
 // payment
 

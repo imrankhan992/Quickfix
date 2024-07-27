@@ -236,6 +236,25 @@ exports.acceptOffer = async (req, res) => {
           message: "Service provider already hired for this project.",
         });
     }
+    // Update the offer price which is given by the service provider
+    const newPrice = order.totalOffers.find(
+      (offer) =>
+        offer.serviceProvider?._id.toString() === serviceProviderId.toString()
+    ).price;
+    // Deduct 20% of the price from the service provider walletBalance
+    const serviceProviderWallet = await registrationModel.findById(
+      serviceProviderId
+    );
+
+    // Check if sufficient balance is available in the wallet
+    if (
+      serviceProviderWallet.walletBalance <= 0 ||
+      serviceProviderWallet.walletBalance < newPrice * 0.2
+    ) {
+      throw new Error(
+        "OOPS!  Insufficient balance in the service provider wallet. Please hire another service Provider."
+      );
+    }
 
     // Update the status of the offer to accepted and reject others
     order.totalOffers.forEach((offer) => {
@@ -245,11 +264,7 @@ exports.acceptOffer = async (req, res) => {
           : "rejected";
     });
 
-    // Update the offer price which is given by the service provider
-    const newPrice = order.totalOffers.find(
-      (offer) =>
-        offer.serviceProvider?._id.toString() === serviceProviderId.toString()
-    ).price;
+    
 
     // Save the order with updated offers
     const updatedOrder = await order.save();
@@ -268,20 +283,8 @@ exports.acceptOffer = async (req, res) => {
       price: newPrice,
     });
 
-    // Deduct 20% of the price from the service provider walletBalance
-    const serviceProviderWallet = await registrationModel.findById(
-      serviceProviderId
-    );
-
-    // Check if sufficient balance is available in the wallet
-    if (
-      serviceProviderWallet.walletBalance <= 0 ||
-      serviceProviderWallet.walletBalance < newPrice * 0.2
-    ) {
-      throw new Error(
-        "OOPS!  Insufficient balance in the service provider wallet. Please hire another service Provider."
-      );
-    }
+    
+    
     const deductionAmount = newPrice * 0.2;
     serviceProviderWallet.walletBalance -= deductionAmount;
     await serviceProviderWallet.save();
@@ -594,7 +597,7 @@ exports.getallActiveOrders = async (req, res) => {
       ]
     });
 
-    const totalOrdersLength = orders.length;
+    const totalOrdersLength = orders?.length;
     res.status(200).json({ orders, totalOrdersLength, success: true });
   } catch (error) {
     return res.status(500).json({
@@ -625,9 +628,9 @@ exports.getallActiveOrdersClient = async (req, res) => {
     });
 
     const AllActiveOrders = await AcceptOrder.find({ clientId: id });
-    const totalOrdersLengthBySpecificClient = AllActiveOrders.length;
-    const cancelOrderLength = cancelOrder.length;
-    const totalOrdersLength = orders.length;
+    const totalOrdersLengthBySpecificClient = AllActiveOrders?.length;
+    const cancelOrderLength = cancelOrder?.length;
+    const totalOrdersLength = orders?.length;
     res.status(200).json({ orders, totalOrdersLength, totalOrdersLengthBySpecificClient, cancelOrderLength, success: true });
   } catch (error) {
     return res.status(500).json({

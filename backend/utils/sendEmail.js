@@ -6,7 +6,7 @@ const sendEmail = async (options) => {
         host: "smtp.gmail.com",
         port: 465,
         secure: true,
-        service: "gmail", // Corrected service property
+        service: "gmail", 
         auth: {
             user: process.env.SMPT_MAIL,
             pass: process.env.SMPT_PASSWORD

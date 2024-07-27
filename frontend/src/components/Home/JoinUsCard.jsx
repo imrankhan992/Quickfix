@@ -44,7 +44,7 @@ const JoinUsCard = () => {
             STEP 3
           </h3></div>
           <h1 className="text-primarycolor arimo font-semibold text-5xl"> GET PAID</h1>
-          <p className="text-primarycolor arimo">Get paid on time, every time. Payment is available for withdrawal as soon as it clears.</p>
+          <p className="text-primarycolor arimo">Get paid </p>
             <Link to={"/signup"} className="text-primarycolor arimo flex gap-3 items-center ">Get started <FaArrowRightLong/></Link>
         </div>
       </div>

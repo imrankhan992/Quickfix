@@ -56,9 +56,9 @@ const Home = () => {
               </p>
 
               <div>
-                <button className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
+                <a href="#services"  className="px-10 rounded-xl capitalize bg-buttoncolor text-[16px] py-3 text-hoverblack border-b-4 border-hoverblack  hover:bg-[#B9FF66] arimo hover:text-hoverblack font-bold">
                   Get Start
-                </button>
+                </a>
               </div>
             </div>
 
@@ -118,9 +118,9 @@ const Home = () => {
           </div>
         </div>
         {/* services */}
-        <div className="pt-12 md:pt-28 pb-10 md:px-12 px-3">
+        <div className="pt-12 md:pt-28 pb-10 md:px-12 px-3" id="services">
           <div className=" grid md:grid-cols-4 gap-6 ">
-            <h2 className="text-hoverblack text-center  bg-buttoncolor arimo inline md:text-4xl text-2xl font-semibold px-2 rounded-xl">
+            <h2  className="text-hoverblack text-center  bg-buttoncolor arimo inline md:text-4xl text-2xl font-semibold px-2 rounded-xl">
               Our Services
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
@@ -131,7 +131,7 @@ const Home = () => {
         </div>
         {/* services cards */}
         <div className="grid md:grid-cols-3 md:gap-14 gap-8 ">
-          <div className="bg-cardbg h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
+          <Link to={"/single/services/Carpentar/6684593a399eb54ede427f76"} className="bg-cardbg h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
             <p className="text-hoverblack arimo text-2xl mb-6 font-semibold">
               Carpenter Services
             </p>
@@ -142,9 +142,9 @@ const Home = () => {
             <div className="absolute bottom-0 bg-buttoncolor right-0 p-5 rounded-tl-[2rem]">
               <img src={carpenterpng} className="w-20 " alt="" />
             </div>
-          </div>
+          </Link>
           {/* electration */}
-          <div className="bg-hoverblack h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
+          <Link to={"/single/services/Electrician/6686308e5afe9758dd7f5a82"} className="bg-hoverblack h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
             <p className="text-primarycolor arimo text-2xl mb-6 font-semibold">
               Electrician Services
             </p>
@@ -155,9 +155,9 @@ const Home = () => {
             <div className="absolute bottom-0 bg-buttoncolor right-0 p-5 rounded-tl-[2rem]">
               <img src={voltmeterpng} className="w-20 " alt="" />
             </div>
-          </div>
+          </Link>
           {/* Plumber Services */}
-          <div className="bg-cardbg h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
+          <Link to={"/single/services/Plumber/668625ca5afe9758dd7f5861"} className="bg-cardbg h-[16rem] relative    rounded-tl-3xl rounded-bl-3xl rounded-tr-3xl p-8">
             <p className="text-hoverblack arimo text-2xl mb-6 font-semibold">
               Plumber Services
             </p>
@@ -168,7 +168,7 @@ const Home = () => {
             <div className="absolute bottom-0 bg-buttoncolor right-0 p-5 rounded-tl-[2rem]">
               <img src={plumberpng} className="w-20 " alt="" />
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="md:pt-28 pt-10  md:px-12 px-3 pb-10">
@@ -177,8 +177,7 @@ const Home = () => {
               Join QuickFix
             </h2>
             <p className="col-span-3 text-[16px] font-normal arimo max-w-xl">
-              Meet the skilled and experienced team behind our successful
-              digital marketing strategies
+              Join quick fix and get the best services in town at your doorstep .
             </p>
           </div>
         </div>

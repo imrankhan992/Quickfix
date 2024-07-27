@@ -168,7 +168,7 @@ const Profile = () => {
       );
       const data = await response.json();
 
-      if (data.results.length > 0) {
+      if (data.results?.length > 0) {
         const formattedAddress = data.results[0].formatted_address;
 
         setcurrentaddress(formattedAddress);

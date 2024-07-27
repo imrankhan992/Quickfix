@@ -24,9 +24,9 @@ const Main = ({ user, products }) => {
         `/api/v1/order/get-all-active-orders-client`
       );
       if (data?.success) {
-        setOrderLength(data.totalOrdersLength);
-        setTotalActiveOrdersLength(data.totalOrdersLengthBySpecificClient);
-        setCancelOrderLength(data.cancelOrderLength);
+        setOrderLength(data?.totalOrdersLength);
+        setTotalActiveOrdersLength(data?.totalOrdersLengthBySpecificClient);
+        setCancelOrderLength(data?.cancelOrderLength);
       }
     } catch (error) {
       console.log(error);

@@ -7,7 +7,7 @@ const UserModel = require("../../Models/User/UserModel");
 const Transaction = require("../../Models/Transaction/transaction.model");
 const AcceptOrder = require("../../Models/Order/AcceptOrder");
 const stripe = require('stripe')('sk_test_51PX0FHLhXKwMvDT9RIsWf3w4ZK0qdPXajDHjvcffavOlf3VuPZZ1XeikM4TgArFBTCMZDSBNRESkwCjiWmZlHKvB00pztnZ98m');
-
+const jwt = require("jsonwebtoken")
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
@@ -352,7 +352,7 @@ exports.rechargeWallet = async (req, res) => {
             currency: 'pkr',
             customer: user.stripeCustomerId,
         });
-        
+
         res.status(200).json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -373,7 +373,7 @@ exports.updateWallet = async (req, res) => {
         });
         await newTransaction.save();
         await user.save();
-       
+
         res.status(200).json({ balance: user.walletBalance });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -385,9 +385,9 @@ exports.updateWallet = async (req, res) => {
 // exports.getallTransaction = async (req, res) => {
 //     try {
 //         const id = req.user._id
-        
+
 //         const transactions = await Transaction.find({ userId: id });
-        
+
 //         res.status(200).json({ transactions, success: true });
 //     } catch (error) {
 //         res.status(500).json({ error: error.message });
@@ -409,36 +409,100 @@ exports.getallTransaction = async (req, res) => {
 };
 
 
-exports.getAllRevenue= async (req, res) => {
+exports.getAllRevenue = async (req, res) => {
     try {
-      let totalRevenue = 0;
-      let hasMore = true;
-      let startingAfter = null;
-  
-      // Fetch all charges and calculate total revenue
-      while (hasMore) {
-        const params = { limit: 100 };
-        if (startingAfter) {
-          params.starting_after = startingAfter;
+        let totalRevenue = 0;
+        let hasMore = true;
+        let startingAfter = null;
+
+        // Fetch all charges and calculate total revenue
+        while (hasMore) {
+            const params = { limit: 100 };
+            if (startingAfter) {
+                params.starting_after = startingAfter;
+            }
+            const charges = await stripe.charges.list(params);
+
+            charges.data.forEach(charge => {
+                totalRevenue += charge.amount;
+            });
+
+            hasMore = charges.has_more;
+            if (hasMore) {
+                startingAfter = charges.data[charges.data?.length - 1].id;
+            }
         }
-        const charges = await stripe.charges.list(params);
-  
-        charges.data.forEach(charge => {
-          totalRevenue += charge.amount;
-        });
-  
-        hasMore = charges.has_more;
-        if (hasMore) {
-          startingAfter = charges.data[charges.data.length - 1].id;
-        }
-      }
-  
-      // Stripe returns amount in cents, convert it to dollars
-      totalRevenue = totalRevenue / 100;
-  
-      res.json({ totalRevenue });
+
+        // Stripe returns amount in cents, convert it to dollars
+        totalRevenue = totalRevenue / 100;
+
+        res.json({ totalRevenue });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  }
-  
+}
+
+
+//   forget password service provider and send email
+exports.forgetPasswordServiceProvider = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await registrationModel.findOne({ email });
+        if (!user) throw new Error("User not found");
+        const resetToken = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+            expiresIn: "10m",
+        });
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+        const url = `https://quickfix-8pw7.onrender.com/api/v1/email/account/reset-password/${resetToken}`;
+        const html = `
+        <body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f9f9f9;margin:0;padding:0"><div style="max-width:600px;margin:0 auto;background-color:#fff;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05)"><div style="text-align:center;padding:20px 0;border-bottom:1px solid #eee"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Your Logo" style="width:150px"></div><div style="padding:30px;text-align:center"><h1 style="color:#333;font-size:24px;margin-bottom:20px">Rest Password</h1><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Hi ${user?.firstname},</p><p style="color:#666;line-height:1.6;font-size:16px;margin:15px 0">Reset your password by just clicking on the below button. Note: if you have not requested this email then please just ignore it.</p><a href=${url} style="display:inline-block;margin-top:20px;padding:15px 30px;background-color:#007bff;color:#fff;text-decoration:none;font-size:16px;border-radius:5px;transition:background-color .3s ease">Reset Your Password</a></div><div style="margin-top:30px;padding:20px;background-color:#f4f4f4;text-align:center;color:#888;font-size:14px"><p style="margin:5px 0">If you did not create an account, no further action is required.</p><p style="margin:5px 0">&copy; 2024 Your Company Name. All rights reserved.</p><div style="margin-top:10px"><a href="https://facebook.com/yourcompany" style="margin:0 5px"><img src="https://res.cloudinary.com/dbcopekhr/image/upload/v1716362233/facebook_i8p0zu.svg" alt="Facebook" style="width:32px"></a><a href="https://twitter.com/yourcompany" style="margin:0 5px"><img src="https://img.freepik.com/free-vector/new-2023-twitter-logo-x-icon-design_1017-45418.jpg?size=338&ext=jpg&ga=GA1.1.2082370165.1716249600&semt=ais_user" alt="Twitter" style="width:32px"></a><a href="https://instagram.com/yourcompany" style="margin:0 5px"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTN7-0xfKFBqt9MIsyKA3el52qEj9htrawhjM6ppqNIuQ&s" alt="Instagram" style="width:32px"></a></div></div></div></body>
+    `
+        const message = `Your Email Verify Token is  :- \n\n ${url} \n\n if you have not requested this email then, please ignore it`;
+        await sendEmail({
+            email: user?.email,
+            message,
+            name: user?.firstname,
+            html,
+            subject: "Reset Password"
+        });
+        await user.save();
+        res.status(200).json({ success: true, message: "Email sent successfully! Please check your email" });
+    } catch (error) {
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        res.status(500).send({ message: error.message });
+    }
+}
+
+//   reset password
+exports.resetPasswordServiceProvider = async (req, res, next) => {
+    try {
+        const { token } = req.params;
+        const { password } = req.body
+        if (!password) throw new Error("Please provide a password")
+        if (!token) throw new Error("Invalid token");
+        const verifyToken = jwt.verify(token, process.env.TOKEN_SECRET);
+        // if token is expired or not found
+        const user = await registrationModel.findById(verifyToken.id);
+        if (!user) throw new Error("Invalid token");
+        if (user.resetPasswordExpires < Date.now()) {
+            user.resetPasswordToken = null;
+            user.resetPasswordExpires = null;
+            await user.save();
+            throw new Error("Token expired, please request a new one and try again");
+        }
+
+
+
+        if (!user) throw new Error("Invalid token");
+        user.password = password;
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        await user.save();
+        res.status(200).json({ success: true, message: "Password reset successfully" });
+
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+}

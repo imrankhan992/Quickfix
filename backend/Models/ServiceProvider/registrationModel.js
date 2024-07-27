@@ -123,6 +123,8 @@ const userSchema = new mongoose.Schema({
     ],
     verifyEmailToken: String,
     verifyEmailExpires: Date,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 userSchema.index({ currentlocation: "2dsphere" });
 //creating password reset token

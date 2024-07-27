@@ -11,7 +11,7 @@ import Loading from "@/Pages/Loading";
 import { Input } from "@/components/ui/input";
 
 const Tabs = ({ selectedTab, setSelectedTab }) => {
-  const tabs = ["Pending", "Processing", "Completed", "Search"];
+  const tabs = ["Pending", "Completed", "Search"];
 
   return (
     <div className="flex items-center flex-wrap gap-3 mb-8">
