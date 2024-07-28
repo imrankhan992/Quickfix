@@ -127,7 +127,7 @@ const {
                     alt="Service Provider"
                     className="w-24 h-24 mx-auto rounded-full mb-4"
                   />
-                  <Link to={`/profile/${offers?.serviceProvider?._id}`} className="flex items-center justify-center text-red-500 underline font-bold">Report</Link>
+                  <Link to={`/user/dashboard/profile/${offers?.serviceProvider?._id}`} className="flex items-center justify-center text-red-500 underline font-bold">Report</Link>
                   <h3 className="text-lg font-semibold">
                     {offers?.serviceProvider?.firstname}
                     {offers?.serviceProvider?.lastname}

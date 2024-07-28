@@ -82,7 +82,7 @@ const {newOrder} = useSocketContext()
           <Routes>
            {/* reset password */}
            <Route path="/reset-password" element={<ResetPassword />} />
-           <Route path="/profile/:id" element={<UserProfile />} />
+          
 
            <Route path="/api/v1/email/account/reset-password/:token" element={<SetPassword />} />
             <Route path="/" element={<Home />} />
@@ -142,6 +142,7 @@ const {newOrder} = useSocketContext()
 
             {/*user dashboard  */}
             <Route path="/user/dashboard/" element={<UserPrivate />}>
+            <Route path="profile/:id" element={<UserProfile />} />
               <Route path="my profile" element={<UserDashboard />} />
               <Route path="services" element={<Services />} />
               <Route path="orders" element={<Orders />} />
