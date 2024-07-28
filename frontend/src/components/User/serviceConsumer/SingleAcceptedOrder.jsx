@@ -8,7 +8,7 @@ import axiosInstance from "@/ulities/axios";
 import { Filter } from "./Filter";
 import { errorToast } from "@/Toast/Toast";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Chip } from "@material-tailwind/react";
 import dateFormate from "@/Hooks/dateFormate";
 import { MessageSpeedDial } from "./SpeedDial";
@@ -127,6 +127,7 @@ const {
                     alt="Service Provider"
                     className="w-24 h-24 mx-auto rounded-full mb-4"
                   />
+                  <Link to={`/profile/${offers?.serviceProvider?._id}`} className="flex items-center justify-center text-red-500 underline font-bold">Report</Link>
                   <h3 className="text-lg font-semibold">
                     {offers?.serviceProvider?.firstname}
                     {offers?.serviceProvider?.lastname}
@@ -141,10 +142,10 @@ const {
                       size={30}
                       activeColor="#ffd700"
                       edit={false}
-                      value={3.9}
+                      value={offers?.serviceProvider?.ratings}
                       half={true}
                     />
-                    <span className="text-xl font-bold">4.8</span>
+                    <span className="text-xl font-bold">{offers?.serviceProvider?.ratings}</span>
                   </div>
                 </div>
               </div>

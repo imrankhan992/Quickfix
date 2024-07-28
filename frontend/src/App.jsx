@@ -63,6 +63,7 @@ import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
 
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import SetPassword from "./components/ResetPassword/SetPassword";
+import UserProfile from "./components/User/serviceConsumer/UserProfile";
 
 function App() {
 const {newOrder} = useSocketContext()
@@ -81,6 +82,8 @@ const {newOrder} = useSocketContext()
           <Routes>
            {/* reset password */}
            <Route path="/reset-password" element={<ResetPassword />} />
+           <Route path="/profile/:id" element={<UserProfile />} />
+
            <Route path="/api/v1/email/account/reset-password/:token" element={<SetPassword />} />
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={!user ? <ChooseJob /> : <Home />} />

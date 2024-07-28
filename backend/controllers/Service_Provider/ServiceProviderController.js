@@ -7,7 +7,8 @@ const UserModel = require("../../Models/User/UserModel");
 const Transaction = require("../../Models/Transaction/transaction.model");
 const AcceptOrder = require("../../Models/Order/AcceptOrder");
 const stripe = require('stripe')('sk_test_51PX0FHLhXKwMvDT9RIsWf3w4ZK0qdPXajDHjvcffavOlf3VuPZZ1XeikM4TgArFBTCMZDSBNRESkwCjiWmZlHKvB00pztnZ98m');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const ReportModel = require("../../Models/Report/ReportModel");
 exports.registerUserController = async (req, res) => {
     try {
         const { firstname, lastname, email, password } = req.body;
@@ -504,5 +505,58 @@ exports.resetPasswordServiceProvider = async (req, res, next) => {
 
     } catch (error) {
         res.status(500).send({ message: error.message });
+    }
+}
+
+// report service provider
+
+exports.reportServiceProvider = async (req, res) => {
+    
+        try {
+            const { id } = req.params;
+            const reason = req.body.reason;
+            const userId = req.user._id;
+    
+            // Find the user by ID
+            const user = await registrationModel.findOne({ _id: id });
+    
+            if (!user) {
+                return res.status(404).json({ success: false, message: "User not found" });
+            }
+    
+            // // Increment the user's report count
+            // user.reportCount += 1;
+            // await user.save();
+    
+            // Create and save the new report
+            const newReport = new ReportModel({
+                serviceProvider: id,
+                reason,
+                user: userId,
+            });
+            await newReport.save();
+    
+            // Respond with success
+            return res.status(200).json({ success: true, message: "Reported successfully", newReport });
+        } catch (error) {
+            // Handle any errors
+            return res.status(500).send({ message: error.message });
+        }
+    };
+    
+   
+    
+
+
+// get service provider
+exports.getServiceProvider = async (req, res) => {
+    try {
+        const user = await registrationModel.findOne({ _id: req.params.id });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({ success: true, user });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
