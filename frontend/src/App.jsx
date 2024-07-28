@@ -60,8 +60,9 @@ import ChooseJob from "./components/Signup/ChooseJob";
 import RegistrationPrivate from "./components/PrivateRoutes/RegistrationPrivate";
 import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
 
-import SetPassword from "./components/ResetPassword/setPassword";
+
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import SetPassword from "./components/ResetPassword/SetPassword";
 
 function App() {
 const {newOrder} = useSocketContext()
