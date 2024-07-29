@@ -67,8 +67,8 @@ const SendOffer = ({ order }) => {
             Send Offer
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-[80vw] h-[80vh] bg-cardbg flex p-0">
-          <div className="w-full">
+        <DialogContent className="max-w-[80vw] h-[80vh] bg-cardbg flex md:flex-row flex-col p-0">
+          <div className="w-full md:block hidden">
             {showMap && (
               <AddressGoogleMap
                 order={order}
@@ -77,9 +77,9 @@ const SendOffer = ({ order }) => {
               />
             )}
           </div>
-          <div className="h-full  w-[50%] flex flex-col gap-3 py-8 px-4">
+          <div className="h-full  md:w-[50%] flex flex-col gap-3 py-8 px-4">
             <div className="bg-primarycolor p-2 rounded-md border ">
-              <p className="flex justify-between items-center ">
+              <p className="flex  justify-between items-center ">
                 <b className="arimo text-[26px] text-mutedcolor">
                   Total Time:{" "}
                 </b>{" "}

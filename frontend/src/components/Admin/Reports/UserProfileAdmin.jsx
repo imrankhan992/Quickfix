@@ -39,9 +39,9 @@ const UserProfileAdmin = () => {
         <>
           {/* User Profile Card */}
           <div className="flex flex-col  bg-white shadow-lg rounded-lg p-6">
-            <h1 className="font-bold text-2xl">Account id:  {serviceProvider?._id}</h1>
-           <div className="flex items-center justify-between">
-           <div className="flex items-center justify-start gap-3  w-full">
+            <h1 className="font-bold md:text-2xl text-xl my-4">Account id:  {serviceProvider?._id}</h1>
+           <div className="flex md:flex-row flex-col items-center justify-between">
+           <div className="flex md:flex-row flex-col items-center justify-start gap-3  w-full">
               <img
                 className="w-32 h-32 rounded-full border-4 border-indigo-500"
                 src={serviceProvider?.avatar?.url}

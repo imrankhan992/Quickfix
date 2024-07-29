@@ -82,7 +82,7 @@ const Reports = () => {
 
           <div className="w-full  min-h-screen p-4">
             <h2 className="text-2xl font-semibold text-gray-800">
-              Reported Service Providers {pendingCounts}
+              Reported Service Providers 
             </h2>
             <div className="mt-4 mb-4">
               <label className="mr-2">Filter by Status:</label>

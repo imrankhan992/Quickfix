@@ -91,7 +91,7 @@ const Main = () => {
         <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
           {/* heading */}
 
-          <h3 className="text-hoverblack font-bold text-2xl">{newServiceProviders}</h3>
+          <h3 className="text-hoverblack font-bold text-2xl">Dashboard</h3>
           {/* three divs */}
           <div className="text-primarycolor grid md:grid-cols-4 gap-4 ">
             <div className="border-2 h-52 rounded-xl p-4 bg-primarycolor  ">
