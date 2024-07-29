@@ -64,6 +64,8 @@ import RechargeAccount from "./components/User/ServiceProvider/RechargeAccount";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
 import SetPassword from "./components/ResetPassword/SetPassword";
 import UserProfile from "./components/User/serviceConsumer/UserProfile";
+import Reports from "./components/Admin/Reports/Reports";
+import ReportedProfile from "./components/Admin/Reports/ReportedProfile";
 
 function App() {
 const {newOrder} = useSocketContext()
@@ -80,8 +82,10 @@ const {newOrder} = useSocketContext()
       <IdleTimerContainer>
         <Router>
           <Routes>
+            
            {/* reset password */}
            <Route path="/reset-password" element={<ResetPassword />} />
+          
           
 
            <Route path="/api/v1/email/account/reset-password/:token" element={<SetPassword />} />
@@ -154,6 +158,8 @@ const {newOrder} = useSocketContext()
             </Route>
             {/* admin dashboard */}
             <Route path="/admin/dashboard/" element={<AdminPrivate />}>
+            <Route path="reports" element={<Reports />} />
+            <Route path="reported_profile/:id" element={<ReportedProfile />} />
               <Route path="My Profile" element={<Dashboard />} />
               <Route path="customers" element={<Users />} />
               <Route path="applicant/:id" element={<SingleServiceProvider />} />

@@ -1,6 +1,7 @@
 const CategoryModel = require("../../Models/Admin/CategoryModel");
 const Order = require("../../Models/Order/Order");
 const ProductModel = require("../../Models/Product/ProductModel");
+const ReportModel = require("../../Models/Report/ReportModel");
 const registrationModel = require("../../Models/ServiceProvider/registrationModel");
 const UserModel = require("../../Models/User/UserModel");
 const sendEmail = require("../../utils/sendEmail");
@@ -440,7 +441,7 @@ exports.logout = async (req, res) => {
             secure: 'production', // Match the original cookie setting
             sameSite: 'none', // Match the original cookie setting
         });
-        
+
         return res.status(200).json({
             success: true,
             message: "Logout Successfully",
@@ -561,14 +562,71 @@ exports.updatetheAccountStatus = async (req, res) => {
 exports.totalOrders = async (req, res) => {
     try {
         const orders = await Order.find();
-        
+
         return res.status(200).json({
             success: true,
-            
+
             ordersLength: orders.length
         });
     } catch (error) {
         console.error('Error getting total orders:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+}
+
+// get all reports
+exports.getallReports = async (req, res) => {
+    try {
+        const reports = await ReportModel.find().populate('user').populate('serviceProvider');
+        return res.status(200).json({
+            success: true,
+            reports
+        });
+    } catch (error) {
+        console.error('Error getting reports:', error);
+        res.status(500).json({ error: 'An internal server error occurred.' });
+    }
+}
+
+// update report status
+exports.updateReportStatus = async (req, res) => {
+    try {
+        const { reportId } = req.params;
+        const { status, serviceProviderId } = req.body;
+
+        // Find the service provider
+        const serviceProvider = await registrationModel.findById(serviceProviderId);
+        if (!serviceProvider) {
+            return res.status(404).json({ success: false, message: 'Service provider not found.' });
+        }
+
+        // Find the report
+        const report = await ReportModel.findById(reportId);
+        if (!report) {
+            return res.status(404).json({ success: false, message: 'Report not found.' });
+        }
+
+        // Update the reportCount based on the status changes
+        if (report.status === 'approved') {
+            if (status === 'pending' || status === 'rejected') {
+                serviceProvider.reportCount -= 1;
+            }
+        } else {
+            if (status === 'approved' && report.status !== 'approved') {
+                serviceProvider.reportCount += 1;
+            }
+        }
+
+        // Save the updated service provider
+        await serviceProvider.save();
+
+        // Update the report status
+        report.status = status;
+        await report.save();
+
+        res.status(200).json({ success: true, message: 'Report status updated successfully.' });
+    } catch (error) {
+        console.error('Error updating report status:', error);
         res.status(500).json({ error: 'An internal server error occurred.' });
     }
 }

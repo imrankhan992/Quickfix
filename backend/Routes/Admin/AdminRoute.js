@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const { isAuthenticated, authorizeRoles } = require("../../Middleware/auhRegistration");
 const { getallServiceprovider } = require("../../controllers/Service_Provider/ServiceProviderController");
-const { countingController, loadAdminData, updateAccountController, getsingleServiceProviderController, createCategoryController, getallcategoryiesController, deleteCategoryController, updateCategoryController, createProductController, getallProductsController, getallproductsByCategory,deleteProductController, updateProductController, singleProductController, logout, getsingleServiceById, findserviceProviders, updatetheAccountStatus, totalOrders } = require("../../controllers/Admin/Admincontroller");
+const { countingController, loadAdminData, updateAccountController, getsingleServiceProviderController, createCategoryController, getallcategoryiesController, deleteCategoryController, updateCategoryController, createProductController, getallProductsController, getallproductsByCategory,deleteProductController, updateProductController, singleProductController, logout, getsingleServiceById, findserviceProviders, updatetheAccountStatus, totalOrders, getallReports, updateReportStatus } = require("../../controllers/Admin/Admincontroller");
 const router = express.Router();
 const upload = multer({ dest: "pictures/" });
 router.route("/admin/get-all-sp-provider").get(isAuthenticated, authorizeRoles("admin"), getallServiceprovider)
@@ -22,6 +22,8 @@ router.route("/account/active").put(isAuthenticated,  updatetheAccountStatus)
 router.route("/find-serviceproviders/nearme").post(findserviceProviders)
 router.route("/single-service/:id").get(getsingleServiceById)
 router.route("/total-orders-length").get(isAuthenticated,totalOrders)
+router.route("/get-all-reports").get(isAuthenticated,authorizeRoles("admin"),getallReports)
+router.route("/update-report-status/:reportId").put(isAuthenticated,authorizeRoles("admin"),updateReportStatus)
 
 router.route("/logout/:id").get(logout)
 

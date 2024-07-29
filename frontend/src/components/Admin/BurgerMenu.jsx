@@ -15,25 +15,10 @@ import {
   Drawer,
   Card,
 } from "@material-tailwind/react";
-// import {
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-// } from "@heroicons/react/24/solid";
-// import {
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-//   RiPresentationFill,
-// } from "@heroicons/react/24/outline";
+
 import { RiPresentationFill } from "react-icons/ri";
 import { FaBarsStaggered } from "react-icons/fa6";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdReport } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
 import { GiCardboardBoxClosed } from "react-icons/gi";
@@ -145,6 +130,19 @@ export function BurgerMenu() {
             <GiCardboardBoxClosed className="h-5 w-5" />
           </ListItemPrefix>
           All Services
+        </ListItem>
+        </Link>
+        {/* get all reports */}
+        <Link to={"/admin/dashboard/reports"}>
+        <ListItem className={`text-primarycolor focus:bg-buttoncolor focus:text-primarycolor focus:bg-opacity-100 hover:bg-buttoncolor hover:text-primarycolor hover:border-buttonborder hover:border ${
+              open === 6
+                ? "bg-buttoncolor text-primarycolor border-buttonborder border"
+                : ""
+            }`}>
+          <ListItemPrefix>
+          <MdReport className="h-5 w-5" />
+          </ListItemPrefix>
+         Get all Reports
         </ListItem>
         </Link>
       </List>

@@ -11,6 +11,7 @@ import Loading from "@/Pages/Loading";
 import Alert from "@/components/AlertForUpdateOrders/Alert";
 import axiosInstance from "@/ulities/axios";
 import Rating from "react-rating-stars-component";
+import AccountHealth from "./AccountHealth";
 const Approve = () => {
   const [balance, setBalance] = useState(0);
   const [orderLength, setOrderLength] = useState(0);
@@ -170,6 +171,8 @@ const Approve = () => {
                   </div>
                 </div>
               </div>
+              {/* Account health */}
+              <AccountHealth user={user}/>
             </div>
 
             {/* customer feedback*/}

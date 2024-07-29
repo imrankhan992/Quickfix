@@ -10,8 +10,11 @@ import { FaRupeeSign } from "react-icons/fa6";
 import { ServiceProviderTable } from "./ServiceProviderTable";
 import axiosInstance from "@/ulities/axios";
 import Loading from "@/Pages/Loading";
+import { useSocketContext } from "@/context/SocketContext";
 
 const Main = () => {
+  const { pendingCounts, setPendingCounts,newServiceProviders} = useSocketContext()
+  const [reports, setReports] = useState([]);
   const [users, setusers] = useState(0)
   const [spuser, setspuser] = useState(0)
   const [totalOrdersLength, setTotalOrdersLength] = useState(0)
@@ -56,6 +59,31 @@ const Main = () => {
     fetchRevenue();
   }, []);
 
+
+  const getAllReports = async () => {
+  
+    setLoading(true);
+    try {
+      const { data } = await axiosInstance.get("/api/v1/get-all-reports");
+
+      if (data) {
+        setReports(data?.reports);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+   getAllReports();
+   
+  }, [])
+  if(reports.length > 0){
+    const pending = reports.filter(report => report.status === "pending")
+    setPendingCounts(pending?.length)
+   }
   return (
     <>
       <main className="lg:w-[100%] w-full  h-full bg-cardbg">
@@ -63,7 +91,7 @@ const Main = () => {
         <div className="w-full  min-h-screen p-4 flex flex-col gap-4">
           {/* heading */}
 
-          <h3 className="text-hoverblack font-bold text-2xl">Dashboard</h3>
+          <h3 className="text-hoverblack font-bold text-2xl">{newServiceProviders}</h3>
           {/* three divs */}
           <div className="text-primarycolor grid md:grid-cols-4 gap-4 ">
             <div className="border-2 h-52 rounded-xl p-4 bg-primarycolor  ">

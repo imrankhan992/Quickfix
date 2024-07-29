@@ -1,5 +1,4 @@
 import { FaUserClock } from "react-icons/fa";
-
 import {
   Card,
   CardHeader,
@@ -45,42 +44,49 @@ export function Users() {
   const dispatch = useDispatch();
   const { SPuser, SPloading } = useSelector((state) => state.spData);
   const [selectedTab, setSelectedTab] = useState("Pending");
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     dispatch(spDataAction());
   }, [dispatch]);
 
   const filteredSPuser = SPuser?.filter((user) => {
-    switch (selectedTab) {
-      case "Approved":
-        return user.accountStatus === "approve";
-      case "Deactivated":
-        return user.accountStatus === "deactivate";
-      case "Rejected":
-        return user.accountStatus === "reject";
-      case "Disabled":
-        return user.accountStatus === "disabled";
-      case "Pending":
-      default:
-        return user.accountStatus === "pending";
-    }
+    const matchesTab =
+      selectedTab === "Pending" && user.accountStatus === "pending" ||
+      selectedTab === "Approved" && user.accountStatus === "approve" ||
+      selectedTab === "Deactivated" && user.accountStatus === "deactivate" ||
+      selectedTab === "Rejected" && user.accountStatus === "reject" ||
+      selectedTab === "Disabled" && user.accountStatus === "disabled";
+    
+    const matchesSearch = user._id.includes(searchTerm);
+
+    return matchesTab && matchesSearch;
   });
 
   return (
     <>
       <BurgerMenu />
-      <div className="flex ">
+      <div className="flex">
         <Aside open={3} />
         <main className="lg:w-[100%] w-full h-full bg-thirdcolor">
           <Header />
           <div className="w-full min-h-screen p-4 flex flex-col gap-4">
-            <h3 className="text-hoverblack text-3xl font-bold ">All Service Providers</h3>
-            
+            <h3 className="text-hoverblack text-3xl font-bold">All Service Providers</h3>
+
             <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Search by ID"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="px-4 py-2  rounded-md w-full bg-cardbg text-hoverblack focus:ring-offset-1 focus:ring-offset-buttoncolor  border border-bordercolor"
+              />
+            </div>
 
             {!SPloading && (
               <Card className="h-full w-full rounded-none bg-thirdcolor z-1">
-              
                 <CardBody className="px-0 bg-thirdcolor text-hoverblack overflow-auto">
                   <table className="w-full min-w-max table-auto text-left">
                     <thead>
@@ -88,14 +94,14 @@ export function Users() {
                         {TABLE_HEAD.map((head) => (
                           <th
                             key={head}
-                            className="cursor-pointer border-y border-blue-gray-100 bg-sidebarbg p-4 transition-colors  "
+                            className="cursor-pointer border-y border-blue-gray-100 bg-sidebarbg p-4 transition-colors"
                           >
                             <Typography
                               variant="small"
                               color="blue-gray"
-                              className="flex items-center justify-between gap-2 font-normal leading-none    text-primarycolor"
+                              className="flex items-center justify-between gap-2 font-normal leading-none text-primarycolor"
                             >
-                              {head}{" "}
+                              {head}
                             </Typography>
                           </th>
                         ))}
@@ -125,7 +131,7 @@ export function Users() {
                               <td className={classes}>
                                 <div className="flex items-center gap-3">
                                   <Avatar src={avatar?.url} alt={firstname} size="sm" />
-                                  <div className="flex flex-col ">
+                                  <div className="flex flex-col">
                                     <Typography
                                       variant="small"
                                       color="blue-gray"
@@ -143,7 +149,6 @@ export function Users() {
                                   </div>
                                 </div>
                               </td>
-
                               <td className={classes}>
                                 <div className="w-max">
                                   <Chip

@@ -18,6 +18,8 @@ export const SocketContextProvider = ({ children }) => {
   const [requestOrderId, setRequestOrderId] = useState();
   const [orderExpiresTime, setOrderExpiresTime] = useState();
   const [expiresOrderId, setExpiresOrderId] = useState()
+  const [pendingCounts, setPendingCounts] = useState(0)
+  const [newServiceProviders, setNewServiceProviders] = useState(0)
   // https://noahai.ai 
   // https://quickfix-8pw7.onrender.com
   const initlizeSocket = () => {
@@ -64,7 +66,9 @@ export const SocketContextProvider = ({ children }) => {
         setSelectedConversation,
         orderExpiresTime,
         setOrderExpiresTime,
-        expiresOrderId, setExpiresOrderId
+        expiresOrderId, setExpiresOrderId,
+        pendingCounts, setPendingCounts,
+        newServiceProviders, setNewServiceProviders
       }}
     >
       {children}
